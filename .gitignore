@@ -1,0 +1,148 @@
+# ============================
+# DEPENDENCIES
+# ============================
+node_modules/
+jspm_packages/
+bower_components/
+web_modules/
+
+# ============================
+# LOGS
+# ============================
+logs
+*.log
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ============================
+# DIAGNOSTIC REPORTS
+# ============================
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# ============================
+# RUNTIME DATA
+# ============================
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# ============================
+# ENVIRONMENT VARIABLES
+# ============================
+.env
+.env.*
+.env.*.local
+!.env.example
+
+# ============================
+# BUILD OUTPUT / COVERAGE
+# ============================
+dist/
+build/
+build/Release
+coverage/
+*.lcov
+.nyc_output
+.output
+.nuxt
+.vuepress/dist
+.temp
+.docusaurus
+.svelte-kit/
+**/.vitepress/dist
+**/.vitepress/cache
+
+# ============================
+# CACHE DIRECTORIES
+# ============================
+.cache/
+.parcel-cache/
+.vite/
+tmp/
+temp/
+.grunt
+.fusebox/
+.serverless/
+.firebase/
+.dynamodb/
+
+# ============================
+# TESTING / REPORTING
+# ============================
+lib-cov
+.vscode-test
+
+# ============================
+# PACKAGE MANAGER FILES
+# ============================
+.yarn-integrity
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.npm
+
+# ============================
+# TOOL CACHES
+# ============================
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
+
+# ============================
+# TEMPORARY / BACKUP FILES
+# ============================
+*.bak
+*.tmp
+*.swp
+*.swo
+
+# ============================
+# REPL / PACK / HISTORY FILES
+# ============================
+.node_repl_history
+*.tgz
+
+# ============================
+# VITE / FRONTEND BUILD FILES
+# ============================
+.next
+out
+.nuxt
+.output
+.vite/
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# ============================
+# STATIC SITE GENERATORS
+# ============================
+.vuepress/dist
+.cache/
+.temp
+
+# ============================
+# OS FILES
+# ============================
+.DS_Store
+Thumbs.db
+
+# ============================
+# IDE / EDITOR SETTINGS
+# ============================
+.vscode/
+.idea/
+
+# ============================
+# MISC
+# ============================
+.lock-wscript
+.tern-port
