@@ -25,4 +25,4 @@ export const MovieOnDisplay = ()=> {
     )
 }
 
-export default Movie;
+export default MovieCard;

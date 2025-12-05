@@ -1,6 +1,6 @@
 import React from "react";
 
-function Movie() {
+function MovieDetail() {
     return <></>
 };
-export default Movie;
+export default MovieDetail;
