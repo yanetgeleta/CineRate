@@ -1,5 +1,5 @@
 import React from "react";
-import NavLink from "./Navlink";
+import NavLink from "./NavLink";
 
 const Footer = ()=> {
     const currentYear = new Date().getFullYear();

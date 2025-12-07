@@ -6,9 +6,9 @@ const ComboBox = (props)=> {
             <label htmlFor={props.name}>{props.label}</label>
             <select name={props.name} id={props.name}>
                 {
-                    props.options.map((sort)=> {
+                    props.options.map((sort, index)=> {
                         return (
-                            <option>{sort}</option>
+                            <option key={index} value={sort} >{sort}</option>
                         )
                     })
                 }

@@ -1,6 +1,6 @@
 import React from "react";
-
-function Show() {
+// This is a page that shows details of shows
+function ShowDetail() {
     return <></>
 }
-export default Show;
+export default ShowDetail;

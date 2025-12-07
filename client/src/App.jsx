@@ -1,22 +1,22 @@
 import React from "react";
-import Home from "./pages/Home";
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import Movie from "./pages/MovieDetail";
-import Show from "./pages/ShowDetail";
 import LoginSignUp from "./pages/LoginSignup";
-import Profile from "./pages/ProfilePage";
+import Profile from "./pages/Profile";
 import OtherUser from "./pages/OtherUser";
 import Footer from "./components/Footer";
 import Movies from "./pages/Movies";
 import Shows from "./pages/Shows";
+import MovieDetail from "./pages/MovieDetail";
+import ShowDetail from "./pages/ShowDetail";
+import Home from "./pages/home";
 
 function App() {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/movieDetail" element={<Movie/>} />
-                <Route path="/showDetail" element={<Show/>} />
+                <Route path="/" element={<Home/>} />
+                <Route path="/movieDetail" element={<MovieDetail/>} />
+                <Route path="/showDetail" element={<ShowDetail/>} />
                 <Route path="/loginSignup" element={<LoginSignUp/>} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/otherUser" element={<OtherUser />} />

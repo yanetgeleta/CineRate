@@ -1,8 +1,7 @@
 import React from "react";
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import MovieCard, { MovieOnDisplay } from "../components/movieCard";
-
+// This is the home page that users see when they search for site
 function Home() {
     return (
         <div>
