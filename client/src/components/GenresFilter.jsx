@@ -1,6 +1,6 @@
 import React from "react";
 
-const Genres = ()=> {
+const GenresFilter = ()=> {
     const genres = ["Action",
     "Adventure",
     "Drama",
@@ -23,4 +23,4 @@ const Genres = ()=> {
     )
 }
 
-export default Genres;
+export default GenresFilter;

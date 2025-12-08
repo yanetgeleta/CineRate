@@ -6,9 +6,9 @@ const Footer = ()=> {
     return (
         <div>
             <p>{currentYear} CineRate.All rights reserved</p>
-            <NavLink />
-            <NavLink />
-            <NavLink /> 
+            <NavLink name="About" path="/about" />
+            <NavLink name="Privacy Policy" path="/privacy-policy" />
+            <NavLink name="Contact" path="/contact" /> 
         </div>
     )
 }

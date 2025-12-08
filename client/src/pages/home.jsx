@@ -1,18 +1,23 @@
 import React from "react";
 import Navbar from "../components/Navbar";
-import MovieCard, { MovieOnDisplay } from "../components/movieCard";
+import FilmCard from "../components/FilmCard";
+import Button from "../components/Button";
 // This is the home page that users see when they search for site
 function Home() {
     return (
         <div>
             <Navbar />
-            <MovieOnDisplay />
+            <FilmCard />
+            <h2>Title</h2>
+            <p>Description</p>
+            <Button name="WatchTrailer" />
+
             <h2>Trending</h2>
-            <MovieCard />
+            <FilmCard/>
             <h2>New Releases</h2>
-            <MovieCard />
+            <FilmCard />
             <h2>Top Rated</h2>
-            <MovieCard />
+            <FilmCard />
             {/* we will loop through the value we get from the api */}
         </div>
     )

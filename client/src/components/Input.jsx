@@ -1,8 +1,8 @@
 import React from "react";
 
-function SearchInput() {
+function Input() {
     return (
         <input type="text" />
     )
 }
-export default SearchInput;
+export default Input;

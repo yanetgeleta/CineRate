@@ -1,10 +1,10 @@
 import React from "react";
 import Brand from "./Brand";
 import NavLink from "./NavLink";
-import SearchInput from "./SearchInput";
 import Button from "./Button";
 import ProfilePic from "./ProfilePic";
 import NotificationRing from "./NotificationRing";
+import Input from "./Input";
 
 function Navbar() {
     return (
@@ -13,11 +13,11 @@ function Navbar() {
             <NavLink path="/movies" name="Movies" />
             <NavLink path="/tvShows" name="TV Shows" />
             <NavLink path="/genres" name="Genres" />
-            <SearchInput />
+            <Input />
             <NotificationRing />
             <ProfilePic />
-            <Button name="Sign Up" />
-            <Button name="Login" />
+            <Button>Sign Up</Button>
+            <Button>Log In</Button>
         </div>
     );
 };
