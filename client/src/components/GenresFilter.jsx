@@ -1,11 +1,7 @@
 import React from "react";
 
 const GenresFilter = ()=> {
-    const genres = ["Action",
-    "Adventure",
-    "Drama",
-    "Comedy",
-    "Science Fiction"]
+    const genres = ["Action","Adventure","Drama","Comedy","Science Fiction"]
 
     return (
         <div>
