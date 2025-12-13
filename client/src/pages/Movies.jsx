@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "../layouts/Navbar";
 import Button from "../components/Button";
 import FilterAndSort from "../components/FilterAndSort";
 import FilmCard from "../components/FilmCard";

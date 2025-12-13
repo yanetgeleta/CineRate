@@ -1,4 +1,6 @@
 import React from "react";
+import FilmCard from "../components/FilmCard";
+import Button from "../components/Button";
 // This is a page that shows details of shows
 function ShowDetail() {
     return (

@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "../layouts/Navbar";
 import GenreCard from "../components/GenreCard";
 // This is a page where users will explore genres both for shows and movies
 const Genres = ()=> {

@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "../layouts/Navbar";
 import FilmCard from "../components/FilmCard";
 import Button from "../components/Button";
 // This is the home page that users see when they search for site

@@ -3,12 +3,12 @@ import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import LoginSignUp from "./pages/LoginSignup";
 import Profile from "./pages/Profile";
 import OtherUser from "./pages/OtherUser";
-import Footer from "./components/Footer";
 import Movies from "./pages/Movies";
 import Shows from "./pages/Shows";
 import MovieDetail from "./pages/MovieDetail";
 import ShowDetail from "./pages/ShowDetail";
 import Home from "./pages/home";
+import Footer from "./layouts/Footer";
 
 function App() {
     return (

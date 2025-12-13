@@ -1,10 +1,10 @@
 import React from "react";
-import Brand from "./Brand";
-import NavLink from "./NavLink";
-import Button from "./Button";
-import ProfilePic from "./ProfilePic";
-import NotificationRing from "./NotificationRing";
-import Input from "./Input";
+import Brand from "../components/Brand";
+import NavLink from "../components/NavLink";
+import Button from "../components/Button";
+import ProfilePic from "../components/ProfilePic";
+import NotificationRing from "../components/NotificationRing";
+import Input from "../components/Input";
 
 function Navbar() {
     return (

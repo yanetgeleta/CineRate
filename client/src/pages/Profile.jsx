@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "../layouts/Navbar";
 import ProfilePic from "../components/ProfilePic";
 import Button from "../components/Button";
 import StatBox from "../components/StatBox";
