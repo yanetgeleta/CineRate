@@ -4,7 +4,8 @@ import ProfilePic from "../components/ProfilePic";
 import Button from "../components/Button";
 import StatBox from "../components/StatBox";
 import ComboBox from "../components/ComboBox";
-import GenresFilter from "../components/GenresFilter";
+import YearList from "../components/YearList";
+import FilmCard from "../components/FilmCard";
 // This is a page that shows user details/profile
 function Profile() {
     const sorting = ["Date Added","Title (A–Z)","Release Year","Rating","Popularity","Runtime"]
@@ -25,8 +26,10 @@ function Profile() {
             <Button>Want to Watch</Button>
             <Button>Reviews</Button>
             <ComboBox label="Sort by" name="sort" options={sorting} />
-            <ComboBox label="Genres" name="genre" options={genres} />
-            <ComboBox label="Year" name="year" options={genres} />
+            <ComboBox label="Genre" name="genre" options={genres} />
+            <YearList currentYear={currentYear} earliestYear={earlistYear} label="Year" />
+            <FilmCard />
+            {/* Will be looped through based on the list selection */}
         </div>
     )
 }
