@@ -11,7 +11,7 @@ export const registerUser = async (req, res)=> {
         if(existingUser.rows.length > 0) {
             return res.status(409).json({message: "Email already exists"});
         }
-        const displayName = fName + " " + lName;
+        const displayName = `${fName} ${lName}`;
 
         bcrypt.hash(password, 10, async (err, hash)=> {
             if(err) {

@@ -9,22 +9,26 @@ import MovieDetail from "./pages/MovieDetail";
 import ShowDetail from "./pages/ShowDetail";
 import Home from "./pages/home";
 import Footer from "./layouts/Footer";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
     return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<Home/>} />
-                <Route path="/movieDetail" element={<MovieDetail/>} />
-                <Route path="/showDetail" element={<ShowDetail/>} />
-                <Route path="/loginSignup" element={<LoginSignUp/>} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/otherUser" element={<OtherUser />} />
-                <Route path="/movies" element={<Movies />}/>
-                <Route path="/shows" element={<Shows />} />
-            </Routes>
-            <Footer />
-        </Router>
+        <AuthProvider>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<Home/>} />
+                    <Route path="/movieDetail" element={<MovieDetail/>} />
+                    <Route path="/showDetail" element={<ShowDetail/>} />
+                    <Route path="/loginSignup" element={<LoginSignUp/>} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/otherUser" element={<OtherUser />} />
+                    <Route path="/movies" element={<Movies />}/>
+                    <Route path="/shows" element={<Shows />} />
+                </Routes>
+                <Footer />
+            </Router>
+        </AuthProvider>
+
     )
 }
 export default App;
