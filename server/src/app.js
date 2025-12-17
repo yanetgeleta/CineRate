@@ -4,11 +4,12 @@ import session from "express-session";
 import bodyParser from "body-parser";
 import passport from "passport";
 import env from "dotenv";
+import path from "path";
 
-import configurePassport from "./config/passport";
-import authRoutes from "./routes/authRoutes";
+import configurePassport from "./config/passport.js";
+import authRoutes from "./routes/authRoutes.js";
 
-env.config();
+env.config({path: '../.env'});
 
 const app = express();
 

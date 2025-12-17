@@ -1,7 +1,8 @@
 import pg from "pg"
 import env from "dotenv"
+import path from "path";
 
-env.config();
+env.config({path: '../.env'});
 
 const db = new pg.Pool({
     database: process.env.DB_DATABASE,

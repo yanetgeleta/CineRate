@@ -1,6 +1,10 @@
 import React from "react";
 import FilmCard from "../components/FilmCard";
 import Button from "../components/Button";
+import Navbar from "../layouts/Navbar";
+import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
+import StarIcon from '@mui/icons-material/Star';
+import CreateIcon from '@mui/icons-material/Create';
 // This is a page that shows details of shows
 function ShowDetail() {
     return (

@@ -5,6 +5,7 @@ import FilmCard from "../components/FilmCard";
 import Button from "../components/Button";
 import GenresFilter from "../components/GenresFilter";
 import AddIcon from '@mui/icons-material/Add';
+import FilterAndSort from "../components/FilterAndSort";
 // This is a dedicated page for shows
 const Shows = ()=> {
     return (

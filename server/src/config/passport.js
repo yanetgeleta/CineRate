@@ -2,13 +2,17 @@ import { Strategy as LocalStrategy } from "passport-local";
 import passport from "passport";
 import bcrypt from "bcrypt";
 import {Strategy as GoogleStrategy} from "passport-google-oauth2";
-import db from "./database";
+import db from "./database.js";
+import env from "dotenv";
+import path from "path";
+
+env.config({path: '../.env'});
 
 const configurePassport = ()=> {
-    passport.use("local", new LocalStrategy(async (password, email, cb)=> {
+    passport.use("local", new LocalStrategy(async (username, password, cb)=> {
         try {
-            const existingUser = await db.query(`select * from users where email = $1 or username = $2`, [email, username]);
-            if(existingUser.rows.length === 0) cb(null, false, {message: 'Email doesn\'t exist'});
+            const existingUser = await db.query(`select * from users where email = $1 or username = $1`, [username]);
+            if(existingUser.rows.length === 0) cb(null, false, {message: 'Email or username doesn\'t exist'});
             const user = existingUser.rows[0];
             bcrypt.compare(password, user.password_hash, (err, valid) => {
                 if(err) return cb(err);
