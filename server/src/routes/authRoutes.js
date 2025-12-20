@@ -4,10 +4,17 @@ import { registerUser } from "../controllers/authController.js";
 import env from "dotenv";
 
 env.config({path: '../.env'});
-const clientURL = env.process.CLIENT_URL || "http://localhost:5173";
+const clientURL = process.env.CLIENT_URL || "http://localhost:5173";
 const router = express.Router();
 
 router.post("/register", registerUser);
+router.get('/user', (req,res)=> {
+    if(req.isAuthenticated()) {
+        res.json({user: req.user})
+    } else {
+        res.status(401).json({message: "User not logged in!"})
+    }
+})
 
 router.post("/login", passport.authenticate("local"), (req,res)=> {
     res.json({user: req.user});

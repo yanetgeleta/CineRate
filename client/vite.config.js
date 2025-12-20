@@ -1,15 +1,20 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
+import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
+// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
+      // String shorthand:
+      // "Whenever the frontend sees '/api', forward it to localhost:3000"
+      '/api': 'http://localhost:3000', 
+      
+      // OR, the detailed object syntax (Recommended):
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:3000', // Your Node Backend Port
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '') // Optional: match your router prefix
+        secure: false,      
       }
     }
   }

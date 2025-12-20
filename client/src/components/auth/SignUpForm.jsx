@@ -13,9 +13,11 @@ const SignUpForm = (props)=> {
     const [email, setEmail] = useState('');
 
     const navigate = useNavigate();
+    const {login} = useAuth();
 
     const handleSubmit = async (event)=> {
         event.preventDefault();
+        console.log("Form submitted!");
 
         try {
             const response = await fetch('/api/register', {
@@ -35,7 +37,9 @@ const SignUpForm = (props)=> {
 
             login(data.user);
             navigate('/dashboard');
-            props.onSuccess();
+            if(props.onSuccess) {
+                props.onSuccess();
+            }
         }
         catch(err) {
             console.log("Registration form error", err);
@@ -73,7 +77,7 @@ const SignUpForm = (props)=> {
                     />
                 </label>
                 {/* Usernames are unique and you have to implement the checking process where you check through the database before submitting */}
-                <label htmlFor="signup-email">Email or Username
+                <label htmlFor="signup-email">Email
                     <Input 
                         type="email"
                         placeholder="Enter your email" 
