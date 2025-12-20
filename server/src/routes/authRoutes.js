@@ -1,7 +1,10 @@
 import express from "express";
 import passport from "passport";
 import { registerUser } from "../controllers/authController.js";
+import env from "dotenv";
 
+env.config({path: '../.env'});
+const clientURL = env.process.CLIENT_URL || "http://localhost:5173";
 const router = express.Router();
 
 router.post("/register", registerUser);
@@ -22,10 +25,10 @@ router.get("/auth/google/callback", passport.authenticate("google", {
   }
 );
 
-router.get("/logout", (req, res, next) => {f
+router.get("/logout", (req, res, next) => {
     req.logout((err)=> {
         if(err) next(err);
-        res.redirect("http://localhost:5173/");
+        res.redirect(`${clientURL}/dashboard`);
     })
 })
 

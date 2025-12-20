@@ -28,7 +28,7 @@ const LoginForm = (props)=> {
             }
 
             const data = await response.json()
-            console.log("Success", data);
+            console.log("Login Success", data);
 
             login(data.user);
             props.onSuccess();

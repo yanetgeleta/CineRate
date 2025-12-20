@@ -1,5 +1,9 @@
 import bcrypt from "bcrypt";
 import db from "../config/database.js";
+import env from "dotenv";
+
+env.config({path: '../.env'});
+const profilePlaceholder = process.env.PROFILE_PLACEHOLDER;
 
 export const registerUser = async (req, res)=> {
     const {fName, lName, password, username, email} = req.body;
@@ -13,21 +17,22 @@ export const registerUser = async (req, res)=> {
         }
         const displayName = `${fName} ${lName}`;
 
-        bcrypt.hash(password, 10, async (err, hash)=> {
-            if(err) {
-                console.log("Error hashing the password")
-            }
-            const result = await db.query(`
-                insert into users (email,password_hash, auth_provider, display_name, profile_pic_url, username)
-                values ($1, $2, 'local', $3, 'https://placehold.co/100x150', $4)
-                returning * 
-            `, [email, hash, displayName, username]);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-            req.login(result.rows[0], (err)=> {
-                if (err) return res.status(500).json({message: "Login failed after registration."})
-                res.redirect('http://localhost:5173/dashboard');
-            }) 
-        })
+        const result = await db.query(`
+                insert into users (email,password_hash, auth_provider, display_name, profile_pic_url, username)
+                values ($1, $2, 'local', $3, $4, $5)
+                returning * 
+            `, [email, hashedPassword, displayName, profilePlaceholder, username]);
+
+        const newUser = result.rows[0];
+        req.login(newUser, (err)=> {
+            if (err) return res.status(500).json({message: "Login failed after registration."})
+            return res.status(201).json({
+                message: "Registration successful",
+                user: newUser
+            })
+        }) 
     }
     catch(err) {
         console.log(err);

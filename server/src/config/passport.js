@@ -12,11 +12,11 @@ const configurePassport = ()=> {
     passport.use("local", new LocalStrategy(async (username, password, cb)=> {
         try {
             const existingUser = await db.query(`select * from users where email = $1 or username = $1`, [username]);
-            if(existingUser.rows.length === 0) cb(null, false, {message: 'Email or username doesn\'t exist'});
+            if(existingUser.rows.length === 0) cb(null, false, {message: 'Email or username not found'});
             const user = existingUser.rows[0];
             bcrypt.compare(password, user.password_hash, (err, valid) => {
                 if(err) return cb(err);
-                if(!valid) return cb(null, false, {message: 'Incorrect email or password.'});
+                if(!valid) return cb(null, false, {message: 'Incorrect password.'});
                 return cb(null, user);
             })
         }
