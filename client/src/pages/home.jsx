@@ -1,24 +1,71 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../layouts/Navbar";
 import FilmCard from "../components/FilmCard";
 import Button from "../components/Button";
+import { useAuth } from "../context/AuthContext";
 // This is the home page that users see when they search for site
 function Home() {
+    const [trendingToday, setTrendingToday] = useState([]);
+    const [trendingWeekly, setTrendingWeekly] = useState([]);
+    const [newMovies, setNewMovies] = useState([]);
+    const [topMovies, setTopMovies] = useState([]);
+    const [topShows, setTopShows] = useState([]);
+    const {user} = useAuth();
+
+    // fetches data from the backend for the home page
+    useEffect(()=> {
+        const fetchHomeData = async ()=> {
+            try {
+                const [trendingTodayRes, trendingWeeklyRes, newMoviesRes, topMoviesRes, topShowsRes] = await Promise.all([
+                    fetch('/api/tmdb/trending/today'),
+                    fetch('/api/tmdb/trending/weekly'),
+                    fetch('/api/tmdb/new/movies'),
+                    fetch('/api/tmdb/top/movies'),
+                    fetch('/api/tmdb/top/shows')
+                ])
+                if (!trendingTodayRes.ok || !trendingWeeklyRes.ok || !newMoviesRes.ok || !topMoviesRes.ok || !topShowsRes.ok) throw new Error('Failed to fetch home data');
+                const [trendingTodayData, trendingWeeklyData, newMoviesData, topMoviesData, topShowsData] = await Promise.all([
+                    trendingTodayRes.json(),
+                    trendingWeeklyRes.json(),
+                    newMoviesRes.json(),
+                    topMoviesRes.json(),
+                    topShowsRes.json()
+                ])
+                setTrendingToday(trendingTodayData);
+                setTrendingWeekly(trendingWeeklyData);
+                setNewMovies(newMoviesData);
+                setTopMovies(topMoviesData);
+                setTopShows(topShowsData);
+
+            }
+            catch(err) {
+                console.log("Failed to fetch home data from backend: ", err.message);
+            }
+        }
+        fetchHomeData();
+    }, []);
+
     return (
         <div>
             <Navbar />
             <FilmCard />
+            {/* There will be multiple data that come here from daily and will be shown with slider button as a banner */}
             <h2>Title</h2>
             <p>Description</p>
-            <Button name="WatchTrailer" />
+            {/* title and descripting for the banner */}
+            <Button>Watch Trailer</Button>
 
             <h2>Trending</h2>
             <FilmCard/>
+            {/* Multiple data will come here from weeky, trending movies and shows will be shows here */}
             <h2>New Releases</h2>
             <FilmCard />
-            <h2>Top Rated</h2>
+            {/* Multiple data will come for newly releases movies */}
+            <h2>Top Rated Movies</h2>
             <FilmCard />
-            {/* we will loop through the value we get from the api */}
+            <h2>Top Rated Shows</h2>
+            <FilmCard />
+            {/* Multiple films from topMovies and topShows */}
         </div>
     )
 }

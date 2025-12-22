@@ -20,11 +20,11 @@ router.post("/login", passport.authenticate("local"), (req,res)=> {
     res.json({user: req.user});
 });
 
-router.get("/auth/google", passport.authenticate("google", {
+router.get("/google", passport.authenticate("google", {
     scope: ["profile", "email"]
 }));
 
-router.get("/auth/google/callback", passport.authenticate("google", {
+router.get("/google/callback", passport.authenticate("google", {
     failureRedirect: "http://localhost:5173/login?error=googlefail"
 }),
   (req,res) => {

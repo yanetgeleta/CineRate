@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import passport from "passport";
 import env from "dotenv";
 import path from "path";
+import tmdbRoute from "./routes/tmdbRoutes.js";
 
 import configurePassport from "./config/passport.js";
 import authRoutes from "./routes/authRoutes.js";
@@ -35,7 +36,8 @@ app.use(cors({
     credentials: true
 }));
 
-app.use("/", authRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/tmdb", tmdbRoute);
 app.get("/", (req, res) => {
     res.send("Api is running correctly.");
 })

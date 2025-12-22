@@ -10,6 +10,7 @@ import ShowDetail from "./pages/ShowDetail";
 import Home from "./pages/home";
 import Footer from "./layouts/Footer";
 import { AuthProvider } from "./context/AuthContext";
+import Genres from "./pages/Genres";
 
 function App() {
     return (
@@ -25,6 +26,7 @@ function App() {
                     <Route path="/movies" element={<Movies />}/>
                     <Route path="/shows" element={<Shows />} />
                     <Route path="/dashboard" element={<Home/>} />
+                    <Route path="/genres" element={<Genres />} />
                 </Routes>
                 <Footer />
             </Router>

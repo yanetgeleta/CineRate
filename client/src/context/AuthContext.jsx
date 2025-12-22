@@ -12,7 +12,7 @@ export const AuthProvider = ({children}) => {
     useEffect(()=> {
         const checkUserLoggedIn = async ()=> {
             try {   
-                const response = await fetch('/api/usr');
+                const response = await fetch('/api/user');
                 if(response.ok) {
                     const data = await response.json();
                     setUser(data.user);
@@ -37,7 +37,7 @@ export const AuthProvider = ({children}) => {
     };
     const logout = async ()=> {
         try {
-            await fetch('/api/logout', {method: 'POST', credentials: 'include'})
+            await fetch('/api/auth/logout', {method: 'POST', credentials: 'include'})
         }
         catch(err) {
             console.log("Logout Error: ", err);
