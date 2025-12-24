@@ -1,0 +1,28 @@
+{
+  "name": "cinerate",
+  "version": "1.0.0",
+  "description": "c",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon --env-file=.env server/server.js",
+    "client": "npm run dev --prefix client",
+    "dev": "concurrently -n \"SERVER,CLIENT\" -c \"magenta,cyan\" \"npm run server\" \"npm run client\""
+  }
+  ,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yanetgeleta/CineRate.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yanetgeleta/CineRate/issues"
+  },
+  "homepage": "https://github.com/yanetgeleta/CineRate#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "nodemon": "^3.1.11"
+  }
+}

@@ -10,8 +10,6 @@ import tmdbRoute from "./routes/tmdbRoutes.js";
 import configurePassport from "./config/passport.js";
 import authRoutes from "./routes/authRoutes.js";
 
-env.config({path: '../.env'});
-
 const app = express();
 
 configurePassport();

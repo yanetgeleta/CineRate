@@ -1,8 +1,9 @@
 import bcrypt from "bcrypt";
 import db from "../config/database.js";
 import env from "dotenv";
+import path from "path";
 
-env.config({path: '../.env'});
+env.config({ path: path.resolve(process.cwd(), '.env') });
 const profilePlaceholder = process.env.PROFILE_PLACEHOLDER;
 
 export const registerUser = async (req, res)=> {

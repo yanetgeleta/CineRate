@@ -6,7 +6,7 @@ import db from "./database.js";
 import env from "dotenv";
 import path from "path";
 
-env.config({path: '../.env'});
+env.config({ path: path.resolve(process.cwd(), '.env') });
 
 const configurePassport = ()=> {
     passport.use("local", new LocalStrategy(async (username, password, cb)=> {

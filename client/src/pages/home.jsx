@@ -3,17 +3,19 @@ import Navbar from "../layouts/Navbar";
 import FilmCard from "../components/FilmCard";
 import Button from "../components/Button";
 import { useAuth } from "../context/AuthContext";
-import env from "dotenv";
 // This is the home page that users see when they search for site
 
 // env.config({path: '../.env'});
 function Home() {
-    const [trendingToday, setTrendingToday] = useState([]);
-    const [trendingWeekly, setTrendingWeekly] = useState([]);
-    const [newMovies, setNewMovies] = useState([]);
-    const [topMovies, setTopMovies] = useState([]);
-    const [topShows, setTopShows] = useState([]);
+    const [trendingToday, setTrendingToday] = useState(null);
+    const [trendingWeekly, setTrendingWeekly] = useState(null);
+    const [newMovies, setNewMovies] = useState(null);
+    const [topMovies, setTopMovies] = useState(null);
+    const [topShows, setTopShows] = useState(null);
+
     const {user} = useAuth();
+    const [loading, setLoading] = useState(true);
+
     const basePosterPath = 'https://image.tmdb.org/t/p/';
     const bannerWidth = 'w780';
 
@@ -46,17 +48,22 @@ function Home() {
             }
             catch(err) {
                 console.log("Failed to fetch home data from backend: ", err.message);
+            } finally {
+                setLoading(false);
             }
         }
         fetchHomeData();
     }, []);
+    
+    if(loading) return <div>Loading films...</div>
+    const bannerFilm = trendingToday?.results;
 
     return (
         <div>
             <Navbar />
             {/* Banner for trending movies and shows daily */}
             {trendingToday.results.map((film, index)=> {
-                <FilmCard src={`${basePosterPath}${bannerWidth}${film.poster_path}`} />
+                return <FilmCard src={`${basePosterPath}${bannerWidth}${film.poster_path}`} />
             })}
             <h2>Title</h2>
             <p>Description</p>

@@ -1,13 +1,13 @@
 import express from "express";
-import { newReleaseMovies, topRatedMovies, topRatedShows, trendingToday, trendingWeekly } from "../services/tmdbServices.js";
+import { getTopRatedMovies,getNewReleaseMovies, getTopRatedShows, getTrendingToday,getTrendingWeekly } from "../services/tmdbServices.js";
 
 const router = express.Router();
 const routerFunction = (path, importFunction, errorMessage)=> {
     router.get(path, async (req, res)=> {
         try {
-            const res = await importFunction();
+            const tmdbRes = await importFunction();
             // console.log(res);
-            const data = await res.data;
+            const data = await tmdbRes.data;
             // console.log(data);
             res.json(data);
         }
@@ -17,9 +17,9 @@ const routerFunction = (path, importFunction, errorMessage)=> {
         }
     })
 }
-routerFunction("/trending/today", trendingToday, "Failed to fetch trending movies and shows daily");
-routerFunction("/trending/weekly", trendingWeekly, "Failed to fetch trending movies and shows weekly");
-routerFunction("/new/movies", newReleaseMovies, "Failed to fetch new released movies");
-routerFunction("/top/movies", topRatedMovies, "Failed to fetch top rated movies");
-routerFunction("/top/shows", topRatedShows, "Failed to fetch top rateds shows");
+routerFunction("/trending/today", getTrendingToday, "Failed to fetch trending movies and shows daily");
+routerFunction("/trending/weekly", getTrendingWeekly, "Failed to fetch trending movies and shows weekly");
+routerFunction("/new/movies", getNewReleaseMovies, "Failed to fetch new released movies");
+routerFunction("/top/movies", getTopRatedMovies, "Failed to fetch top rated movies");
+routerFunction("/top/shows", getTopRatedShows, "Failed to fetch top rateds shows");
 export default router;  

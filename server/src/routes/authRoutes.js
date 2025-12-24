@@ -2,8 +2,9 @@ import express from "express";
 import passport from "passport";
 import { registerUser } from "../controllers/authController.js";
 import env from "dotenv";
+import path from "path";
 
-env.config({path: '../.env'});
+env.config({ path: path.resolve(process.cwd(), '.env') });
 const clientURL = process.env.CLIENT_URL || "http://localhost:5173";
 const router = express.Router();
 
