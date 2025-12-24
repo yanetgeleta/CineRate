@@ -1,9 +1,9 @@
 import React from "react";
 
-const FilmCard = ()=> {
+const FilmCard = (props)=> {
     return (
         <div>
-            <img src="https://placehold.co/100x150" alt="a movie card" />
+            <img src={props.src} alt="a film card" />
         </div>
     )
 }

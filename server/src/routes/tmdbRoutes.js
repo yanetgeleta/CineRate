@@ -5,7 +5,10 @@ const router = express.Router();
 const routerFunction = (path, importFunction, errorMessage)=> {
     router.get(path, async (req, res)=> {
         try {
-            const data = await importFunction();
+            const res = await importFunction();
+            // console.log(res);
+            const data = await res.data;
+            // console.log(data);
             res.json(data);
         }
         catch(err) {

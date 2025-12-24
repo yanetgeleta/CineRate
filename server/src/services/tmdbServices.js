@@ -17,3 +17,4 @@ export const trendingWeekly = await axios.get(`${baseURL}/trending/all/week`, co
 export const newReleaseMovies = await axios.get(`${baseURL}/movie/now_playing`, config);
 export const topRatedMovies = await axios.get(`${baseURL}/movie/top_rated`, config);
 export const topRatedShows = await axios.get(`${baseURL}/tv/top_rated`, config);
+console.log(trendingToday.data.results[0]);

@@ -3,7 +3,10 @@ import Navbar from "../layouts/Navbar";
 import FilmCard from "../components/FilmCard";
 import Button from "../components/Button";
 import { useAuth } from "../context/AuthContext";
+import env from "dotenv";
 // This is the home page that users see when they search for site
+
+// env.config({path: '../.env'});
 function Home() {
     const [trendingToday, setTrendingToday] = useState([]);
     const [trendingWeekly, setTrendingWeekly] = useState([]);
@@ -11,6 +14,8 @@ function Home() {
     const [topMovies, setTopMovies] = useState([]);
     const [topShows, setTopShows] = useState([]);
     const {user} = useAuth();
+    const basePosterPath = 'https://image.tmdb.org/t/p/';
+    const bannerWidth = 'w780';
 
     // fetches data from the backend for the home page
     useEffect(()=> {
@@ -36,6 +41,7 @@ function Home() {
                 setNewMovies(newMoviesData);
                 setTopMovies(topMoviesData);
                 setTopShows(topShowsData);
+                console.log(trendingToday);
 
             }
             catch(err) {
@@ -48,11 +54,12 @@ function Home() {
     return (
         <div>
             <Navbar />
-            <FilmCard />
-            {/* There will be multiple data that come here from daily and will be shown with slider button as a banner */}
+            {/* Banner for trending movies and shows daily */}
+            {trendingToday.results.map((film, index)=> {
+                <FilmCard src={`${basePosterPath}${bannerWidth}${film.poster_path}`} />
+            })}
             <h2>Title</h2>
             <p>Description</p>
-            {/* title and descripting for the banner */}
             <Button>Watch Trailer</Button>
 
             <h2>Trending</h2>
