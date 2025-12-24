@@ -3,6 +3,7 @@ import Navbar from "../layouts/Navbar";
 import FilmCard from "../components/FilmCard";
 import Button from "../components/Button";
 import { useAuth } from "../context/AuthContext";
+import Carousel from "../components/Carousel";
 // This is the home page that users see when they search for site
 
 // env.config({path: '../.env'});
@@ -17,7 +18,7 @@ function Home() {
     const [loading, setLoading] = useState(true);
 
     const basePosterPath = 'https://image.tmdb.org/t/p/';
-    const bannerWidth = 'w780';
+    const bannerWidth = 'w1280';
 
     // fetches data from the backend for the home page
     useEffect(()=> {
@@ -56,18 +57,25 @@ function Home() {
     }, []);
     
     if(loading) return <div>Loading films...</div>
-    const bannerFilm = trendingToday?.results;
+    const bannerFilms = trendingToday?.results;
 
     return (
         <div>
             <Navbar />
             {/* Banner for trending movies and shows daily */}
-            {trendingToday.results.map((film, index)=> {
-                return <FilmCard src={`${basePosterPath}${bannerWidth}${film.poster_path}`} />
-            })}
-            <h2>Title</h2>
-            <p>Description</p>
-            <Button>Watch Trailer</Button>
+            <Carousel>
+                {trendingToday?.results.map((film)=> {
+                    return (
+                        <div key={film.id}>
+                            <FilmCard src={`${basePosterPath}${bannerWidth}${film.backdrop_path}`} />
+                            <h2>{film.title? film.title : film.name}</h2>
+                            <p>{film.overview}</p>
+                            <p>{film.media_type === 'tv'? "Show" : "Movie"}</p>
+                            <Button>Watch Trailer</Button>
+                        </div>
+                    )
+                })}
+            </Carousel>
 
             <h2>Trending</h2>
             <FilmCard/>
