@@ -8,88 +8,101 @@ import Carousel from "../components/Carousel";
 
 // env.config({path: '../.env'});
 function Home() {
-    const [trendingToday, setTrendingToday] = useState(null);
-    const [trendingWeekly, setTrendingWeekly] = useState(null);
-    const [newMovies, setNewMovies] = useState(null);
-    const [topMovies, setTopMovies] = useState(null);
-    const [topShows, setTopShows] = useState(null);
+  const [trendingToday, setTrendingToday] = useState(null);
+  const [trendingWeekly, setTrendingWeekly] = useState(null);
+  const [newMovies, setNewMovies] = useState(null);
+  const [topMovies, setTopMovies] = useState(null);
+  const [topShows, setTopShows] = useState(null);
 
-    const {user} = useAuth();
-    const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
+  const [loading, setLoading] = useState(true);
 
-    const basePosterPath = 'https://image.tmdb.org/t/p/';
-    const bannerWidth = 'w1280';
+  // dont forget to replace these variables with values from dotenv
+  const basePosterPath = "https://image.tmdb.org/t/p/";
+  const heroBannerWidth = "w1280";
+  const smallBannerWidht = "w300";
 
-    // fetches data from the backend for the home page
-    useEffect(()=> {
-        const fetchHomeData = async ()=> {
-            try {
-                const [trendingTodayRes, trendingWeeklyRes, newMoviesRes, topMoviesRes, topShowsRes] = await Promise.all([
-                    fetch('/api/tmdb/trending/today'),
-                    fetch('/api/tmdb/trending/weekly'),
-                    fetch('/api/tmdb/new/movies'),
-                    fetch('/api/tmdb/top/movies'),
-                    fetch('/api/tmdb/top/shows')
-                ])
-                if (!trendingTodayRes.ok || !trendingWeeklyRes.ok || !newMoviesRes.ok || !topMoviesRes.ok || !topShowsRes.ok) throw new Error('Failed to fetch home data');
-                const [trendingTodayData, trendingWeeklyData, newMoviesData, topMoviesData, topShowsData] = await Promise.all([
-                    trendingTodayRes.json(),
-                    trendingWeeklyRes.json(),
-                    newMoviesRes.json(),
-                    topMoviesRes.json(),
-                    topShowsRes.json()
-                ])
-                setTrendingToday(trendingTodayData);
-                setTrendingWeekly(trendingWeeklyData);
-                setNewMovies(newMoviesData);
-                setTopMovies(topMoviesData);
-                setTopShows(topShowsData);
-                console.log(trendingToday);
+  // fetches data from the backend for the home page
+  useEffect(() => {
+    const fetchHomeData = async () => {
+      try {
+        const [
+          trendingTodayRes,
+          trendingWeeklyRes,
+          newMoviesRes,
+          topMoviesRes,
+          topShowsRes,
+        ] = await Promise.all([
+          fetch("/api/tmdb/trending/today"),
+          fetch("/api/tmdb/trending/weekly"),
+          fetch("/api/tmdb/new/movies"),
+          fetch("/api/tmdb/top/movies"),
+          fetch("/api/tmdb/top/shows"),
+        ]);
+        if (
+          !trendingTodayRes.ok ||
+          !trendingWeeklyRes.ok ||
+          !newMoviesRes.ok ||
+          !topMoviesRes.ok ||
+          !topShowsRes.ok
+        )
+          throw new Error("Failed to fetch home data");
+        const [
+          trendingTodayData,
+          trendingWeeklyData,
+          newMoviesData,
+          topMoviesData,
+          topShowsData,
+        ] = await Promise.all([
+          trendingTodayRes.json(),
+          trendingWeeklyRes.json(),
+          newMoviesRes.json(),
+          topMoviesRes.json(),
+          topShowsRes.json(),
+        ]);
+        setTrendingToday(trendingTodayData);
+        setTrendingWeekly(trendingWeeklyData);
+        setNewMovies(newMoviesData);
+        setTopMovies(topMoviesData);
+        setTopShows(topShowsData);
+        console.log(trendingToday);
+      } catch (err) {
+        console.log("Failed to fetch home data from backend: ", err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchHomeData();
+  }, []);
 
-            }
-            catch(err) {
-                console.log("Failed to fetch home data from backend: ", err.message);
-            } finally {
-                setLoading(false);
-            }
-        }
-        fetchHomeData();
-    }, []);
-    
-    if(loading) return <div>Loading films...</div>
-    const bannerFilms = trendingToday?.results;
+  if (loading) return <div>Loading films...</div>;
 
-    return (
-        <div>
-            <Navbar />
-            {/* Banner for trending movies and shows daily */}
-            <Carousel>
-                {trendingToday?.results.map((film)=> {
-                    return (
-                        <div key={film.id}>
-                            <FilmCard src={`${basePosterPath}${bannerWidth}${film.backdrop_path}`} />
-                            <h2>{film.title? film.title : film.name}</h2>
-                            <p>{film.overview}</p>
-                            <p>{film.media_type === 'tv'? "Show" : "Movie"}</p>
-                            <Button>Watch Trailer</Button>
-                        </div>
-                    )
-                })}
-            </Carousel>
+  return (
+    <div>
+      <Navbar />
+      {/* Banner for trending movies and shows daily */}
+      <Carousel
+        bannerWidth={heroBannerWidth}
+        basePath={basePosterPath}
+        slidesPerView="1"
+        pagination={true}
+      >
+        {trendingToday?.results}
+      </Carousel>
 
-            <h2>Trending</h2>
-            <FilmCard/>
-            {/* Multiple data will come here from weeky, trending movies and shows will be shows here */}
-            <h2>New Releases</h2>
-            <FilmCard />
-            {/* Multiple data will come for newly releases movies */}
-            <h2>Top Rated Movies</h2>
-            <FilmCard />
-            <h2>Top Rated Shows</h2>
-            <FilmCard />
-            {/* Multiple films from topMovies and topShows */}
-        </div>
-    )
+      <h2>Trending</h2>
+      <FilmCard />
+      {/* Multiple data will come here from weeky, trending movies and shows will be shows here */}
+      <h2>New Releases</h2>
+      <FilmCard />
+      {/* Multiple data will come for newly releases movies */}
+      <h2>Top Rated Movies</h2>
+      <FilmCard />
+      <h2>Top Rated Shows</h2>
+      <FilmCard />
+      {/* Multiple films from topMovies and topShows */}
+    </div>
+  );
 }
 
 export default Home;

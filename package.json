@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "react-slick": "^0.31.0",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "swiper": "^12.1.0"
   }
 }
