@@ -6,7 +6,6 @@ import { useAuth } from "../context/AuthContext";
 import Carousel from "../components/Carousel";
 // This is the home page that users see when they search for site
 
-// env.config({path: '../.env'});
 function Home() {
   const [trendingToday, setTrendingToday] = useState(null);
   const [trendingWeekly, setTrendingWeekly] = useState(null);
@@ -20,7 +19,35 @@ function Home() {
   // dont forget to replace these variables with values from dotenv
   const basePosterPath = "https://image.tmdb.org/t/p/";
   const heroBannerWidth = "w1280";
-  const smallBannerWidht = "w300";
+  const smallBannerWidth = "w300";
+
+  const heroBannerSettings = {
+    direction: "horizontal",
+    // threshold: 100,
+    // touchRatio: 0.5,
+    // shortSwipes: false,
+    // longSwipesRatio: 0.7,
+    spaceBetween: 0,
+    slidesPerView: 1,
+    // pagination: { clickable: true },
+    autoplay: { delay: 5000 },
+    // mousewheel: { enabled: true, forceToAxis: true },
+    disableOnInteraction: false,
+    pauseOnMouseEnter: true,
+    // have a class name for a tailwind design
+  };
+  const posterSettings = {
+    direction: "horizontal",
+    spaceBetween: 20,
+    slidesPerView: 5,
+    breakpoints: {
+      320: { slidesPerView: 2 },
+      640: { slidesPerView: 3 },
+      1024: { slidesPerView: 4 },
+      1280: { slidesPerView: 5 },
+    },
+    mousewheel: { enabled: true, forceToAxis: true },
+  };
 
   // fetches data from the backend for the home page
   useEffect(() => {
@@ -84,22 +111,40 @@ function Home() {
       <Carousel
         bannerWidth={heroBannerWidth}
         basePath={basePosterPath}
-        slidesPerView="1"
-        pagination={true}
-      >
-        {trendingToday?.results}
-      </Carousel>
+        items={trendingToday?.results}
+        settings={heroBannerSettings}
+      />
 
       <h2>Trending</h2>
-      <FilmCard />
+      <Carousel
+        bannerWidth={smallBannerWidth}
+        basePath={basePosterPath}
+        items={trendingWeekly?.results}
+        settings={posterSettings}
+      />
       {/* Multiple data will come here from weeky, trending movies and shows will be shows here */}
       <h2>New Releases</h2>
-      <FilmCard />
+      <Carousel
+        bannerWidth={smallBannerWidth}
+        basePath={basePosterPath}
+        items={newMovies?.results}
+        settings={posterSettings}
+      />
       {/* Multiple data will come for newly releases movies */}
       <h2>Top Rated Movies</h2>
-      <FilmCard />
+      <Carousel
+        bannerWidth={smallBannerWidth}
+        basePath={basePosterPath}
+        items={topMovies?.results}
+        settings={posterSettings}
+      />
       <h2>Top Rated Shows</h2>
-      <FilmCard />
+      <Carousel
+        bannerWidth={smallBannerWidth}
+        basePath={basePosterPath}
+        items={topShows?.results}
+        settings={posterSettings}
+      />
       {/* Multiple films from topMovies and topShows */}
     </div>
   );

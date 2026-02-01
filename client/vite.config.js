@@ -1,21 +1,23 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import path from "path"; // Add this import
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      // This forces Swiper and your app to share the exact same React instance
+      react: path.resolve(__dirname, "node_modules/react"),
+      "react-dom": path.resolve(__dirname, "node_modules/react-dom"),
+    },
+  },
   server: {
     proxy: {
-      // String shorthand:
-      // "Whenever the frontend sees '/api', forward it to localhost:3000"
-      '/api': 'http://localhost:3000', 
-      
-      // OR, the detailed object syntax (Recommended):
-      '/api': {
-        target: 'http://localhost:3000', // Your Node Backend Port
+      "/api": {
+        target: "http://localhost:3000",
         changeOrigin: true,
-        secure: false,      
-      }
-    }
-  }
-})
+        secure: false,
+      },
+    },
+  },
+});
