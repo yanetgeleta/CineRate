@@ -12,6 +12,7 @@ function Home() {
   const [newMovies, setNewMovies] = useState(null);
   const [topMovies, setTopMovies] = useState(null);
   const [topShows, setTopShows] = useState(null);
+  const [trailerURL, setTrailerURL] = useState(null);
 
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -20,6 +21,8 @@ function Home() {
   const basePosterPath = "https://image.tmdb.org/t/p/";
   const heroBannerWidth = "w1280";
   const smallBannerWidth = "w300";
+  const youtubeSearchBase = "https://www.youtube.com/watch?v=";
+  const tmdbMovieBase = "https://api.themoviedb.org/3/movie/";
 
   const heroBannerSettings = {
     direction: "horizontal",
@@ -30,8 +33,8 @@ function Home() {
     spaceBetween: 0,
     slidesPerView: 1,
     // pagination: { clickable: true },
-    autoplay: { delay: 5000 },
-    // mousewheel: { enabled: true, forceToAxis: true },
+    // autoplay: { delay: 5000 },
+    mousewheel: { enabled: true, forceToAxis: true },
     disableOnInteraction: false,
     pauseOnMouseEnter: true,
     // have a class name for a tailwind design
@@ -102,6 +105,27 @@ function Home() {
     fetchHomeData();
   }, []);
 
+  async function trailerButtonHandler(e) {
+    const buttonValue = e.currentTarget.value;
+    console.log(buttonValue);
+    const videosPath = `${tmdbMovieBase}${buttonValue}/videos`;
+
+    try {
+      const response = await fetch(videosPath);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      const movieIndex = result.results.findIndex((item) => {
+        return item.type === "Trailer";
+      });
+      setTrailerURL(`${youtubeSearchBase}${result.results[movieIndex].key}`);
+    } catch (err) {
+      console.log(err);
+    }
+    // setTrailerURL(`${tmdbMovieBase}${buttonValue}/videos`);
+  }
+
   if (loading) return <div>Loading films...</div>;
 
   return (
@@ -109,6 +133,7 @@ function Home() {
       <Navbar />
       {/* Banner for trending movies and shows daily */}
       <Carousel
+        onClick={trailerButtonHandler}
         bannerWidth={heroBannerWidth}
         basePath={basePosterPath}
         items={trendingToday?.results}

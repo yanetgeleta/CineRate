@@ -27,6 +27,7 @@
   "dependencies": {
     "react-slick": "^0.31.0",
     "slick-carousel": "^1.8.1",
-    "swiper": "^12.1.0"
+    "swiper": "^12.1.0",
+    "video.js": "^8.23.4"
   }
 }
