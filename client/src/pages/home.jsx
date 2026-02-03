@@ -21,7 +21,7 @@ function Home() {
   const basePosterPath = "https://image.tmdb.org/t/p/";
   const heroBannerWidth = "w1280";
   const smallBannerWidth = "w300";
-  const youtubeSearchBase = "https://www.youtube.com/watch?v=";
+  // const youtubeSearchBase = "https://www.youtube.com/watch?v=";
   const tmdbMovieBase = "https://api.themoviedb.org/3/movie/";
 
   const heroBannerSettings = {
@@ -35,8 +35,8 @@ function Home() {
     // pagination: { clickable: true },
     // autoplay: { delay: 5000 },
     mousewheel: { enabled: true, forceToAxis: true },
-    disableOnInteraction: false,
-    pauseOnMouseEnter: true,
+    // disableOnInteraction: false,
+    // pauseOnMouseEnter: true,
     // have a class name for a tailwind design
   };
   const posterSettings = {
@@ -107,23 +107,26 @@ function Home() {
 
   async function trailerButtonHandler(e) {
     const buttonValue = e.currentTarget.value;
-    console.log(buttonValue);
-    const videosPath = `${tmdbMovieBase}${buttonValue}/videos`;
-
+    const params = new URLSearchParams({ movieId: buttonValue });
+    const trailerPath = `/api/tmdb/trailer?${params}`;
+    // console.log(buttonValue);
+    // I think the movie Id is not being sent as params
     try {
-      const response = await fetch(videosPath);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      const response = await fetch(trailerPath);
+      const data = await response.json();
+      if (response.ok) {
+        if (data.TrailerURL) {
+          setTrailerURL(data.TrailerURL);
+        } else {
+          console.log("The back end couldn't find trailer path");
+        }
+      } else {
+        console.log("Couldn't fetch data from the backend");
       }
-      const result = await response.json();
-      const movieIndex = result.results.findIndex((item) => {
-        return item.type === "Trailer";
-      });
-      setTrailerURL(`${youtubeSearchBase}${result.results[movieIndex].key}`);
     } catch (err) {
       console.log(err);
     }
-    // setTrailerURL(`${tmdbMovieBase}${buttonValue}/videos`);
+    // Now try calling the Trailer page or somehow the vidoe playinb by connecting them
   }
 
   if (loading) return <div>Loading films...</div>;
@@ -133,7 +136,7 @@ function Home() {
       <Navbar />
       {/* Banner for trending movies and shows daily */}
       <Carousel
-        onClick={trailerButtonHandler}
+        onButtonClick={trailerButtonHandler}
         bannerWidth={heroBannerWidth}
         basePath={basePosterPath}
         items={trendingToday?.results}

@@ -33,7 +33,7 @@ const Carousel = ({ settings, items, ...otherProps }) => {
               <>
                 <p>{item.overview}</p>
                 <p>{item.media_type === "tv" ? "Show" : "Movie"}</p>
-                <Button onClick={otherProps.onClick} value={item.id}>
+                <Button onClick={otherProps.onButtonClick} value={item.id}>
                   Watch Trailer
                 </Button>
               </>
