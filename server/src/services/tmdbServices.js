@@ -29,8 +29,9 @@ export const getTopRatedShows = async () => {
   return await axios.get(`${baseURL}/tv/top_rated`, config);
 };
 export const getTrailerURL = async (req, res) => {
-  const movieID = req.query.movieId;
-  const videosPath = `${baseURL}/movie/${movieID}/videos`;
+  const filmID = req.query.filmId;
+  const filmType = req.query.filmType;
+  const videosPath = `${baseURL}/${filmType}/${filmID}/videos`;
   try {
     const response = await axios.get(videosPath, config);
     const trailerItem = response.data.results.find(

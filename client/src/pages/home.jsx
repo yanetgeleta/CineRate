@@ -115,9 +115,9 @@ function Home() {
     fetchHomeData();
   }, []);
 
-  async function trailerButtonHandler(e) {
-    const buttonValue = e.currentTarget.value;
-    const params = new URLSearchParams({ movieId: buttonValue });
+  async function trailerButtonHandler(values) {
+    // const buttonValue = e.currentTarget.value;
+    const params = new URLSearchParams(values);
     const trailerPath = `/api/tmdb/trailer?${params}`;
     // console.log(buttonValue);
     // I think the movie Id is not being sent as params
@@ -164,6 +164,7 @@ function Home() {
         settings={heroBannerSettings}
       />
       {trailerURL && isPlayerOpen && (
+        // isnall and import the necessary tailwind dependencies to makes this classname desing work
         <div className="fixed inset-0 z-50 w-screen h-screen bg-black/80 flex items-center justify-center">
           <Button
             onClick={() => {
