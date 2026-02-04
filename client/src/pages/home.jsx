@@ -4,7 +4,7 @@ import FilmCard from "../components/FilmCard";
 import Button from "../components/Button";
 import { useAuth } from "../context/AuthContext";
 import Carousel from "../components/Carousel";
-import Trailer from "./Trailer";
+import Trailer from "./Video";
 // This is the home page that users see when they search for site
 
 function Home() {
@@ -15,6 +15,7 @@ function Home() {
   const [topShows, setTopShows] = useState(null);
   const [trailerURL, setTrailerURL] = useState(null);
   const playerRef = useRef(null);
+  const [isPlayerOpen, setIsPlayerOpen] = useState(false);
 
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -126,6 +127,7 @@ function Home() {
       if (response.ok) {
         if (data.TrailerURL) {
           setTrailerURL(data.TrailerURL);
+          setIsPlayerOpen(true);
         } else {
           console.log("The back end couldn't find trailer path");
         }
@@ -161,8 +163,18 @@ function Home() {
         items={trendingToday?.results}
         settings={heroBannerSettings}
       />
-      {trailerURL && (
-        <Trailer options={videoJsOptions} onReady={playerOnReady} />
+      {trailerURL && isPlayerOpen && (
+        <div className="fixed inset-0 z-50 w-screen h-screen bg-black/80 flex items-center justify-center">
+          <Button
+            onClick={() => {
+              setIsPlayerOpen(false);
+              setTrailerURL(null);
+            }}
+          >
+            X
+          </Button>
+          <Trailer options={videoJsOptions} onReady={playerOnReady} />
+        </div>
       )}
 
       <h2>Trending</h2>
