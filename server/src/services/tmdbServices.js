@@ -1,12 +1,13 @@
 import axios from "axios";
 import env from "dotenv";
+import { response } from "express";
 import path from "path";
 
 env.config({ path: path.resolve(process.cwd(), ".env") });
 const baseURL = process.env.TMDB_BASE_URL;
 const bearerToken = process.env.TMDB_ACCESS_TOKEN;
 const tmdbApiKey = process.env.TMDB_API_KEY;
-const youtubeVideoBase = "https://www.youtube.com/watch?v=";
+const youtubeVideoBase = process.env.YOUTUBE_VIDEO_BASE;
 // fetches data from the movie database
 const config = {
   headers: {
@@ -50,4 +51,32 @@ export const getTrailerURL = async (req, res) => {
     return { data: { TrailerURL: null } };
   }
   // return { TrailerURL: `https://www.youtube.com/watch?v=${trailerItem.key}` };
+};
+export const discoverMovies = async (req, res) => {
+  let params;
+  // change params back to const once you get the values
+  const path = `${baseURL}/discover/movies?${params}`;
+  try {
+    const response = await axios.get(path, config);
+  } catch (err) {
+    console.error(new Error("Couldn't fetch from discover movies"), err);
+  }
+  return;
+};
+export const genreIdGetter = async (req, res) => {
+  const filmTypeName = req.query.filmType;
+  const genreName = req.query.genre;
+  const path = `${baseURL}/genre/${filmTypeName}/list`;
+  if (!genreName) {
+    return null;
+  }
+  try {
+    const response = await axios.get(path, config);
+    const genreValue = response.data.genres.find((genre) => {
+      return genre.name.toLowerCase() === genreName.toLowerCase();
+    });
+    return { data: { genreId: genreValue.id } };
+  } catch (err) {
+    console.error(new Error(`Couldn't fetch the genre list for ${movieType}`));
+  }
 };

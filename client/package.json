@@ -20,6 +20,7 @@
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.10.1",
     "video.js": "^8.23.4",
+    "swiper": "^12.1.0",
     "videojs-youtube": "^3.0.1"
   },
   "devDependencies": {
