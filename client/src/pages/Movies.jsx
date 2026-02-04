@@ -9,8 +9,28 @@ import Slider from "@mui/material/Slider";
 // This is dedicated page just for movies\
 // year=1999&sort_by=popularity.desc&without_genres=action'
 const Movies = () => {
-  const [params, setParams] = useState({ year: null, sortBy: null });
-  useEffect(() => {}, []);
+  //   const [params, setParams] = useState({ year: null, sortBy: null });
+  const currentYear = new Date().getFullYear;
+  const [genre, setGenre] = useState(null);
+  const [year, setYear] = useState(currentYear);
+  const [sortBy, setSortBy] = useState(null);
+  const [genreID, setGenreId] = useState(null);
+  useEffect(async () => {
+    if (genre) {
+      genreIdData = await fetch(
+        `/api/tmdb/genre/id?filmType=movie&genre=${genre}`,
+      );
+      setGenreId(genreIdData.genreId);
+    }
+    const values = {
+      genreIdValue: genreID,
+      yearValue: year,
+      sortByValue: sortBy,
+      filmType: "movie",
+    };
+    const params = new URLSearchParams(values);
+    const response = await fetch(`/api/tmdb/discover/film?${params}`);
+  }, [genre, year, sortBy]);
   return (
     <div>
       <Navbar />

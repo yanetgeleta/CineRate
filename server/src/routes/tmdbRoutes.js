@@ -7,6 +7,7 @@ import {
   getTrendingWeekly,
   getTrailerURL,
   genreIdGetter,
+  discoverFilm,
 } from "../services/tmdbServices.js";
 
 const router = express.Router();
@@ -55,7 +56,7 @@ routerFunction(
   getTrailerURL,
   "Failed to fetch trailer for the movie",
 );
-routerFunction("/discover");
+routerFunction("/discover/film", discoverFilm, "Failed to fetch film");
 routerFunction(
   "/genre/id",
   genreIdGetter,

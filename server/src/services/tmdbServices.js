@@ -52,10 +52,16 @@ export const getTrailerURL = async (req, res) => {
   }
   // return { TrailerURL: `https://www.youtube.com/watch?v=${trailerItem.key}` };
 };
-export const discoverMovies = async (req, res) => {
-  let params;
-  // change params back to const once you get the values
-  const path = `${baseURL}/discover/movies?${params}`;
+export const discoverFilm = async (req, res) => {
+  // converts the query values from the frontend to object for params
+  const paramValues = {
+    with_genres: req.query.genreIdValue,
+    year: req.query.yearValue,
+    sort_by: `${req.query.sortByValue}.desc`,
+  };
+  const params = new URLSearchParams(paramValues);
+  const filmTypeName = req.query.filmType;
+  const path = `${baseURL}/discover/${filmTypeName}?${params}`;
   try {
     const response = await axios.get(path, config);
   } catch (err) {
