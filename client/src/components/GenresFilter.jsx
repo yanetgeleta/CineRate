@@ -1,22 +1,34 @@
 import React from "react";
+import ComboBox from "./ComboBox";
 
-const GenresFilter = ()=> {
-    const genres = ["Action","Adventure","Drama","Comedy","Science Fiction"]
+const GenresFilter = () => {
+  const genres = [
+    "Action",
+    "Adventure",
+    "Animation",
+    "Comedy",
+    "Crime",
+    "Documentary",
+    "Drama",
+    "Family",
+    "Fantasy",
+    "History",
+    "Horror",
+    "Music",
+    "Mystery",
+    "Romance",
+    "Science Fiction",
+    "TV Movie",
+    "Thriller",
+    "War",
+    "Western",
+  ];
 
-    return (
-        <div>
-            {
-                genres.map(genre=> {
-                    return (
-                    <label htmlFor="">
-                        <input type="checkbox" value={genre} />
-                        {genre}
-                    </label>
-                    )
-                })
-            }
-        </div>
-    )
-}
+  return (
+    <div>
+      <ComboBox label="Genres" name="genres" options={genres} />
+    </div>
+  );
+};
 
 export default GenresFilter;
