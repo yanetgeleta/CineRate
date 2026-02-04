@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import videojs from "video.js";
 import "video.js/dist/video-js.css";
 import "videojs-youtube";
@@ -20,7 +20,7 @@ function Trailer(props) {
       }));
     } else {
       player = playerRef.current;
-      player.src = { type: "video/youtube", source: trailerURL };
+      player.src = { type: "video/youtube", src: trailerURL };
     }
   }, [trailerURL]);
 

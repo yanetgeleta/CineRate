@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../layouts/Navbar";
 import FilmCard from "../components/FilmCard";
 import Button from "../components/Button";
 import { useAuth } from "../context/AuthContext";
 import Carousel from "../components/Carousel";
+import Trailer from "./Trailer";
 // This is the home page that users see when they search for site
 
 function Home() {
@@ -13,6 +14,7 @@ function Home() {
   const [topMovies, setTopMovies] = useState(null);
   const [topShows, setTopShows] = useState(null);
   const [trailerURL, setTrailerURL] = useState(null);
+  const playerRef = useRef(null);
 
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -50,6 +52,13 @@ function Home() {
       1280: { slidesPerView: 5 },
     },
     mousewheel: { enabled: true, forceToAxis: true },
+  };
+  const videoJsOptions = {
+    autoplay: true,
+    controls: true,
+    responsive: true,
+    fluid: true,
+    sources: [{ src: trailerURL, type: "video/youtube" }],
   };
 
   // fetches data from the backend for the home page
@@ -128,6 +137,16 @@ function Home() {
     }
     // Now try calling the Trailer page or somehow the vidoe playinb by connecting them
   }
+  function playerOnReady(player) {
+    playerRef.current = player;
+
+    player.on("waiting", () => {
+      videojs.log("player is waiting");
+    });
+    player.on("dispose", () => {
+      videojs.log("player will dispose");
+    });
+  }
 
   if (loading) return <div>Loading films...</div>;
 
@@ -142,6 +161,9 @@ function Home() {
         items={trendingToday?.results}
         settings={heroBannerSettings}
       />
+      {trailerURL && (
+        <Trailer options={videoJsOptions} onReady={playerOnReady} />
+      )}
 
       <h2>Trending</h2>
       <Carousel
