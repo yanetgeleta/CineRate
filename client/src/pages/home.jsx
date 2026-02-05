@@ -4,7 +4,7 @@ import FilmCard from "../components/FilmCard";
 import Button from "../components/Button";
 import { useAuth } from "../context/AuthContext";
 import Carousel from "../components/Carousel";
-import Trailer from "./Video";
+import Trailer from "../components/Video";
 // This is the home page that users see when they search for site
 
 function Home() {

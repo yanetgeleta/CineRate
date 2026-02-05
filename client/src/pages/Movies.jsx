@@ -67,7 +67,8 @@ const Movies = () => {
       {/* Issues on this page so far:
             Doesn't load movie data as soon as the page loads
             both filter and genre should have a none option
-            the selected value is not persisting between loads*/}
+            the selected values are not persisting between loads for each of the selection methods
+            clear all not working*/}
       <FilterAndSort
         onSortChange={(sortByValue) => {
           setSortBy(sortByValue);
@@ -83,13 +84,16 @@ const Movies = () => {
       {/* <Button>Apply Filters</Button> */}
       {/* Add a listener for the Slider */}
       <Slider
-        defaultValue={2026}
+        defaultValue={currentYear}
         valueLabelDisplay="auto"
         aria-label="Year Filter"
         step={1}
         shiftStep={10}
         min={1878}
-        max={2026}
+        max={currentYear}
+        onChangeCommitted={(event, newValue) => {
+          setYear(newValue);
+        }}
       />
       <Button
         onClearButton={() => {
