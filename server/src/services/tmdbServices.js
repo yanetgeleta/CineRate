@@ -58,12 +58,14 @@ export const discoverFilm = async (req, res) => {
     with_genres: req.query.genreIdValue,
     year: req.query.yearValue,
     sort_by: `${req.query.sortByValue}.desc`,
+    page: req.query.pageValue,
   };
   const params = new URLSearchParams(paramValues);
   const filmTypeName = req.query.filmType;
   const path = `${baseURL}/discover/${filmTypeName}?${params}`;
   try {
     const response = await axios.get(path, config);
+    return response;
   } catch (err) {
     console.error(new Error("Couldn't fetch from discover movies"), err);
   }

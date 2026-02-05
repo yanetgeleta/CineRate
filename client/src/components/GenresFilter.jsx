@@ -1,7 +1,7 @@
 import React from "react";
 import ComboBox from "./ComboBox";
 
-const GenresFilter = () => {
+const GenresFilter = (props) => {
   const genres = [
     "Action",
     "Adventure",
@@ -26,7 +26,12 @@ const GenresFilter = () => {
 
   return (
     <div>
-      <ComboBox label="Genres" name="genres" options={genres} />
+      <ComboBox
+        onChange={props.onGenreChange}
+        label="Genres"
+        name="genres"
+        options={genres}
+      />
     </div>
   );
 };
