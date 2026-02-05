@@ -105,7 +105,6 @@ function Home() {
         setNewMovies(newMoviesData);
         setTopMovies(topMoviesData);
         setTopShows(topShowsData);
-        console.log(trendingToday);
       } catch (err) {
         console.log("Failed to fetch home data from backend: ", err.message);
       } finally {

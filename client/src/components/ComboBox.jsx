@@ -11,10 +11,10 @@ const ComboBox = (props) => {
         name={props.name}
         id={props.name}
       >
-        {props.options.map((sort, index) => {
+        {props.options.map((option, index) => {
           return (
-            <option key={index} value={sort}>
-              {sort}
+            <option key={index} value={option.query}>
+              {option.name}
             </option>
           );
         })}

@@ -54,12 +54,24 @@ export const getTrailerURL = async (req, res) => {
 };
 export const discoverFilm = async (req, res) => {
   // converts the query values from the frontend to object for params
-  const paramValues = {
-    with_genres: req.query.genreIdValue,
-    year: req.query.yearValue,
-    sort_by: `${req.query.sortByValue}.desc`,
-    page: req.query.pageValue,
-  };
+  const paramValues = {};
+  // function paramsAdder(queryPath, queryName) {
+  //   if (queryPath) {
+  //     paramValues.queryName = queryPath;
+  //   }
+  // }
+  if (req.query.genreIdValue) {
+    paramValues.with_genres = req.query.genreIdValue;
+  }
+  if (req.query.yearValue) {
+    paramValues.year = req.query.yearValue;
+  }
+  if (req.query.sortByValue) {
+    paramValues.sort_by = `${req.query.sortByValue}.asc`;
+  }
+  if (req.query.pageValue) {
+    paramValues.page = req.query.pageValue;
+  }
   const params = new URLSearchParams(paramValues);
   const filmTypeName = req.query.filmType;
   const path = `${baseURL}/discover/${filmTypeName}?${params}`;
