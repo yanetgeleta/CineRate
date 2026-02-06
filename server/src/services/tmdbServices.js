@@ -67,7 +67,9 @@ export const discoverFilm = async (req, res) => {
     paramValues.year = req.query.yearValue;
   }
   if (req.query.sortByValue) {
-    paramValues.sort_by = `${req.query.sortByValue}.asc`;
+    const order =
+      req.query.sortByValue === "title" || "original_title" ? "desc" : "asc";
+    paramValues.sort_by = `${req.query.sortByValue}.${order}`;
   }
   if (req.query.pageValue) {
     paramValues.page = req.query.pageValue;

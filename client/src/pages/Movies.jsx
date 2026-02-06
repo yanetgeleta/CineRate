@@ -37,25 +37,31 @@ const Movies = () => {
   }, [genre]);
 
   useEffect(() => {
-    if (genre && !genreID) return;
+    if (genre && !genreID) setLoading[true];
     async function moviesDataGetter() {
       setLoading(true);
-      const values = {
-        genreIdValue: genreID,
-        yearValue: year,
-        sortByValue: sortBy,
-        filmType: "movie",
-        pageVAlue: page,
-      };
-      const params = new URLSearchParams(values);
-      const response = await fetch(`/api/tmdb/discover/film?${params}`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch movies for movies page!");
+      try {
+        const values = { filmType: "movie" };
+        if (genreID) values.genreIdValue = genreID;
+        if (year) values.yearValue = year;
+        if (sortBy) values.sortByValue = sortBy;
+        if (page) values.pageValue = page;
+        const params = new URLSearchParams(values);
+        const response = await fetch(`/api/tmdb/discover/film?${params}`);
+        if (!response.ok) {
+          setLoading[false];
+          throw new Error("Failed to fetch movies for movies page!");
+        }
+        const responseData = await response.json();
+        setMoviesData(responseData);
+      } catch (err) {
+        console.log(
+          new Error("Error trying to fetch for discover movies"),
+          err.message,
+        );
+      } finally {
+        setLoading(false);
       }
-      const responseData = await response.json();
-      setMoviesData(responseData);
-      console.log(response);
-      setLoading(false);
     }
     moviesDataGetter();
   }, [genreID, year, sortBy, page]);
@@ -65,14 +71,14 @@ const Movies = () => {
       <Navbar />
       <h2>Filter & Sort</h2>
       {/* Issues on this page so far:
-            Doesn't load movie data as soon as the page loads
-            both filter and genre should have a none option
-            the selected values are not persisting between loads for each of the selection methods
-            clear all not working*/}
+            clear all not working
+            I want sort filter to come after the genre and other query so the data will be the same
+            */}
       <FilterAndSort
         onSortChange={(sortByValue) => {
           setSortBy(sortByValue);
         }}
+        currentSortValue={sortBy}
       />
       <h2>Genres</h2>
       <GenresFilter

@@ -3,6 +3,7 @@ import ComboBox from "./ComboBox";
 
 const FilterAndSort = (props) => {
   const sorting = [
+    // desc, desc,desc, desc, asc, asc
     { name: "Popularity", query: "popularity" },
     { name: "Release Date", query: "release_date" },
     { name: "Revenue", query: "revenue" },
@@ -18,9 +19,10 @@ const FilterAndSort = (props) => {
     <div>
       <ComboBox
         onChange={props.onSortChange}
-        label="Sort By"
+        label="Sort Method"
         name="sort"
         options={sorting}
+        currentValue={props.currentSortValue}
       />
     </div>
   );
