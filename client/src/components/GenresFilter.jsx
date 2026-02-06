@@ -3,7 +3,6 @@ import ComboBox from "./ComboBox";
 
 const GenresFilter = (props) => {
   const genres = [
-    { name: "Select genre...", query: null },
     { name: "Action", query: "action" },
     { name: "Adventure", query: "adventure" },
     { name: "Animation", query: "animation" },
