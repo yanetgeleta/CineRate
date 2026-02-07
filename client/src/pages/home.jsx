@@ -5,6 +5,7 @@ import Button from "../components/Button";
 import { useAuth } from "../context/AuthContext";
 import Carousel from "../components/Carousel";
 import Trailer from "../components/Video";
+import { ClipLoader } from "react-spinners";
 // This is the home page that users see when they search for site
 
 function Home() {
@@ -149,65 +150,73 @@ function Home() {
     });
   }
 
-  if (loading) return <div>Loading films...</div>;
-
   return (
     <div>
       <Navbar />
       {/* Banner for trending movies and shows daily */}
-      <Carousel
-        onButtonClick={trailerButtonHandler}
-        bannerWidth={heroBannerWidth}
-        basePath={basePosterPath}
-        items={trendingToday?.results}
-        settings={heroBannerSettings}
-      />
-      {trailerURL && isPlayerOpen && (
-        // isnall and import the necessary tailwind dependencies to makes this classname desing work
-        <div className="fixed inset-0 z-50 w-screen h-screen bg-black/80 flex items-center justify-center">
-          <Button
-            onClick={() => {
-              setIsPlayerOpen(false);
-              setTrailerURL(null);
-            }}
-          >
-            X
-          </Button>
-          <Trailer options={videoJsOptions} onReady={playerOnReady} />
+      {loading ? (
+        <ClipLoader
+          loading={loading}
+          aria-label="Loading Movies Spinner"
+          data-testid="loader"
+        />
+      ) : (
+        <div>
+          <Carousel
+            onButtonClick={trailerButtonHandler}
+            bannerWidth={heroBannerWidth}
+            basePath={basePosterPath}
+            items={trendingToday?.results}
+            settings={heroBannerSettings}
+          />
+          {trailerURL && isPlayerOpen && (
+            // isnall and import the necessary tailwind dependencies to makes this classname desing work
+            <div className="fixed inset-0 z-50 w-screen h-screen bg-black/80 flex items-center justify-center">
+              <Button
+                onClick={() => {
+                  setIsPlayerOpen(false);
+                  setTrailerURL(null);
+                }}
+              >
+                X
+              </Button>
+              <Trailer options={videoJsOptions} onReady={playerOnReady} />
+            </div>
+          )}
+
+          <h2>Trending</h2>
+          <Carousel
+            bannerWidth={smallBannerWidth}
+            basePath={basePosterPath}
+            items={trendingWeekly?.results}
+            settings={posterSettings}
+          />
+          {/* Multiple data will come here from weeky, trending movies and shows will be shows here */}
+          <h2>New Releases</h2>
+          <Carousel
+            bannerWidth={smallBannerWidth}
+            basePath={basePosterPath}
+            items={newMovies?.results}
+            settings={posterSettings}
+          />
+          {/* Multiple data will come for newly releases movies */}
+          <h2>Top Rated Movies</h2>
+          <Carousel
+            bannerWidth={smallBannerWidth}
+            basePath={basePosterPath}
+            items={topMovies?.results}
+            settings={posterSettings}
+          />
+          <h2>Top Rated Shows</h2>
+          <Carousel
+            bannerWidth={smallBannerWidth}
+            basePath={basePosterPath}
+            items={topShows?.results}
+            settings={posterSettings}
+          />
+          {/* Multiple films from topMovies and topShows */}
         </div>
       )}
-
-      <h2>Trending</h2>
-      <Carousel
-        bannerWidth={smallBannerWidth}
-        basePath={basePosterPath}
-        items={trendingWeekly?.results}
-        settings={posterSettings}
-      />
-      {/* Multiple data will come here from weeky, trending movies and shows will be shows here */}
-      <h2>New Releases</h2>
-      <Carousel
-        bannerWidth={smallBannerWidth}
-        basePath={basePosterPath}
-        items={newMovies?.results}
-        settings={posterSettings}
-      />
-      {/* Multiple data will come for newly releases movies */}
-      <h2>Top Rated Movies</h2>
-      <Carousel
-        bannerWidth={smallBannerWidth}
-        basePath={basePosterPath}
-        items={topMovies?.results}
-        settings={posterSettings}
-      />
-      <h2>Top Rated Shows</h2>
-      <Carousel
-        bannerWidth={smallBannerWidth}
-        basePath={basePosterPath}
-        items={topShows?.results}
-        settings={posterSettings}
-      />
-      {/* Multiple films from topMovies and topShows */}
     </div>
   );
 }

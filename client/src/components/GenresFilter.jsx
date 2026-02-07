@@ -31,6 +31,7 @@ const GenresFilter = (props) => {
         label="Genres"
         name="genres"
         options={genres}
+        currentValue={props.currentGenreValue}
       />
     </div>
   );

@@ -6,6 +6,8 @@ import FilmCard from "../components/FilmCard";
 import GenresFilter from "../components/GenresFilter";
 import AddIcon from "@mui/icons-material/Add";
 import Slider from "@mui/material/Slider";
+import { ClipLoader } from "react-spinners";
+
 // This is dedicated page just for movies\
 // year=1999&sort_by=popularity.desc&without_genres=action'
 const Movies = () => {
@@ -65,70 +67,80 @@ const Movies = () => {
     }
     moviesDataGetter();
   }, [genreID, year, sortBy, page]);
-  if (loading) return <div>Loading movies...</div>;
   return (
     <div>
       <Navbar />
-      <h2>Filter & Sort</h2>
-      {/* Issues on this page so far:
+      {loading ? (
+        <ClipLoader
+          loading={loading}
+          aria-label="Loading Movies Spinner"
+          data-testid="loader"
+        />
+      ) : (
+        <div>
+          <h2>Filter & Sort</h2>
+          {/* Issues on this page so far:
             clear all not working
             I want sort filter to come after the genre and other query so the data will be the same
             */}
-      <FilterAndSort
-        onSortChange={(sortByValue) => {
-          setSortBy(sortByValue);
-        }}
-        currentSortValue={sortBy}
-      />
-      <h2>Genres</h2>
-      <GenresFilter
-        onGenreChange={(genreValue) => {
-          setGenre(genreValue);
-        }}
-      />
-      {/* It should automatically apply the filters instead of waiting for the buttons to be pressed */}
-      {/* <Button>Apply Filters</Button> */}
-      {/* Add a listener for the Slider */}
-      <Slider
-        defaultValue={currentYear}
-        valueLabelDisplay="auto"
-        aria-label="Year Filter"
-        step={1}
-        shiftStep={10}
-        min={1878}
-        max={currentYear}
-        onChangeCommitted={(event, newValue) => {
-          setYear(newValue);
-        }}
-      />
-      <Button
-        onClearButton={() => {
-          setSortBy(null);
-          setYear(null);
-          setGenre(null);
-        }}
-      >
-        Clear all
-      </Button>
-      <h1>Browse Movies</h1>
+          <FilterAndSort
+            onSortChange={(sortByValue) => {
+              setSortBy(sortByValue);
+            }}
+            currentSortValue={sortBy}
+          />
+          <h2>Genres</h2>
+          <GenresFilter
+            onGenreChange={(genreValue) => {
+              setGenre(genreValue);
+            }}
+            currentGenreValue={genre}
+          />
+          {/* It should automatically apply the filters instead of waiting for the buttons to be pressed */}
+          {/* <Button>Apply Filters</Button> */}
+          {/* Add a listener for the Slider */}
+          <Slider
+            defaultValue={year}
+            valueLabelDisplay="auto"
+            aria-label="Year Filter"
+            step={1}
+            shiftStep={10}
+            min={1878}
+            max={currentYear}
+            onChangeCommitted={(event, newValue) => {
+              setYear(newValue);
+            }}
+          />
+          <Button
+            onClearButton={() => {
+              setSortBy(null);
+              setYear(null);
+              setGenre(null);
+            }}
+          >
+            Clear all
+          </Button>
+          <h1>Browse Movies</h1>
 
-      {moviesData &&
-        moviesData.results.map((movie) => {
-          return (
-            <div>
-              <FilmCard
-                src={`${basePosterPath}${smallBannerWidth}${movie.poster_path}`}
-              />
-              <p>{movie.vote_average}</p>
-              {/* the vote average will be replaced by my own */}
-              <AddIcon />
-              <p>{movie.title}</p>
-            </div>
-          );
-        })}
+          {moviesData &&
+            moviesData.results.map((movie) => {
+              return (
+                <div>
+                  <FilmCard
+                    src={`${basePosterPath}${smallBannerWidth}${movie.poster_path}`}
+                  />
+                  <p>{movie.vote_average}</p>
+                  {/* the vote average will be replaced by my own */}
+                  <AddIcon />
+                  <p>{movie.title}</p>
+                </div>
+              );
+            })}
 
-      {/* The film cards obviously will be looped through */}
-      {/* We need a pagination */}
+          {/* The film cards obviously will be looped through */}
+          {/* We need a pagination */}
+        </div>
+      )}
     </div>
   );
 };
