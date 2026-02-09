@@ -10,14 +10,14 @@ const ComboBox = (props) => {
         }}
         name={props.name}
         id={props.name}
-        value={props.currentValue}
+        value={props.currentValue || ""}
       >
-        <option value="" hidden>
+        {/* <option value="" hidden>
           Select {props.label}
-        </option>
+        </option> */}
         {props.options.map((option, index) => {
           return (
-            <option key={index} value={option.query}>
+            <option hidden={option.hidden} key={index} value={option.query}>
               {option.name}
             </option>
           );

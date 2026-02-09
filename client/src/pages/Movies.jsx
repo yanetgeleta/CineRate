@@ -72,8 +72,8 @@ const Movies = () => {
       <Navbar />
       <h2>Filter & Sort</h2>
       {/* Issues on this page so far:
-            clear all not working
             I want sort filter to come after the genre and other query so the data will be the same
+            Clear all button not changing the values in the selecting method
             */}
       <FilterAndSort
         onSortChange={(sortByValue) => {
@@ -105,7 +105,7 @@ const Movies = () => {
           setSortBy(null);
           setYear(currentYear);
           setGenre(null);
-          setGenreID(null);
+          // setGenreID(null);
         }}
       >
         Clear all

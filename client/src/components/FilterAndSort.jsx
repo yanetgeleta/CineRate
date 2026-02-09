@@ -4,12 +4,17 @@ import ComboBox from "./ComboBox";
 const FilterAndSort = (props) => {
   const sorting = [
     // desc, desc,desc, desc, asc, asc
-    { name: "Popularity", query: "popularity" },
-    { name: "Release Date", query: "release_date" },
-    { name: "Revenue", query: "revenue" },
-    { name: "Primary Release Date", query: "primary_release_date" },
-    { name: "Original Title", query: "original_title" },
-    { name: "None", query: null },
+    { name: "Select soring method", query: "", hidden: true },
+    { name: "Popularity", query: "popularity", hidden: false },
+    { name: "Release Date", query: "release_date", hidden: false },
+    { name: "Revenue", query: "revenue", hidden: false },
+    {
+      name: "Primary Release Date",
+      query: "primary_release_date",
+      hidden: false,
+    },
+    { name: "Original Title", query: "original_title", hidden: false },
+    { name: "None", query: "", hidden: false },
   ];
 
   // Original Title is always better than title
