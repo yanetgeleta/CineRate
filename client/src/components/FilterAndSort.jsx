@@ -9,7 +9,7 @@ const FilterAndSort = (props) => {
     { name: "Revenue", query: "revenue" },
     { name: "Primary Release Date", query: "primary_release_date" },
     { name: "Original Title", query: "original_title" },
-    { name: "Title", query: "title" },
+    { name: "None", query: null },
   ];
 
   // Original Title is always better than title

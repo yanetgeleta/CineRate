@@ -103,7 +103,7 @@ const Movies = () => {
       <Button
         onClick={() => {
           setSortBy(null);
-          setYear(null);
+          setYear(currentYear);
           setGenre(null);
           setGenreID(null);
         }}

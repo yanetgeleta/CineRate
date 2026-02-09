@@ -22,6 +22,7 @@ const GenresFilter = (props) => {
     { name: "Thriller", query: "thriller" },
     { name: "War", query: "war" },
     { name: "Western", query: "western" },
+    { name: "None", query: null },
   ];
 
   return (
