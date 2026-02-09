@@ -38,7 +38,9 @@ const Movies = () => {
     }
     genreIdGetter();
   }, [genre]);
-
+  useEffect(() => {
+    setPage(1);
+  }, [genre, year]);
   useEffect(() => {
     if (genre && !genreID) setLoading[true];
     async function moviesDataGetter() {
