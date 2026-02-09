@@ -2,7 +2,7 @@ import React from "react";
 import ComboBox from "./ComboBox";
 
 const FilterAndSort = (props) => {
-  const sorting = [
+  const movieSorting = [
     // desc, desc,desc, desc, asc, asc
     { name: "Select soring method", query: "", hidden: true },
     { name: "Popularity", query: "popularity", hidden: false },
@@ -14,8 +14,16 @@ const FilterAndSort = (props) => {
       hidden: false,
     },
     { name: "Original Title", query: "original_title", hidden: false },
-    { name: "None", query: "", hidden: false },
   ];
+  const tvSorting = [
+    { name: "Select sorting method", query: "", hidden: true },
+    { name: "Popularity", query: "popularity.desc", hidden: false },
+    { name: "First Air Date", query: "first_air_date.desc", hidden: false },
+    { name: "Vote Average", query: "vote_average.desc", hidden: false },
+    { name: "Vote Count", query: "vote_count.desc", hidden: false },
+    { name: "Original Name", query: "original_name.desc", hidden: false },
+  ];
+  const sorting = props.filmType === "movie" ? movieSorting : tvSorting;
 
   // Original Title is always better than title
   // Maybe make your own api for vote count and average vote

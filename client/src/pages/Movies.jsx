@@ -83,6 +83,7 @@ const Movies = () => {
           setSortBy(sortByValue);
         }}
         currentSortValue={sortBy}
+        filmType="movie"
       />
       <h2>Genres</h2>
       <GenresFilter
@@ -90,6 +91,7 @@ const Movies = () => {
           setGenre(genreValue);
         }}
         currentGenreValue={genre}
+        filmType="movie"
       />
       <Slider
         defaultValue={year}
