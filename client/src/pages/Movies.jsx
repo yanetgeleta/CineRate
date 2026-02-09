@@ -132,20 +132,28 @@ const Movies = () => {
         <div>
           <h1>Browse Movies</h1>
 
-          {moviesData &&
-            moviesData.results.map((movie) => {
-              return (
-                <div>
+          <div className="grid grid-cols-5 gap-4 p-4">
+            {moviesData &&
+              moviesData.results.map((movie) => (
+                /* 2. THE ITEM: Each child automatically fills one grid cell */
+                <div
+                  key={movie.id}
+                  className="flex flex-col border border-gray-200 rounded p-2"
+                >
                   <FilmCard
                     src={`${basePosterPath}${smallBannerWidth}${movie.poster_path}`}
                   />
-                  <p>{movie.vote_average}</p>
-                  {/* the vote average will be replaced by my own */}
-                  <AddIcon />
-                  <p>{movie.title}</p>
+
+                  <div className="mt-2">
+                    <p className="font-bold">{movie.title}</p>
+                    <p className="text-sm text-gray-600 italic">
+                      Rating: {movie.vote_average}
+                    </p>
+                    <AddIcon />
+                  </div>
                 </div>
-              );
-            })}
+              ))}
+          </div>
 
           {/* The film cards obviously will be looped through */}
           {/* We need a pagination */}

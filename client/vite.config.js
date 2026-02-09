@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 import path from "path"; // Add this import
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
       // This forces Swiper and your app to share the exact same React instance
