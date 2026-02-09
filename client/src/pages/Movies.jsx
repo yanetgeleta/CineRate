@@ -7,6 +7,7 @@ import GenresFilter from "../components/GenresFilter";
 import AddIcon from "@mui/icons-material/Add";
 import Slider from "@mui/material/Slider";
 import { ClipLoader } from "react-spinners";
+import Pagination from "@mui/material/Pagination";
 
 // This is dedicated page just for movies\
 // year=1999&sort_by=popularity.desc&without_genres=action'
@@ -18,7 +19,7 @@ const Movies = () => {
   const [sortBy, setSortBy] = useState(null);
   const [genreID, setGenreID] = useState(null);
   const [moviesData, setMoviesData] = useState(null);
-  const [page, setPage] = useState(null);
+  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
 
   const basePosterPath = "https://image.tmdb.org/t/p/";
@@ -43,11 +44,11 @@ const Movies = () => {
     async function moviesDataGetter() {
       setLoading(true);
       try {
-        const values = { filmType: "movie" };
+        const values = { filmType: "movie", pageValue: page };
         if (genreID) values.genreIdValue = genreID;
         if (year) values.yearValue = year;
         if (sortBy) values.sortByValue = sortBy;
-        if (page) values.pageValue = page;
+
         const params = new URLSearchParams(values);
         const response = await fetch(`/api/tmdb/discover/film?${params}`);
         if (!response.ok) {
@@ -73,7 +74,7 @@ const Movies = () => {
       <h2>Filter & Sort</h2>
       {/* Issues on this page so far:
             I want sort filter to come after the genre and other query so the data will be the same
-            Clear all button not changing the values in the selecting method
+
             */}
       <FilterAndSort
         onSortChange={(sortByValue) => {
@@ -110,6 +111,15 @@ const Movies = () => {
       >
         Clear all
       </Button>
+      {/* Pagination should go down later */}
+      <Pagination
+        onChange={(e, value) => {
+          setPage(value);
+        }}
+        page={page}
+        count={10}
+        color="primary"
+      />
       {loading ? (
         <ClipLoader
           loading={loading}
