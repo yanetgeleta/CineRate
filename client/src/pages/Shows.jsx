@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../layouts/Navbar";
 import Input from "../components/Input";
 import FilmCard from "../components/FilmCard";
@@ -8,8 +8,12 @@ import AddIcon from "@mui/icons-material/Add";
 import FilterAndSort from "../components/FilterAndSort";
 import { ClipLoader } from "react-spinners";
 import { useState } from "react";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 // This is a dedicated page for shows
 const Shows = () => {
+  const currentYear = new Date().getFullYear();
   const [genre, setGenre] = useState(null);
   const [genreID, setGenreID] = useState(null);
   const [sortBy, setSortBy] = useState(null);
@@ -34,9 +38,11 @@ const Shows = () => {
     }
     genreIdGetter();
   }, [genre]);
+
   useEffect(() => {
     setPage(1);
   }, [genre, year]);
+
   useEffect(() => {
     if (genre && !genreID) setLoading[true];
     async function tvDataGetter() {
@@ -54,7 +60,7 @@ const Shows = () => {
           throw new Error("Failed to fetch shows for movies page!");
         }
         const responseData = await response.json();
-        setMoviesData(responseData);
+        setShowData(responseData);
       } catch (err) {
         console.log(
           new Error("Error trying to fetch for discover shows"),
@@ -86,15 +92,50 @@ const Shows = () => {
         currentGenreValue={genre}
         filmType="tv"
       />
-      <h2>Number of Seasons</h2>
-      <Input />
-      <Input />
-      <Button name="Reset" />
-      <h1>Browse Tv Shows</h1>
-      <FilmCard />
-      <p>8.5</p>
-      <AddIcon />
-      <p>Title</p>
+
+      <span>
+        <h2>Number of Seasons</h2>
+        <Input />
+        <Input />
+      </span>
+      <Button>Reset</Button>
+      {loading ? (
+        <ClipLoader
+          loading={loading}
+          data-testid="loader"
+          aria-label="Loading shows spinner"
+        />
+      ) : (
+        <div>
+          <h1>Browse Tv Shows</h1>
+          <div className="grid grid-cols-5 gap-4 p-4">
+            {showData &&
+              showData.results.map((show) => (
+                /* 2. THE ITEM: Each child automatically fills one grid cell */
+                <div
+                  key={show.id}
+                  className="flex flex-col border border-gray-200 rounded p-2"
+                >
+                  <FilmCard
+                    src={`${basePosterPath}${smallBannerWidth}${show.poster_path}`}
+                  />
+
+                  <div className="mt-2">
+                    <p className="font-bold">{show.name}</p>
+                    <p className="text-sm text-gray-600 italic">
+                      Rating: {show.vote_average}
+                      {/* Shall change the vote average to be my own calculated from users */}
+                    </p>
+                    <BookmarkAddOutlinedIcon />
+                    <VisibilityOutlinedIcon />
+                    <FavoriteBorderOutlinedIcon />
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
+      )}
+
       {/* The film cards obviously will be looped through */}
       {/* We need to add a navigation for next pages, a numbered one */}
     </div>

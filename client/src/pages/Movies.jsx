@@ -8,6 +8,9 @@ import AddIcon from "@mui/icons-material/Add";
 import Slider from "@mui/material/Slider";
 import { ClipLoader } from "react-spinners";
 import Pagination from "@mui/material/Pagination";
+import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 
 // This is dedicated page just for movies\
 // year=1999&sort_by=popularity.desc&without_genres=action'
@@ -113,17 +116,9 @@ const Movies = () => {
           // setGenreID(null);
         }}
       >
-        Clear all
+        Reset
       </Button>
       {/* Pagination should go down later */}
-      <Pagination
-        onChange={(e, value) => {
-          setPage(value);
-        }}
-        page={page}
-        count={10}
-        color="primary"
-      />
       {loading ? (
         <ClipLoader
           loading={loading}
@@ -151,7 +146,9 @@ const Movies = () => {
                     <p className="text-sm text-gray-600 italic">
                       Rating: {movie.vote_average}
                     </p>
-                    <AddIcon />
+                    <BookmarkAddOutlinedIcon />
+                    <VisibilityOutlinedIcon />
+                    <FavoriteBorderOutlinedIcon />
                   </div>
                 </div>
               ))}
@@ -161,6 +158,14 @@ const Movies = () => {
           {/* We need a pagination */}
         </div>
       )}
+      <Pagination
+        onChange={(e, value) => {
+          setPage(value);
+        }}
+        page={page}
+        count={10}
+        color="primary"
+      />
     </div>
   );
 };

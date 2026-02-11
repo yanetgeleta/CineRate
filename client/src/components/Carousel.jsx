@@ -2,6 +2,9 @@ import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/bundle";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 // import "swiper/css/pagination";
 // import "swiper/css/autoplay";
 import {
@@ -45,6 +48,9 @@ const Carousel = ({ settings, items, ...otherProps }) => {
                 </Button>
               </>
             )}
+            <FavoriteBorderOutlinedIcon />
+            <BookmarkAddOutlinedIcon />
+            <VisibilityOutlinedIcon />
           </div>
         </SwiperSlide>
       ))}

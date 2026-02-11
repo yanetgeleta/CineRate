@@ -55,11 +55,6 @@ export const getTrailerURL = async (req, res) => {
 export const discoverFilm = async (req, res) => {
   // converts the query values from the frontend to object for params
   const paramValues = { page: req.query.pageValue };
-  // function paramsAdder(queryPath, queryName) {
-  //   if (queryPath) {
-  //     paramValues.queryName = queryPath;
-  //   }
-  // }
   if (req.query.genreIdValue) {
     paramValues.with_genres = req.query.genreIdValue;
   }
@@ -67,9 +62,9 @@ export const discoverFilm = async (req, res) => {
     paramValues.year = req.query.yearValue;
   }
   if (req.query.sortByValue) {
-    const order =
-      req.query.sortByValue === "title" || "original_title" ? "desc" : "asc";
-    paramValues.sort_by = `${req.query.sortByValue}.${order}`;
+    // const order =
+    //   req.query.sortByValue === "title" || "original_title" ? "desc" : "asc";
+    paramValues.sort_by = req.query.sortByValue;
   }
 
   const params = new URLSearchParams(paramValues);

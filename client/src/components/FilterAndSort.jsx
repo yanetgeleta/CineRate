@@ -5,15 +5,15 @@ const FilterAndSort = (props) => {
   const movieSorting = [
     // desc, desc,desc, desc, asc, asc
     { name: "Select soring method", query: "", hidden: true },
-    { name: "Popularity", query: "popularity", hidden: false },
-    { name: "Release Date", query: "release_date", hidden: false },
-    { name: "Revenue", query: "revenue", hidden: false },
+    { name: "Popularity", query: "popularity.desc", hidden: false },
+    { name: "Release Date", query: "release_date.desc", hidden: false },
+    { name: "Revenue", query: "revenue.desc", hidden: false },
     {
       name: "Primary Release Date",
-      query: "primary_release_date",
+      query: "primary_release_date.desc",
       hidden: false,
     },
-    { name: "Original Title", query: "original_title", hidden: false },
+    { name: "Original Title", query: "original_title.desc", hidden: false },
   ];
   const tvSorting = [
     { name: "Select sorting method", query: "", hidden: true },
@@ -21,7 +21,7 @@ const FilterAndSort = (props) => {
     { name: "First Air Date", query: "first_air_date.desc", hidden: false },
     { name: "Vote Average", query: "vote_average.desc", hidden: false },
     { name: "Vote Count", query: "vote_count.desc", hidden: false },
-    { name: "Original Name", query: "original_name.desc", hidden: false },
+    { name: "Name", query: "name.asc", hidden: false },
   ];
   const sorting = props.filmType === "movie" ? movieSorting : tvSorting;
 
