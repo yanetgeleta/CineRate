@@ -26,7 +26,7 @@ const GenresFilter = (props) => {
   ];
   const tvGenres = [
     { name: "Select Genre", query: "", hidden: true },
-    { name: "Action & Adventure", query: "action_adventure", hidden: false },
+    { name: "Action & Adventure", query: "action & adventure", hidden: false },
     { name: "Animation", query: "animation", hidden: false },
     { name: "Comedy", query: "comedy", hidden: false },
     { name: "Crime", query: "crime", hidden: false },
@@ -37,10 +37,10 @@ const GenresFilter = (props) => {
     { name: "Mystery", query: "mystery", hidden: false },
     { name: "News", query: "news", hidden: false },
     { name: "Reality", query: "reality", hidden: false },
-    { name: "Sci-Fi & Fantasy", query: "sci_fi_fantasy", hidden: false },
+    { name: "Sci-Fi & Fantasy", query: "sci-fi & fantasy", hidden: false },
     { name: "Soap", query: "soap", hidden: false },
     { name: "Talk", query: "talk", hidden: false },
-    { name: "War & Politics", query: "war_politics", hidden: false },
+    { name: "War & Politics", query: "war & politics", hidden: false },
     { name: "Western", query: "western", hidden: false },
   ];
   const genres = props.filmType === "movie" ? movieGenres : tvGenres;

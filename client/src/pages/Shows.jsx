@@ -11,13 +11,15 @@ import { useState } from "react";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import Slider from "@mui/material/Slider";
+import Pagination from "@mui/material/Pagination";
 // This is a dedicated page for shows
 const Shows = () => {
-  const currentYear = new Date().getFullYear();
+  // const currentYear = new Date().getFullYear();
   const [genre, setGenre] = useState(null);
   const [genreID, setGenreID] = useState(null);
   const [sortBy, setSortBy] = useState(null);
-  const [year, setYear] = useState(currentYear);
+  // const [year, setYear] = useState(currentYear);
   const [showData, setShowData] = useState(null);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -41,7 +43,7 @@ const Shows = () => {
 
   useEffect(() => {
     setPage(1);
-  }, [genre, year]);
+  }, [genre, sortBy]);
 
   useEffect(() => {
     if (genre && !genreID) setLoading[true];
@@ -50,7 +52,6 @@ const Shows = () => {
       try {
         const values = { filmType: "tv", pageValue: page };
         if (genreID) values.genreIdValue = genreID;
-        if (year) values.yearValue = year;
         if (sortBy) values.sortByValue = sortBy;
 
         const params = new URLSearchParams(values);
@@ -71,7 +72,7 @@ const Shows = () => {
       }
     }
     tvDataGetter();
-  }, [genreID, year, sortBy, page]);
+  }, [genreID, sortBy, page]);
 
   return (
     <div>
@@ -84,6 +85,7 @@ const Shows = () => {
         currentSortValue={sortBy}
         filmType="tv"
       />
+      {/* Genres not working: war and politics, action and adventure, sci-fi and fantasy */}
       <h2>Genres</h2>
       <GenresFilter
         onGenreChange={(genreValue) => {
@@ -92,12 +94,6 @@ const Shows = () => {
         currentGenreValue={genre}
         filmType="tv"
       />
-
-      <span>
-        <h2>Number of Seasons</h2>
-        <Input />
-        <Input />
-      </span>
       <Button>Reset</Button>
       {loading ? (
         <ClipLoader
@@ -135,6 +131,14 @@ const Shows = () => {
           </div>
         </div>
       )}
+      <Pagination
+        onChange={(e, value) => {
+          setPage(value);
+        }}
+        page={page}
+        count={10}
+        color="primary"
+      />
 
       {/* The film cards obviously will be looped through */}
       {/* We need to add a navigation for next pages, a numbered one */}
