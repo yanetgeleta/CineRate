@@ -21,7 +21,6 @@ function Home() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
 
-  // dont forget to replace these variables with values from dotenv
   const basePosterPath = "https://image.tmdb.org/t/p/";
   const heroBannerWidth = "w1280";
   const smallBannerWidth = "w300";
