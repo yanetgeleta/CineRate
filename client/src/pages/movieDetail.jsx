@@ -26,7 +26,7 @@ function MovieDetail() {
         setMovieData(data);
       } catch (err) {
         console.log(
-          new Error("Error trying to fetch for discover movies"),
+          new Error("Error trying to fetch for movie detail"),
           err.message,
         );
       } finally {
