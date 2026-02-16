@@ -95,3 +95,21 @@ export const genreIdGetter = async (req, res) => {
     console.error(new Error(`Couldn't fetch the genre list for ${movieType}`));
   }
 };
+export const filmDetailGetter = async (req, res) => {
+  const filmId = req.query.filmId;
+  const filmType = req.query.flimType;
+  // https://api.themoviedb.org/3/movie/{movie_id}
+  const moviePath = `https://api.themoviedb.org/3/movie/${filmId}`;
+  const tvPath = `https://api.themoviedb.org/3/tv/${filmId}`;
+  const path = filmType === "tv" ? tvPath : moviePath;
+  try {
+    const response = await axios.get(path, config);
+    if (!response.ok) {
+      return "Failed after fetching details for film";
+    }
+    return { data: { filmData: response.data } };
+  } catch (err) {
+    console.log(new Error(`Couldn't fetch details for ${filmId}`, err.message));
+  }
+  return;
+};

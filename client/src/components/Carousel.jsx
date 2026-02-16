@@ -7,6 +7,7 @@ import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 // import "swiper/css/pagination";
 // import "swiper/css/autoplay";
+import { useAuth } from "../context/AuthContext";
 import {
   A11y,
   Navigation,
@@ -17,8 +18,10 @@ import {
 } from "swiper/modules";
 import FilmCard from "./FilmCard";
 import Button from "./Button";
+import { Link } from "react-router-dom";
 
 const Carousel = ({ settings, items, ...otherProps }) => {
+  const { user } = useAuth();
   if (!items || items.length === 0) return null;
   return (
     <Swiper
@@ -27,31 +30,35 @@ const Carousel = ({ settings, items, ...otherProps }) => {
     >
       {items.map((item) => (
         <SwiperSlide key={item.id}>
-          <div>
-            <FilmCard
-              src={`${otherProps.basePath}${otherProps.bannerWidth}${otherProps.bannerWidth === "w1280" ? item.backdrop_path : item.poster_path}`}
-            />
-            <h2>{item.title || item.name}</h2>
-            {otherProps.bannerWidth === "w1280" && (
-              <>
-                <p>{item.overview}</p>
-                <p>{item.media_type === "tv" ? "Show" : "Movie"}</p>
-                <Button
-                  onClick={() => {
-                    otherProps.onButtonClick({
-                      filmId: item.id,
-                      filmType: item.media_type,
-                    });
-                  }}
-                >
-                  Watch Trailer
-                </Button>
-              </>
-            )}
-            <FavoriteBorderOutlinedIcon />
-            <BookmarkAddOutlinedIcon />
-            <VisibilityOutlinedIcon />
-          </div>
+          <Link
+            to={`/${item.media_type === "tv" ? "showdetail" : "moviedetail"}/${item.id}`}
+          >
+            <div>
+              <FilmCard
+                src={`${otherProps.basePath}${otherProps.bannerWidth}${otherProps.bannerWidth === "w1280" ? item.backdrop_path : item.poster_path}`}
+              />
+              <h2>{item.title || item.name}</h2>
+              {otherProps.bannerWidth === "w1280" && (
+                <>
+                  <p>{item.overview}</p>
+                  <p>{item.media_type === "tv" ? "Show" : "Movie"}</p>
+                  <Button
+                    onClick={() => {
+                      otherProps.onTrailerButtonClick({
+                        filmId: item.id,
+                        filmType: item.media_type,
+                      });
+                    }}
+                  >
+                    Watch Trailer
+                  </Button>
+                </>
+              )}
+            </div>
+          </Link>
+          <FavoriteBorderOutlinedIcon />
+          <BookmarkAddOutlinedIcon />
+          <VisibilityOutlinedIcon />
         </SwiperSlide>
       ))}
     </Swiper>

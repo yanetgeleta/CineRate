@@ -162,7 +162,7 @@ function Home() {
       ) : (
         <div>
           <Carousel
-            onButtonClick={trailerButtonHandler}
+            onTrailerButtonClick={trailerButtonHandler}
             bannerWidth={heroBannerWidth}
             basePath={basePosterPath}
             items={trendingToday?.results}
