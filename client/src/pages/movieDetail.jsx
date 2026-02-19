@@ -7,6 +7,8 @@ import StarIcon from "@mui/icons-material/Star";
 import CreateIcon from "@mui/icons-material/Create";
 import { useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
+import MovieDetailsComp from "../components/FilmDetailsComp";
+import FilmDetailsComp from "../components/FilmDetailsComp";
 // This is the page that shows details of a specific movie when clicked on
 function MovieDetail() {
   const { movieId } = useParams();
@@ -16,10 +18,6 @@ function MovieDetail() {
   const heroBannerWidth = "w1280";
   const smallBannerWidth = "w300";
   const [movieGenres, setMovieGenres] = useState(null);
-  const [cast, setCast] = useState(null);
-  const [crew, setCrew] = useState(null);
-  const [directorObj, setDirectorObj] = useState(null);
-  const [writerObj, setWriterObj] = useState(null);
   //   These are two arrays
 
   useEffect(() => {
@@ -37,18 +35,6 @@ function MovieDetail() {
         const data = await json.filmData;
         setMovieData(data);
         setMovieGenres(data.genres);
-        setCast(data.credits.cast);
-        setCrew(data.credits.crew);
-        setDirectorObj(
-          data.credits.crew.find((item) => {
-            return item.job === "Director";
-          }),
-        );
-        setWriterObj(
-          data.credits.crew.find((item) => {
-            return item.job === "Writer" || item.job === "Novel";
-          }),
-        );
       } catch (err) {
         console.log(
           new Error("Error trying to fetch for movie detail"),
@@ -99,17 +85,7 @@ function MovieDetail() {
           <Button>Details</Button>
           <Button>Cast & Crew</Button>
           <Button>Reviews</Button>
-          <h1>Synopsis</h1>
-          <p>{movieData.overview}</p>
-          <h3>Director</h3>
-          <p>{directorObj.name}</p>
-          <h3>Writer</h3>
-          <p>{writerObj && writerObj.name}</p>
-          <h3>Studio</h3>
-          {movieData.production_companies.map((studio, index) => {
-            return <p>{studio.name} </p>;
-          })}
-          {/* Each button will render its respective information */}
+          <FilmDetailsComp filmData={movieData} />
         </div>
       )}
     </div>
