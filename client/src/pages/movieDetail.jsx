@@ -33,19 +33,20 @@ function MovieDetail() {
           console.log(new Error("Failed to fetch movie detail"));
           setLoading(false);
         }
-        const data = await response.filmData.json();
+        const json = await response.json();
+        const data = await json.filmData;
         setMovieData(data);
-        setMovieGenres(movieData.genres);
-        setCast(movieData.credits.cast);
-        setCrew(movieData.credits.crew);
+        setMovieGenres(data.genres);
+        setCast(data.credits.cast);
+        setCrew(data.credits.crew);
         setDirectorObj(
-          crew.find((item) => {
+          data.credits.crew.find((item) => {
             return item.job === "Director";
           }),
         );
         setWriterObj(
-          crew.find((item) => {
-            return item.job === "Writer";
+          data.credits.crew.find((item) => {
+            return item.job === "Writer" || item.job === "Novel";
           }),
         );
       } catch (err) {
@@ -103,7 +104,7 @@ function MovieDetail() {
           <h3>Director</h3>
           <p>{directorObj.name}</p>
           <h3>Writer</h3>
-          <p>{writerObj.name}</p>
+          <p>{writerObj && writerObj.name}</p>
           <h3>Studio</h3>
           {movieData.production_companies.map((studio, index) => {
             return <p>{studio.name} </p>;
