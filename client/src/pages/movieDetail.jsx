@@ -6,11 +6,22 @@ import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import StarIcon from "@mui/icons-material/Star";
 import CreateIcon from "@mui/icons-material/Create";
 import { useParams } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 // This is the page that shows details of a specific movie when clicked on
 function MovieDetail() {
   const { movieId } = useParams();
   const [movieData, setMovieData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const basePosterPath = "https://image.tmdb.org/t/p/";
+  const heroBannerWidth = "w1280";
+  const smallBannerWidth = "w300";
+  const [movieGenres, setMovieGenres] = useState(null);
+  const [cast, setCast] = useState(null);
+  const [crew, setCrew] = useState(null);
+  const [directorObj, setDirectorObj] = useState(null);
+  const [writerObj, setWriterObj] = useState(null);
+  //   These are two arrays
+
   useEffect(() => {
     const fetchMovieData = async () => {
       setLoading(true);
@@ -22,8 +33,21 @@ function MovieDetail() {
           console.log(new Error("Failed to fetch movie detail"));
           setLoading(false);
         }
-        const data = await response.json();
+        const data = await response.filmData.json();
         setMovieData(data);
+        setMovieGenres(movieData.genres);
+        setCast(movieData.credits.cast);
+        setCrew(movieData.credits.crew);
+        setDirectorObj(
+          crew.find((item) => {
+            return item.job === "Director";
+          }),
+        );
+        setWriterObj(
+          crew.find((item) => {
+            return item.job === "Writer";
+          }),
+        );
       } catch (err) {
         console.log(
           new Error("Error trying to fetch for movie detail"),
@@ -33,29 +57,60 @@ function MovieDetail() {
         setLoading(false);
       }
     };
-  });
+    fetchMovieData();
+  }, [movieId]);
   return (
     <div>
       <Navbar />
-      <FilmCard /> {/* the big background */}
-      <FilmCard /> {/* the smaller card */}
-      <h2>Title</h2>
-      <p>Rating</p>
-      <p>Release/on air date</p>
-      <Button>Action</Button> {/* loops the genre for the movie */}
-      <Button>
-        <BookmarkAddIcon /> Add To Watchlist
-      </Button>
-      <Button>
-        <StarIcon /> Rate
-      </Button>
-      <Button>
-        <CreateIcon /> Write a Review
-      </Button>
-      <Button>Details</Button>
-      <Button>Cast & Crew</Button>
-      <Button>Reviews</Button>
-      {/* Each button will render its respective information */}
+      {loading ? (
+        <ClipLoader
+          loading={loading}
+          aria-label="Loading Movies Spinner"
+          data-testid="loader"
+        />
+      ) : (
+        <div>
+          {" "}
+          <FilmCard
+            src={`${basePosterPath}${heroBannerWidth}${movieData.backdrop_path}`}
+          />{" "}
+          {/* the big background */}
+          <FilmCard
+            src={`${basePosterPath}${smallBannerWidth}${movieData.poster_path}`}
+          />{" "}
+          {/* the smaller card */}
+          <h2>{movieData.title || movieData.name}</h2>
+          <p>{movieData.vote_average}</p>
+          {/* Will be replace by my own rating */}
+          <p>{movieData.release_date}</p>
+          {movieGenres.map((genre, index) => (
+            <Button key={index}>{genre.name}</Button>
+          ))}
+          <Button>
+            <BookmarkAddIcon /> Add To Watchlist
+          </Button>
+          <Button>
+            <StarIcon /> Rate
+          </Button>
+          <Button>
+            <CreateIcon /> Write a Review
+          </Button>
+          <Button>Details</Button>
+          <Button>Cast & Crew</Button>
+          <Button>Reviews</Button>
+          <h1>Synopsis</h1>
+          <p>{movieData.overview}</p>
+          <h3>Director</h3>
+          <p>{directorObj.name}</p>
+          <h3>Writer</h3>
+          <p>{writerObj.name}</p>
+          <h3>Studio</h3>
+          {movieData.production_companies.map((studio, index) => {
+            return <p>{studio.name} </p>;
+          })}
+          {/* Each button will render its respective information */}
+        </div>
+      )}
     </div>
   );
 }
