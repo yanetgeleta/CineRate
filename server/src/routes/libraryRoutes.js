@@ -3,7 +3,7 @@ import { updateUserLibary } from "../services/libraryServices.js";
 
 const router = express.Router();
 
-router.get("/update/film/status", async (req, res) => {
+router.post("/update/film/status", async (req, res) => {
   try {
     const libaryRes = await updateUserLibary(req);
     res.json(libaryRes);

@@ -25,17 +25,16 @@ const Carousel = ({ settings, items, user, ...otherProps }) => {
   const [filmStatus, setFilmStatus] = useState(null);
   const [isFavorite, setIsFavorite] = useState(null);
 
-  async function statusUpdateCall(userId, filmId, mediaType) {
+  async function statusUpdateCall(filmId, mediaType, updatedStatus) {
     const body = {
-      userId: userId,
       filmId: filmId,
       mediaType: mediaType || filmType,
-      filmStatus: filmStatus,
-      isFavorite: isFavorite,
+      filmStatus: updatedStatus,
     };
     const response = await fetch("/api/library/update/film/status", {
       method: "POST",
       body: JSON.stringify(body),
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -81,7 +80,7 @@ const Carousel = ({ settings, items, user, ...otherProps }) => {
             <FavoriteBorderOutlinedIcon
               onClick={() => {
                 setIsFavorite(true);
-                statusUpdateCall(user.id, item.id, item.media_type);
+                statusUpdateCall(item.id, item.media_type, isFavorite);
               }}
             />
           </IconButton>
@@ -89,7 +88,7 @@ const Carousel = ({ settings, items, user, ...otherProps }) => {
             <BookmarkAddOutlinedIcon
               onClick={() => {
                 setFilmStatus("watchlist");
-                statusUpdateCall(user.id, item.id, item.media_type);
+                statusUpdateCall(item.id, item.media_type, filmStatus);
               }}
             />
           </IconButton>
@@ -97,7 +96,7 @@ const Carousel = ({ settings, items, user, ...otherProps }) => {
             <VisibilityOutlinedIcon
               onClick={() => {
                 setFilmStatus("watched");
-                statusUpdateCall(user.id, item.id, item.media_type);
+                statusUpdateCall(item.id, item.media_type, filmStatus);
               }}
             />
           </IconButton>
