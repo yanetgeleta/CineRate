@@ -27,7 +27,7 @@ function FilmDetailsComp({ filmData }) {
       <h3>Cast</h3>
       {topCast.map((actor, index) => {
         return (
-          <div>
+          <div key={index}>
             {/* https://image.tmdb.org/t/p/w780/ */}
             <img
               src={`https://image.tmdb.org/t/p/w185/${actor.profile_path}`}

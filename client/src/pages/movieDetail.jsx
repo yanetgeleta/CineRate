@@ -7,7 +7,6 @@ import StarIcon from "@mui/icons-material/Star";
 import CreateIcon from "@mui/icons-material/Create";
 import { useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
-import MovieDetailsComp from "../components/FilmDetailsComp";
 import FilmDetailsComp from "../components/FilmDetailsComp";
 import FilmCastCrewComp from "../components/FilmCastCrewComp";
 // This is the page that shows details of a specific movie when clicked on
@@ -19,7 +18,6 @@ function MovieDetail() {
   const heroBannerWidth = "w1280";
   const smallBannerWidth = "w300";
   const [movieGenres, setMovieGenres] = useState(null);
-  //   These are two arrays
 
   useEffect(() => {
     const fetchMovieData = async () => {
@@ -53,7 +51,7 @@ function MovieDetail() {
       {loading ? (
         <ClipLoader
           loading={loading}
-          aria-label="Loading Movies Spinner"
+          aria-label="Loading Movie Detail Spinner"
           data-testid="loader"
         />
       ) : (
@@ -71,8 +69,8 @@ function MovieDetail() {
           <p>{movieData.vote_average}</p>
           {/* Will be replace by my own rating */}
           <p>{movieData.release_date}</p>
-          {movieGenres.map((genre, index) => (
-            <Button key={index}>{genre.name}</Button>
+          {movieGenres.map((genre) => (
+            <Button key={genre.id}>{genre.name}</Button>
           ))}
           <Button>
             <BookmarkAddIcon /> Add To Watchlist
