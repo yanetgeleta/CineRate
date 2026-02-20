@@ -10,6 +10,7 @@ function FilmDetailsComp({ filmData }) {
   const writerObj = crew.find((item) => {
     return item.job === "Writer" || item.job === "Novel";
   });
+  const topCast = cast.slice(0, 5);
   return (
     <div>
       <h1>Synopsis</h1>
@@ -19,10 +20,23 @@ function FilmDetailsComp({ filmData }) {
       <h3>Writer</h3>
       <p>{writerObj && writerObj.name}</p>
       <h3>Studio</h3>
-      {movieData.production_companies.map((studio, index) => {
+      {filmData.production_companies.map((studio, index) => {
         return <p>{studio.name} </p>;
       })}
       {/* Each button will render its respective information */}
+      <h3>Cast</h3>
+      {topCast.map((actor, index) => {
+        return (
+          <div>
+            {/* https://image.tmdb.org/t/p/w780/ */}
+            <img
+              src={`https://image.tmdb.org/t/p/w185/${actor.profile_path}`}
+            />
+            <p>{actor.name}</p>
+            <p>{actor.character}</p>
+          </div>
+        );
+      })}
     </div>
   );
 }

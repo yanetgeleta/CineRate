@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import MovieDetailsComp from "../components/FilmDetailsComp";
 import FilmDetailsComp from "../components/FilmDetailsComp";
+import FilmCastCrewComp from "../components/FilmCastCrewComp";
 // This is the page that shows details of a specific movie when clicked on
 function MovieDetail() {
   const { movieId } = useParams();
@@ -86,6 +87,7 @@ function MovieDetail() {
           <Button>Cast & Crew</Button>
           <Button>Reviews</Button>
           <FilmDetailsComp filmData={movieData} />
+          <FilmCastCrewComp filmCredits={movieData.credits} />
         </div>
       )}
     </div>
