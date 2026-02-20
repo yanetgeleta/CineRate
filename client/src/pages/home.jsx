@@ -193,6 +193,7 @@ function Home() {
           {/* Multiple data will come here from weeky, trending movies and shows will be shows here */}
           <h2>New Releases</h2>
           <Carousel
+            filmType="movie"
             bannerWidth={smallBannerWidth}
             basePath={basePosterPath}
             items={newMovies?.results}
@@ -203,6 +204,7 @@ function Home() {
           {/* You can use the recommendations end point along with one of the movies they watched id  */}
           <h2>Top Rated Movies</h2>
           <Carousel
+            filmType="movie"
             bannerWidth={smallBannerWidth}
             basePath={basePosterPath}
             items={topMovies?.results}
@@ -210,6 +212,7 @@ function Home() {
           />
           <h2>Top Rated Shows</h2>
           <Carousel
+            filmType="tv"
             bannerWidth={smallBannerWidth}
             basePath={basePosterPath}
             items={topShows?.results}

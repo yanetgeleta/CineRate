@@ -64,7 +64,12 @@ function ShowDetail() {
           {/* the smaller card */}
           <h2>{showData.title || showData.name}</h2>
           <p>{showData.vote_average}</p>
-          <p>{showData.first_air_data}</p>
+          <p>
+            {showData.first_air_date} -{" "}
+            {showData.status === "Ended"
+              ? showData.last_air_date
+              : "Continuing"}
+          </p>
           {showGenres.map((genre) => (
             <Button key={genre.id}>{genre.name}</Button>
           ))}
@@ -82,7 +87,7 @@ function ShowDetail() {
           <Button>Seasons</Button>
           <Button>Reviews</Button>
           <FilmDetailsComp filmData={showData} />
-          <FilmCastCrewComp filmData={showData.credits} />
+          <FilmCastCrewComp filmCredits={showData.credits} />
           {/* Each button will render its respective information */}
         </div>
       )}

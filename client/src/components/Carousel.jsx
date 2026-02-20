@@ -22,6 +22,7 @@ import { Link } from "react-router-dom";
 
 const Carousel = ({ settings, items, ...otherProps }) => {
   const { user } = useAuth();
+  const filmType = otherProps.filmType;
   if (!items || items.length === 0) return null;
   return (
     <Swiper
@@ -31,7 +32,7 @@ const Carousel = ({ settings, items, ...otherProps }) => {
       {items.map((item) => (
         <SwiperSlide key={item.id}>
           <Link
-            to={`/${item.media_type === "tv" ? "showdetail" : "moviedetail"}/${item.id}`}
+            to={`/${item.media_type === "movie" || filmType === "movie" ? "moviedetail" : "showdetail"}/${item.id}`}
           >
             <div>
               <FilmCard
