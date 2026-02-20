@@ -7,19 +7,32 @@ import NotificationRing from "../components/NotificationRing";
 import Input from "../components/Input";
 import { Link } from "react-router-dom";
 
-function Navbar() {
-    return (
-        <div>
-            <Brand />
-            <NavLink path="/movies" name="Movies" />
-            <NavLink path="/shows" name="TV Shows" />
-            <NavLink path="/genres" name="Genres" />
-            <Input />
-            <NotificationRing />
-            <ProfilePic />
-            <Link to="/loginsignup" state={{initialMode: "signup"}} ><Button>Sign Up</Button></Link>
-            <Link to="/loginsignup" state={{initialMode: "login"}} ><Button>Log In</Button></Link>
-        </div>
-    );
-};
+function Navbar({ user }) {
+  return (
+    <div>
+      <Brand />
+      <NavLink path="/movies" name="Movies" />
+      <NavLink path="/shows" name="TV Shows" />
+      <NavLink path="/genres" name="Genres" />
+      <Input />
+      {user && (
+        <>
+          <NotificationRing />
+          <ProfilePic />
+        </>
+      )}
+
+      {!user && (
+        <>
+          <Link to="/loginsignup" state={{ initialMode: "signup" }}>
+            <Button>Sign Up</Button>
+          </Link>
+          <Link to="/loginsignup" state={{ initialMode: "login" }}>
+            <Button>Log In</Button>
+          </Link>
+        </>
+      )}
+    </div>
+  );
+}
 export default Navbar;

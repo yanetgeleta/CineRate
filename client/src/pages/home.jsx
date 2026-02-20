@@ -151,7 +151,7 @@ function Home() {
 
   return (
     <div>
-      <Navbar />
+      <Navbar user={user} />
       {/* Banner for trending movies and shows daily */}
       {loading ? (
         <ClipLoader
@@ -167,6 +167,7 @@ function Home() {
             basePath={basePosterPath}
             items={trendingToday?.results}
             settings={heroBannerSettings}
+            user={user}
           />
           {trailerURL && isPlayerOpen && (
             // isnall and import the necessary tailwind dependencies to makes this classname desing work
@@ -189,6 +190,7 @@ function Home() {
             basePath={basePosterPath}
             items={trendingWeekly?.results}
             settings={posterSettings}
+            user={user}
           />
           {/* Multiple data will come here from weeky, trending movies and shows will be shows here */}
           <h2>New Releases</h2>
@@ -198,6 +200,7 @@ function Home() {
             basePath={basePosterPath}
             items={newMovies?.results}
             settings={posterSettings}
+            user={user}
           />
           {/* Multiple data will come for newly releases movies */}
           <h2>Because you watched</h2>
@@ -209,6 +212,7 @@ function Home() {
             basePath={basePosterPath}
             items={topMovies?.results}
             settings={posterSettings}
+            user={user}
           />
           <h2>Top Rated Shows</h2>
           <Carousel
@@ -217,6 +221,7 @@ function Home() {
             basePath={basePosterPath}
             items={topShows?.results}
             settings={posterSettings}
+            user={user}
           />
           {/* Multiple films from topMovies and topShows */}
         </div>

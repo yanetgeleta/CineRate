@@ -6,6 +6,7 @@ import passport from "passport";
 import env from "dotenv";
 import path from "path";
 import tmdbRoute from "./routes/tmdbRoutes.js";
+import libraryRoutes from "./routes/libraryRoutes.js";
 
 import configurePassport from "./config/passport.js";
 import authRoutes from "./routes/authRoutes.js";
@@ -15,29 +16,32 @@ const app = express();
 configurePassport();
 
 app.use(
-    session({
-        secret: process.env.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: true,
-        cookie: {maxAge: 1000 * 60 * 60 * 24 * 7, secure: false}
-    })
-)
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 1000 * 60 * 60 * 24 * 7, secure: false },
+  }),
+);
 
-app.use(bodyParser.urlencoded({extended:true}))
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(cors({
+app.use(
+  cors({
     origin: "http://localhost:5173",
-    credentials: true
-}));
+    credentials: true,
+  }),
+);
 
 app.use("/api/auth", authRoutes);
 app.use("/api/tmdb", tmdbRoute);
+app.use("/api/library", libraryRoutes);
 app.get("/", (req, res) => {
-    res.send("Api is running correctly.");
-})
+  res.send("Api is running correctly.");
+});
 
 export default app;

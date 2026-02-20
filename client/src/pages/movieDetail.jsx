@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import FilmDetailsComp from "../components/FilmDetailsComp";
 import FilmCastCrewComp from "../components/FilmCastCrewComp";
+import { useAuth } from "../context/AuthContext";
 // This is the page that shows details of a specific movie when clicked on
 function MovieDetail() {
   const { movieId } = useParams();
@@ -18,6 +19,7 @@ function MovieDetail() {
   const heroBannerWidth = "w1280";
   const smallBannerWidth = "w300";
   const [movieGenres, setMovieGenres] = useState(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchMovieData = async () => {
@@ -47,7 +49,7 @@ function MovieDetail() {
   }, [movieId]);
   return (
     <div>
-      <Navbar />
+      <Navbar user={user} />
       {loading ? (
         <ClipLoader
           loading={loading}

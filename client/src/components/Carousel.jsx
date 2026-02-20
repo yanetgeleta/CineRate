@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/bundle";
@@ -7,7 +7,6 @@ import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 // import "swiper/css/pagination";
 // import "swiper/css/autoplay";
-import { useAuth } from "../context/AuthContext";
 import {
   A11y,
   Navigation,
@@ -19,10 +18,31 @@ import {
 import FilmCard from "./FilmCard";
 import Button from "./Button";
 import { Link } from "react-router-dom";
+import IconButton from "@mui/material/IconButton";
 
-const Carousel = ({ settings, items, ...otherProps }) => {
-  const { user } = useAuth();
+const Carousel = ({ settings, items, user, ...otherProps }) => {
   const filmType = otherProps.filmType;
+  const [filmStatus, setFilmStatus] = useState(null);
+  const [isFavorite, setIsFavorite] = useState(null);
+
+  async function statusUpdateCall(userId, filmId, mediaType) {
+    const body = {
+      userId: userId,
+      filmId: filmId,
+      mediaType: mediaType || filmType,
+      filmStatus: filmStatus,
+      isFavorite: isFavorite,
+    };
+    const response = await fetch("/api/library/update/film/status", {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(response);
+  }
+
   if (!items || items.length === 0) return null;
   return (
     <Swiper
@@ -57,9 +77,30 @@ const Carousel = ({ settings, items, ...otherProps }) => {
               )}
             </div>
           </Link>
-          <FavoriteBorderOutlinedIcon />
-          <BookmarkAddOutlinedIcon />
-          <VisibilityOutlinedIcon />
+          <IconButton>
+            <FavoriteBorderOutlinedIcon
+              onClick={() => {
+                setIsFavorite(true);
+                statusUpdateCall(user.id, item.id, item.media_type);
+              }}
+            />
+          </IconButton>
+          <IconButton>
+            <BookmarkAddOutlinedIcon
+              onClick={() => {
+                setFilmStatus("watchlist");
+                statusUpdateCall(user.id, item.id, item.media_type);
+              }}
+            />
+          </IconButton>
+          <IconButton>
+            <VisibilityOutlinedIcon
+              onClick={() => {
+                setFilmStatus("watched");
+                statusUpdateCall(user.id, item.id, item.media_type);
+              }}
+            />
+          </IconButton>
         </SwiperSlide>
       ))}
     </Swiper>

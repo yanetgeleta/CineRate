@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import FilmDetailsComp from "../components/FilmDetailsComp";
 import FilmCastCrewComp from "../components/FilmCastCrewComp";
+import { useAuth } from "../context/AuthContext";
 // This is a page that shows details of shows
 function ShowDetail() {
   const { showId } = useParams();
@@ -18,6 +19,7 @@ function ShowDetail() {
   const heroBannerWidth = "w1280";
   const smallBannerWidth = "w300";
   const [showGenres, setShowGenres] = useState(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchShowData = async () => {
@@ -45,7 +47,7 @@ function ShowDetail() {
   }, [showId]);
   return (
     <div>
-      <Navbar />
+      <Navbar user={user} />
       {loading ? (
         <ClipLoader
           loading={loading}
