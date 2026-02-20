@@ -22,8 +22,8 @@ import IconButton from "@mui/material/IconButton";
 
 const Carousel = ({ settings, items, user, ...otherProps }) => {
   const filmType = otherProps.filmType;
-  const [filmStatus, setFilmStatus] = useState(null);
-  const [isFavorite, setIsFavorite] = useState(null);
+  const [isFavorited, setIsFavorited] = useState(null);
+  const [status, setStatus] = useState(null);
 
   async function statusUpdateCall(filmId, mediaType, updatedStatus) {
     const body = {
@@ -79,24 +79,39 @@ const Carousel = ({ settings, items, user, ...otherProps }) => {
           <IconButton>
             <FavoriteBorderOutlinedIcon
               onClick={() => {
-                setIsFavorite(true);
-                statusUpdateCall(item.id, item.media_type, isFavorite);
+                if (!isFavorited) {
+                  setIsFavorited(true);
+                  statusUpdateCall(item.id, item.media_type, true);
+                } else {
+                  setIsFavorited(false);
+                  statusUpdateCall(item.id, item.media_type, false);
+                }
               }}
             />
           </IconButton>
           <IconButton>
             <BookmarkAddOutlinedIcon
               onClick={() => {
-                setFilmStatus("watchlist");
-                statusUpdateCall(item.id, item.media_type, filmStatus);
+                if (!status || status === "dropped" || status === "watched") {
+                  setStatus("watchlist");
+                  statusUpdateCall(item.id, item.media_type, "watchlist");
+                } else {
+                  setStatus("dropped");
+                  statusUpdateCall(item.id, item.media_type, "dropped");
+                }
               }}
             />
           </IconButton>
           <IconButton>
             <VisibilityOutlinedIcon
               onClick={() => {
-                setFilmStatus("watched");
-                statusUpdateCall(item.id, item.media_type, filmStatus);
+                if (!status || status === "dropped" || status === "watchlist") {
+                  setStatus("watched");
+                  statusUpdateCall(item.id, item.media_type, "watched");
+                } else {
+                  setStatus("dropped");
+                  statusUpdateCall(item.id, item.media_type, "dropped");
+                }
               }}
             />
           </IconButton>
