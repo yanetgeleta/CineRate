@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../layouts/Navbar";
 import FilmCard from "../components/FilmCard";
 import Button from "../components/Button";
-import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import StarIcon from "@mui/icons-material/Star";
 import CreateIcon from "@mui/icons-material/Create";
 import { useParams } from "react-router-dom";
@@ -10,6 +9,12 @@ import { ClipLoader } from "react-spinners";
 import FilmDetailsComp from "../components/FilmDetailsComp";
 import FilmCastCrewComp from "../components/FilmCastCrewComp";
 import { useAuth } from "../context/AuthContext";
+import IconButton from "@mui/material/IconButton";
+import ReviewModal from "../components/ReviewModal";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+
 // This is the page that shows details of a specific movie when clicked on
 function MovieDetail() {
   const { movieId } = useParams();
@@ -20,6 +25,25 @@ function MovieDetail() {
   const smallBannerWidth = "w300";
   const [movieGenres, setMovieGenres] = useState(null);
   const { user } = useAuth();
+  const [isReviewOpen, setIsReviewOpen] = useState(false);
+  const [status, setStatus] = useState(null);
+
+  async function statusUpdateCall(filmId, mediaType, updatedStatus) {
+    const body = {
+      filmId: filmId,
+      mediaType: mediaType || filmType,
+      filmStatus: updatedStatus,
+    };
+    const response = await fetch("/api/library/update/film/status", {
+      method: "POST",
+      body: JSON.stringify(body),
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(response);
+  }
 
   useEffect(() => {
     const fetchMovieData = async () => {
@@ -74,20 +98,46 @@ function MovieDetail() {
           {movieGenres.map((genre) => (
             <Button key={genre.id}>{genre.name}</Button>
           ))}
-          <Button>
-            <BookmarkAddIcon /> Add To Watchlist
-          </Button>
-          <Button>
+          <IconButton>
+            <BookmarkAddOutlinedIcon
+              onClick={() => {
+                if (!status || status === "dropped" || status === "watched") {
+                  setStatus("watchlist");
+                  statusUpdateCall(item.id, item.media_type, "watchlist");
+                } else {
+                  setStatus("dropped");
+                  statusUpdateCall(item.id, item.media_type, "dropped");
+                }
+              }}
+            />{" "}
+          </IconButton>
+          <IconButton>
+            <VisibilityOutlinedIcon />
+          </IconButton>
+          <IconButton>
+            <FavoriteBorderOutlinedIcon />
+          </IconButton>
+          <IconButton>
             <StarIcon /> Rate
-          </Button>
-          <Button>
+          </IconButton>
+          <IconButton
+            onClick={() => {
+              setIsReviewOpen(true);
+            }}
+          >
             <CreateIcon /> Write a Review
-          </Button>
+          </IconButton>
           <Button>Details</Button>
           <Button>Cast & Crew</Button>
           <Button>Reviews</Button>
           <FilmDetailsComp filmData={movieData} />
           <FilmCastCrewComp filmCredits={movieData.credits} />
+          <ReviewModal
+            isOpen={isReviewOpen}
+            onClose={() => {
+              setIsReviewOpen(false);
+            }}
+          />
         </div>
       )}
     </div>

@@ -10,6 +10,7 @@ import { ClipLoader } from "react-spinners";
 import FilmDetailsComp from "../components/FilmDetailsComp";
 import FilmCastCrewComp from "../components/FilmCastCrewComp";
 import { useAuth } from "../context/AuthContext";
+import IconButton from "@mui/material/IconButton";
 // This is a page that shows details of shows
 function ShowDetail() {
   const { showId } = useParams();
@@ -20,6 +21,24 @@ function ShowDetail() {
   const smallBannerWidth = "w300";
   const [showGenres, setShowGenres] = useState(null);
   const { user } = useAuth();
+  const [status, setStatus] = useState(null);
+
+  async function statusUpdateCall(filmId, mediaType, updatedStatus) {
+    const body = {
+      filmId: filmId,
+      mediaType: mediaType || filmType,
+      filmStatus: updatedStatus,
+    };
+    const response = await fetch("/api/library/update/film/status", {
+      method: "POST",
+      body: JSON.stringify(body),
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(response);
+  }
 
   useEffect(() => {
     const fetchShowData = async () => {
@@ -75,15 +94,26 @@ function ShowDetail() {
           {showGenres.map((genre) => (
             <Button key={genre.id}>{genre.name}</Button>
           ))}
-          <Button>
-            <BookmarkAddIcon /> Add To Watchlist
-          </Button>
-          <Button>
+          <IconButton>
+            <BookmarkAddOutlinedIcon
+              onClick={() => {
+                if (!status || status === "dropped" || status === "watched") {
+                  setStatus("watchlist");
+                  statusUpdateCall(item.id, item.media_type, "watchlist");
+                } else {
+                  setStatus("dropped");
+                  statusUpdateCall(item.id, item.media_type, "dropped");
+                }
+              }}
+            />{" "}
+            Add to Watchlist
+          </IconButton>
+          <IconButton>
             <StarIcon /> Rate
-          </Button>
-          <Button>
+          </IconButton>
+          <IconButton>
             <CreateIcon /> Write a Review
-          </Button>
+          </IconButton>
           <Button>Details</Button>
           <Button>Cast & Crew</Button>
           <Button>Seasons</Button>

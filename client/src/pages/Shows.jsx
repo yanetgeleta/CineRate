@@ -1,18 +1,17 @@
 import React, { useEffect } from "react";
 import Navbar from "../layouts/Navbar";
-import Input from "../components/Input";
 import FilmCard from "../components/FilmCard";
 import Button from "../components/Button";
 import GenresFilter from "../components/GenresFilter";
-import AddIcon from "@mui/icons-material/Add";
 import FilterAndSort from "../components/FilterAndSort";
 import { ClipLoader } from "react-spinners";
 import { useState } from "react";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import Slider from "@mui/material/Slider";
 import Pagination from "@mui/material/Pagination";
+import { Link } from "react-router-dom";
+import IconButton from "@mui/material/IconButton";
 // This is a dedicated page for shows
 const Shows = () => {
   // const currentYear = new Date().getFullYear();
@@ -23,9 +22,28 @@ const Shows = () => {
   const [showData, setShowData] = useState(null);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState(null);
+  const [isFavorited, setIsFavorited] = useState(null);
 
   const basePosterPath = "https://image.tmdb.org/t/p/";
   const smallBannerWidth = "w300";
+
+  async function statusUpdateCall(filmId, updatedStatus) {
+    const body = {
+      filmId: filmId,
+      mediaType: "tv",
+      filmStatus: updatedStatus,
+    };
+    const response = await fetch("/api/library/update/film/status", {
+      method: "POST",
+      body: JSON.stringify(body),
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(response);
+  }
 
   useEffect(() => {
     async function genreIdGetter() {
@@ -112,20 +130,64 @@ const Shows = () => {
                   key={show.id}
                   className="flex flex-col border border-gray-200 rounded p-2"
                 >
-                  <FilmCard
-                    src={`${basePosterPath}${smallBannerWidth}${show.poster_path}`}
-                  />
-
-                  <div className="mt-2">
+                  <Link to={`/showdetail/${show.id}`}>
+                    <FilmCard
+                      src={`${basePosterPath}${smallBannerWidth}${show.poster_path}`}
+                    />
                     <p className="font-bold">{show.name}</p>
                     <p className="text-sm text-gray-600 italic">
                       Rating: {show.vote_average}
                       {/* Shall change the vote average to be my own calculated from users */}
                     </p>
-                    <BookmarkAddOutlinedIcon />
-                    <VisibilityOutlinedIcon />
-                    <FavoriteBorderOutlinedIcon />
-                  </div>
+                  </Link>
+
+                  <IconButton>
+                    <FavoriteBorderOutlinedIcon
+                      onClick={() => {
+                        if (!isFavorited) {
+                          setIsFavorited(true);
+                          statusUpdateCall(show.id, true);
+                        } else {
+                          setIsFavorited(false);
+                          statusUpdateCall(show.id, false);
+                        }
+                      }}
+                    />
+                  </IconButton>
+                  <IconButton>
+                    <BookmarkAddOutlinedIcon
+                      onClick={() => {
+                        if (
+                          !status ||
+                          status === "dropped" ||
+                          status === "watched"
+                        ) {
+                          setStatus("watchlist");
+                          statusUpdateCall(show.id, "watchlist");
+                        } else {
+                          setStatus("dropped");
+                          statusUpdateCall(show.id, "dropped");
+                        }
+                      }}
+                    />
+                  </IconButton>
+                  <IconButton>
+                    <VisibilityOutlinedIcon
+                      onClick={() => {
+                        if (
+                          !status ||
+                          status === "dropped" ||
+                          status === "watchlist"
+                        ) {
+                          setStatus("watched");
+                          statusUpdateCall(show.id, "watched");
+                        } else {
+                          setStatus("dropped");
+                          statusUpdateCall(show.id, "dropped");
+                        }
+                      }}
+                    />
+                  </IconButton>
                 </div>
               ))}
           </div>

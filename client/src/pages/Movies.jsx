@@ -4,13 +4,14 @@ import Button from "../components/Button";
 import FilterAndSort from "../components/FilterAndSort";
 import FilmCard from "../components/FilmCard";
 import GenresFilter from "../components/GenresFilter";
-import AddIcon from "@mui/icons-material/Add";
 import Slider from "@mui/material/Slider";
 import { ClipLoader } from "react-spinners";
 import Pagination from "@mui/material/Pagination";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import { Link } from "react-router-dom";
+import IconButton from "@mui/material/IconButton";
 
 // This is dedicated page just for movies\
 // year=1999&sort_by=popularity.desc&without_genres=action'
@@ -24,6 +25,8 @@ const Movies = () => {
   const [moviesData, setMoviesData] = useState(null);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState(null);
+  const [isFavorited, setIsFavorited] = useState(null);
 
   const basePosterPath = "https://image.tmdb.org/t/p/";
   const smallBannerWidth = "w300";
@@ -73,6 +76,22 @@ const Movies = () => {
     }
     moviesDataGetter();
   }, [genreID, year, sortBy, page]);
+  async function statusUpdateCall(filmId, updatedStatus) {
+    const body = {
+      filmId: filmId,
+      mediaType: "movie",
+      filmStatus: updatedStatus,
+    };
+    const response = await fetch("/api/library/update/film/status", {
+      method: "POST",
+      body: JSON.stringify(body),
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(response);
+  }
   return (
     <div>
       <Navbar />
@@ -137,19 +156,62 @@ const Movies = () => {
                   key={movie.id}
                   className="flex flex-col border border-gray-200 rounded p-2"
                 >
-                  <FilmCard
-                    src={`${basePosterPath}${smallBannerWidth}${movie.poster_path}`}
-                  />
-
-                  <div className="mt-2">
+                  <Link to={`/moviedetail/${movie.id}`}>
+                    <FilmCard
+                      src={`${basePosterPath}${smallBannerWidth}${movie.poster_path}`}
+                    />
                     <p className="font-bold">{movie.title}</p>
                     <p className="text-sm text-gray-600 italic">
                       Rating: {movie.vote_average}
                     </p>
-                    <BookmarkAddOutlinedIcon />
-                    <VisibilityOutlinedIcon />
-                    <FavoriteBorderOutlinedIcon />
-                  </div>
+                  </Link>
+                  <IconButton>
+                    <FavoriteBorderOutlinedIcon
+                      onClick={() => {
+                        if (!isFavorited) {
+                          setIsFavorited(true);
+                          statusUpdateCall(movie.id, true);
+                        } else {
+                          setIsFavorited(false);
+                          statusUpdateCall(movie.id, false);
+                        }
+                      }}
+                    />
+                  </IconButton>
+                  <IconButton>
+                    <BookmarkAddOutlinedIcon
+                      onClick={() => {
+                        if (
+                          !status ||
+                          status === "dropped" ||
+                          status === "watched"
+                        ) {
+                          setStatus("watchlist");
+                          statusUpdateCall(movie.id, "watchlist");
+                        } else {
+                          setStatus("dropped");
+                          statusUpdateCall(movie.id, "dropped");
+                        }
+                      }}
+                    />
+                  </IconButton>
+                  <IconButton>
+                    <VisibilityOutlinedIcon
+                      onClick={() => {
+                        if (
+                          !status ||
+                          status === "dropped" ||
+                          status === "watchlist"
+                        ) {
+                          setStatus("watched");
+                          statusUpdateCall(movie.id, "watched");
+                        } else {
+                          setStatus("dropped");
+                          statusUpdateCall(movie.id, "dropped");
+                        }
+                      }}
+                    />
+                  </IconButton>
                 </div>
               ))}
           </div>
