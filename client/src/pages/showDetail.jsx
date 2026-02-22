@@ -11,6 +11,9 @@ import FilmDetailsComp from "../components/FilmDetailsComp";
 import FilmCastCrewComp from "../components/FilmCastCrewComp";
 import { useAuth } from "../context/AuthContext";
 import IconButton from "@mui/material/IconButton";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 // This is a page that shows details of shows
 function ShowDetail() {
   const { showId } = useParams();
@@ -23,10 +26,10 @@ function ShowDetail() {
   const { user } = useAuth();
   const [status, setStatus] = useState(null);
 
-  async function statusUpdateCall(filmId, mediaType, updatedStatus) {
+  async function statusUpdateCall(updatedStatus) {
     const body = {
-      filmId: filmId,
-      mediaType: mediaType || filmType,
+      filmId: showId,
+      mediaType: "tv",
       filmStatus: updatedStatus,
     };
     const response = await fetch("/api/library/update/film/status", {
@@ -37,7 +40,6 @@ function ShowDetail() {
         "Content-Type": "application/json",
       },
     });
-    console.log(response);
   }
 
   useEffect(() => {
@@ -99,14 +101,39 @@ function ShowDetail() {
               onClick={() => {
                 if (!status || status === "dropped" || status === "watched") {
                   setStatus("watchlist");
-                  statusUpdateCall(item.id, item.media_type, "watchlist");
+                  statusUpdateCall("watchlist");
                 } else {
                   setStatus("dropped");
-                  statusUpdateCall(item.id, item.media_type, "dropped");
+                  statusUpdateCall("dropped");
                 }
               }}
             />{" "}
-            Add to Watchlist
+          </IconButton>
+          <IconButton>
+            <VisibilityOutlinedIcon
+              onClick={() => {
+                if (!status || status === "dropped" || status === "watchlist") {
+                  setStatus("watched");
+                  statusUpdateCall("watched");
+                } else {
+                  setStatus("dropped");
+                  statusUpdateCall("dropped");
+                }
+              }}
+            />
+          </IconButton>
+          <IconButton>
+            <FavoriteBorderOutlinedIcon
+              onClick={() => {
+                if (!isFavorited) {
+                  setIsFavorited(true);
+                  statusUpdateCall(true);
+                } else {
+                  setIsFavorited(false);
+                  statusUpdateCall(false);
+                }
+              }}
+            />
           </IconButton>
           <IconButton>
             <StarIcon /> Rate

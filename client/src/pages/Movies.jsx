@@ -90,7 +90,6 @@ const Movies = () => {
         "Content-Type": "application/json",
       },
     });
-    console.log(response);
   }
   return (
     <div>

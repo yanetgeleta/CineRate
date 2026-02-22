@@ -27,11 +27,12 @@ function MovieDetail() {
   const { user } = useAuth();
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [status, setStatus] = useState(null);
+  const [isFavorited, setIsFavorited] = useState(null);
 
-  async function statusUpdateCall(filmId, mediaType, updatedStatus) {
+  async function statusUpdateCall(updatedStatus) {
     const body = {
-      filmId: filmId,
-      mediaType: mediaType || filmType,
+      filmId: movieId,
+      mediaType: "movie",
       filmStatus: updatedStatus,
     };
     const response = await fetch("/api/library/update/film/status", {
@@ -42,7 +43,6 @@ function MovieDetail() {
         "Content-Type": "application/json",
       },
     });
-    console.log(response);
   }
 
   useEffect(() => {
@@ -103,19 +103,39 @@ function MovieDetail() {
               onClick={() => {
                 if (!status || status === "dropped" || status === "watched") {
                   setStatus("watchlist");
-                  statusUpdateCall(item.id, item.media_type, "watchlist");
+                  statusUpdateCall("watchlist");
                 } else {
                   setStatus("dropped");
-                  statusUpdateCall(item.id, item.media_type, "dropped");
+                  statusUpdateCall("dropped");
                 }
               }}
             />{" "}
           </IconButton>
           <IconButton>
-            <VisibilityOutlinedIcon />
+            <VisibilityOutlinedIcon
+              onClick={() => {
+                if (!status || status === "dropped" || status === "watchlist") {
+                  setStatus("watched");
+                  statusUpdateCall("watched");
+                } else {
+                  setStatus("dropped");
+                  statusUpdateCall("dropped");
+                }
+              }}
+            />
           </IconButton>
           <IconButton>
-            <FavoriteBorderOutlinedIcon />
+            <FavoriteBorderOutlinedIcon
+              onClick={() => {
+                if (!isFavorited) {
+                  setIsFavorited(true);
+                  statusUpdateCall(true);
+                } else {
+                  setIsFavorited(false);
+                  statusUpdateCall(false);
+                }
+              }}
+            />
           </IconButton>
           <IconButton>
             <StarIcon /> Rate
@@ -125,7 +145,7 @@ function MovieDetail() {
               setIsReviewOpen(true);
             }}
           >
-            <CreateIcon /> Write a Review
+            <CreateIcon />
           </IconButton>
           <Button>Details</Button>
           <Button>Cast & Crew</Button>

@@ -39,7 +39,6 @@ const Carousel = ({ settings, items, user, ...otherProps }) => {
         "Content-Type": "application/json",
       },
     });
-    console.log(response);
   }
 
   if (!items || items.length === 0) return null;
