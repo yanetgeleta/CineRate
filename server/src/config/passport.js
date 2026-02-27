@@ -5,6 +5,7 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth2";
 import db from "./database.js";
 import env from "dotenv";
 import path from "path";
+import User from "../models/userModel.js";
 
 env.config({ path: path.resolve(process.cwd(), ".env") });
 
@@ -13,13 +14,10 @@ const configurePassport = () => {
     "local",
     new LocalStrategy(async (username, password, cb) => {
       try {
-        const existingUser = await db.query(
-          `select * from users where email = $1 or username = $1`,
-          [username],
-        );
-        if (existingUser.rows.length === 0)
+        const existingUser = await User.byEmailUsername(username);
+        if (!existingUser)
           cb(null, false, { message: "Email or username not found" });
-        const user = existingUser.rows[0];
+        const user = existingUser;
         bcrypt.compare(password, user.password_hash, (err, valid) => {
           if (err) return cb(err);
           if (!valid)
@@ -41,24 +39,20 @@ const configurePassport = () => {
       },
       async (accessToken, refreshToken, profile, cb) => {
         try {
-          const result = await db.query(
-            `select * from users where email = $1`,
-            [profile.email],
-          );
-          if (result.rows.length === 0) {
+          const user = await User.byEmail(profile.email);
+          if (!user) {
             const { id, displayName, emails, photos } = profile;
             const email = emails[0]?.value;
             const photo = photos[0]?.value;
-            const newUser = await db.query(
-              `insert into users(email, auth_provider, google_id, display_name, profile_pic_url)
-                        values($1, 'google', $2, $3, $4)
-                        returning *
-                `,
-              [email, id, displayName, photo],
+            const newUser = await User.newUserGoogle(
+              email,
+              id,
+              displayName,
+              photo,
             );
-            return cb(null, newUser.rows[0]);
+            return cb(null, newUser);
           }
-          return cb(null, result.rows[0]);
+          return cb(null, user);
         } catch (err) {
           return cb(err);
         }
@@ -71,13 +65,8 @@ const configurePassport = () => {
   });
   passport.deserializeUser(async (id, cb) => {
     try {
-      const result = await db.query(
-        `select (id, email, auth_provider, google_id, display_name, profile_pic_url, created_at, username) from users where id = $1`,
-        [id],
-      );
-      result.rows.length > 0
-        ? cb(null, result.rows[0])
-        : cb(new Error("User not found"), null);
+      const user = await User.byId(id);
+      user ? cb(null, user) : cb(new Error("User not found"), null);
     } catch (err) {
       cb(err, null);
     }

@@ -3,8 +3,6 @@ import cors from "cors";
 import session from "express-session";
 import bodyParser from "body-parser";
 import passport from "passport";
-import env from "dotenv";
-import path from "path";
 import tmdbRoute from "./routes/tmdbRoutes.js";
 import libraryRoutes from "./routes/libraryRoutes.js";
 
