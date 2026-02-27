@@ -153,6 +153,12 @@ function MovieDetail() {
           <FilmDetailsComp filmData={movieData} />
           <FilmCastCrewComp filmCredits={movieData.credits} />
           <ReviewModal
+            title={movieData?.title || movieData?.name || "Loading..."}
+            cardSrc={
+              movieData
+                ? `${basePosterPath}${smallBannerWidth}${movieData.poster_path}`
+                : ""
+            }
             isOpen={isReviewOpen}
             onClose={() => {
               setIsReviewOpen(false);
