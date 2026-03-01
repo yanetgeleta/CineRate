@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import passport from "passport";
 import tmdbRoute from "./routes/tmdbRoutes.js";
 import libraryRoutes from "./routes/libraryRoutes.js";
+import reviewsRoutes from "./routes/reviewsRatingsRoutes.js";
 
 import configurePassport from "./config/passport.js";
 import authRoutes from "./routes/authRoutes.js";
@@ -38,6 +39,7 @@ app.use(
 app.use("/api/auth", authRoutes);
 app.use("/api/tmdb", tmdbRoute);
 app.use("/api/library", libraryRoutes);
+app.use("/api/reviews", reviewsRoutes);
 app.get("/", (req, res) => {
   res.send("Api is running correctly.");
 });

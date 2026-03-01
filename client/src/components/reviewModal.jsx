@@ -13,9 +13,9 @@ function ReviewModal({ isOpen, onClose, title, cardSrc }) {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div>
-        <FilmCard src={cardSrc} />
         <h1>{title}</h1>
         <p>Your review for this film</p>
+        <FilmCard src={cardSrc} />
         <h3>Your Review</h3>
         <textarea aria-label="film-review" onChange={reviewOnChange}>
           {review}
