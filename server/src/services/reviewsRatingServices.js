@@ -19,7 +19,17 @@ export const addReviews = async (req, res) => {
     return reviewRow;
   } catch (err) {
     console.log(err.message);
-    throw new Error("Couldn't add error to the database");
+    throw new Error("Couldn't add review to the database");
+  }
+};
+export const updateReview = async (req, res) => {
+  try {
+    const { reviewId, newReview } = req.body;
+    const reviewRow = await ReviewRating.updateReview(reviewId, newReview);
+    return reviewRow;
+  } catch (err) {
+    console.log(err.message);
+    throw new Error("Couldn't update the database with new review");
   }
 };
 export const updateRating = async (req, res) => {

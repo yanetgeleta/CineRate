@@ -21,5 +21,14 @@ const ReviewRating = {
     );
     return result.rows[0];
   },
+  updateReview: async (reviewId, newReview) => {
+    const result = await db.query(
+      `update reviews
+      set review_text = $1
+      where id = $2 returning *`,
+      [newReview, reviewId],
+    );
+    return result.rows[0];
+  },
 };
 export default ReviewRating;
