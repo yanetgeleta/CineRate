@@ -30,14 +30,16 @@ const Carousel = ({
       {...settings}
     >
       {items.map((item) => (
-        <CarouselItem
-          basePath={basePath}
-          bannerWidth={bannerWidth}
-          onTrailerButtonClick={onTrailerButtonClick}
-          key={item.id}
-          item={item}
-          filmType={filmType}
-        />
+        <SwiperSlide key={item.id}>
+          <CarouselItem
+            basePath={basePath}
+            bannerWidth={bannerWidth}
+            onTrailerButtonClick={onTrailerButtonClick}
+            key={item.id}
+            item={item}
+            filmType={filmType}
+          />
+        </SwiperSlide>
       ))}
     </Swiper>
   );

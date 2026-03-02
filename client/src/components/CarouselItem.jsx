@@ -31,7 +31,7 @@ function CarouselItem({ item, filmType, ...otherProps }) {
     });
   }
   return (
-    <SwiperSlide key={item.id}>
+    <div>
       <Link
         to={`/${item.media_type === "movie" || filmType === "movie" ? "moviedetail" : "showdetail"}/${item.id}`}
       >
@@ -63,14 +63,14 @@ function CarouselItem({ item, filmType, ...otherProps }) {
           <BookmarkAddIcon
             onClick={() => {
               setStatus("dropped");
-              statusUpdateCall("dropped");
+              statusUpdateCall(item.id, item.media_type, "dropped");
             }}
           />
         ) : (
           <BookmarkAddOutlinedIcon
             onClick={() => {
               setStatus("watchlist");
-              statusUpdateCall("watchlist");
+              statusUpdateCall(item.id, item.media_type, "watchlist");
             }}
           />
         )}
@@ -80,14 +80,14 @@ function CarouselItem({ item, filmType, ...otherProps }) {
           <VisibilityIcon
             onClick={() => {
               setStatus("dropped");
-              statusUpdateCall("dropped");
+              statusUpdateCall(item.id, item.media_type, "dropped");
             }}
           />
         ) : (
           <VisibilityOutlinedIcon
             onClick={() => {
               setStatus("watched");
-              statusUpdateCall("watched");
+              statusUpdateCall(item.id, item.media_type, "watched");
             }}
           />
         )}
@@ -97,19 +97,19 @@ function CarouselItem({ item, filmType, ...otherProps }) {
           <FavoriteIcon
             onClick={() => {
               setIsFavorited(false);
-              statusUpdateCall(false);
+              statusUpdateCall(item.id, item.media_type, false);
             }}
           />
         ) : (
           <FavoriteBorderOutlinedIcon
             onClick={() => {
               setIsFavorited(true);
-              statusUpdateCall(true);
+              statusUpdateCall(item.id, item.media_type, true);
             }}
           />
         )}
       </IconButton>
-    </SwiperSlide>
+    </div>
   );
 }
 export default CarouselItem;
