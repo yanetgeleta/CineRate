@@ -12,6 +12,10 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import Pagination from "@mui/material/Pagination";
 import { Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
+import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import FilmItem from "../components/FilmItem";
 // This is a dedicated page for shows
 const Shows = () => {
   // const currentYear = new Date().getFullYear();
@@ -125,69 +129,7 @@ const Shows = () => {
             {showData &&
               showData.results.map((show) => (
                 /* 2. THE ITEM: Each child automatically fills one grid cell */
-                <div
-                  key={show.id}
-                  className="flex flex-col border border-gray-200 rounded p-2"
-                >
-                  <Link to={`/showdetail/${show.id}`}>
-                    <FilmCard
-                      src={`${basePosterPath}${smallBannerWidth}${show.poster_path}`}
-                    />
-                    <p className="font-bold">{show.name}</p>
-                    <p className="text-sm text-gray-600 italic">
-                      Rating: {show.vote_average}
-                      {/* Shall change the vote average to be my own calculated from users */}
-                    </p>
-                  </Link>
-
-                  <IconButton>
-                    <FavoriteBorderOutlinedIcon
-                      onClick={() => {
-                        if (!isFavorited) {
-                          setIsFavorited(true);
-                          statusUpdateCall(show.id, true);
-                        } else {
-                          setIsFavorited(false);
-                          statusUpdateCall(show.id, false);
-                        }
-                      }}
-                    />
-                  </IconButton>
-                  <IconButton>
-                    <BookmarkAddOutlinedIcon
-                      onClick={() => {
-                        if (
-                          !status ||
-                          status === "dropped" ||
-                          status === "watched"
-                        ) {
-                          setStatus("watchlist");
-                          statusUpdateCall(show.id, "watchlist");
-                        } else {
-                          setStatus("dropped");
-                          statusUpdateCall(show.id, "dropped");
-                        }
-                      }}
-                    />
-                  </IconButton>
-                  <IconButton>
-                    <VisibilityOutlinedIcon
-                      onClick={() => {
-                        if (
-                          !status ||
-                          status === "dropped" ||
-                          status === "watchlist"
-                        ) {
-                          setStatus("watched");
-                          statusUpdateCall(show.id, "watched");
-                        } else {
-                          setStatus("dropped");
-                          statusUpdateCall(show.id, "dropped");
-                        }
-                      }}
-                    />
-                  </IconButton>
-                </div>
+                <FilmItem film={show} filmType="show" />
               ))}
           </div>
         </div>

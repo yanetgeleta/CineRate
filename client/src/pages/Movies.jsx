@@ -12,6 +12,10 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import { Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
+import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import FilmItem from "../components/FilmItem";
 
 // This is dedicated page just for movies\
 // year=1999&sort_by=popularity.desc&without_genres=action'
@@ -76,21 +80,7 @@ const Movies = () => {
     }
     moviesDataGetter();
   }, [genreID, year, sortBy, page]);
-  async function statusUpdateCall(filmId, updatedStatus) {
-    const body = {
-      filmId: filmId,
-      mediaType: "movie",
-      filmStatus: updatedStatus,
-    };
-    const response = await fetch("/api/library/update/film/status", {
-      method: "POST",
-      body: JSON.stringify(body),
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  }
+
   return (
     <div>
       <Navbar />
@@ -146,74 +136,10 @@ const Movies = () => {
       ) : (
         <div>
           <h1>Browse Movies</h1>
-
-          <div className="grid grid-cols-5 gap-4 p-4">
-            {moviesData &&
-              moviesData.results.map((movie) => (
-                /* 2. THE ITEM: Each child automatically fills one grid cell */
-                <div
-                  key={movie.id}
-                  className="flex flex-col border border-gray-200 rounded p-2"
-                >
-                  <Link to={`/moviedetail/${movie.id}`}>
-                    <FilmCard
-                      src={`${basePosterPath}${smallBannerWidth}${movie.poster_path}`}
-                    />
-                    <p className="font-bold">{movie.title}</p>
-                    <p className="text-sm text-gray-600 italic">
-                      Rating: {movie.vote_average}
-                    </p>
-                  </Link>
-                  <IconButton>
-                    <FavoriteBorderOutlinedIcon
-                      onClick={() => {
-                        if (!isFavorited) {
-                          setIsFavorited(true);
-                          statusUpdateCall(movie.id, true);
-                        } else {
-                          setIsFavorited(false);
-                          statusUpdateCall(movie.id, false);
-                        }
-                      }}
-                    />
-                  </IconButton>
-                  <IconButton>
-                    <BookmarkAddOutlinedIcon
-                      onClick={() => {
-                        if (
-                          !status ||
-                          status === "dropped" ||
-                          status === "watched"
-                        ) {
-                          setStatus("watchlist");
-                          statusUpdateCall(movie.id, "watchlist");
-                        } else {
-                          setStatus("dropped");
-                          statusUpdateCall(movie.id, "dropped");
-                        }
-                      }}
-                    />
-                  </IconButton>
-                  <IconButton>
-                    <VisibilityOutlinedIcon
-                      onClick={() => {
-                        if (
-                          !status ||
-                          status === "dropped" ||
-                          status === "watchlist"
-                        ) {
-                          setStatus("watched");
-                          statusUpdateCall(movie.id, "watched");
-                        } else {
-                          setStatus("dropped");
-                          statusUpdateCall(movie.id, "dropped");
-                        }
-                      }}
-                    />
-                  </IconButton>
-                </div>
-              ))}
-          </div>
+          {moviesData &&
+            moviesData.results.map((movie) => {
+              <FilmItem filmType="movie" key={movie.id} film={movie} />;
+            })}
 
           {/* The film cards obviously will be looped through */}
           {/* We need a pagination */}

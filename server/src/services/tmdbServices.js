@@ -55,20 +55,21 @@ export const getTrailerURL = async (req, res) => {
 export const discoverFilm = async (req, res) => {
   // converts the query values from the frontend to object for params
   const paramValues = { page: req.query.pageValue };
-  if (req.query.genreIdValue) {
-    paramValues.with_genres = req.query.genreIdValue;
+  const { genreIdValue, yearValue, sortByValue, filmType } = req.query;
+  if (genreIdValue) {
+    paramValues.with_genres = genreIdValue;
   }
-  if (req.query.yearValue) {
-    paramValues.year = req.query.yearValue;
+  if (yearValue) {
+    paramValues.year = yearValue;
   }
-  if (req.query.sortByValue) {
+  if (sortByValue) {
     // const order =
     //   req.query.sortByValue === "title" || "original_title" ? "desc" : "asc";
-    paramValues.sort_by = req.query.sortByValue;
+    paramValues.sort_by = sortByValue;
   }
 
   const params = new URLSearchParams(paramValues);
-  const filmTypeName = req.query.filmType;
+  const filmTypeName = filmType;
   const path = `${baseURL}/discover/${filmTypeName}?${params}`;
   try {
     const response = await axios.get(path, config);

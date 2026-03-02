@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import FilmCard from "../components/FilmCard";
 import Button from "../components/Button";
 import Navbar from "../layouts/Navbar";
-import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import StarIcon from "@mui/icons-material/Star";
 import CreateIcon from "@mui/icons-material/Create";
 import { useParams } from "react-router-dom";
@@ -14,6 +13,9 @@ import IconButton from "@mui/material/IconButton";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 // This is a page that shows details of shows
 function ShowDetail() {
   const { showId } = useParams();
@@ -97,43 +99,55 @@ function ShowDetail() {
             <Button key={genre.id}>{genre.name}</Button>
           ))}
           <IconButton>
-            <BookmarkAddOutlinedIcon
-              onClick={() => {
-                if (!status || status === "dropped" || status === "watched") {
+            {status === "watchlist" ? (
+              <BookmarkAddIcon
+                onClick={() => {
+                  setStatus("dropped");
+                  statusUpdateCall("dropped");
+                }}
+              />
+            ) : (
+              <BookmarkAddOutlinedIcon
+                onClick={() => {
                   setStatus("watchlist");
                   statusUpdateCall("watchlist");
-                } else {
-                  setStatus("dropped");
-                  statusUpdateCall("dropped");
-                }
-              }}
-            />{" "}
+                }}
+              />
+            )}
           </IconButton>
           <IconButton>
-            <VisibilityOutlinedIcon
-              onClick={() => {
-                if (!status || status === "dropped" || status === "watchlist") {
+            {status === "watched" ? (
+              <VisibilityIcon
+                onClick={() => {
+                  setStatus("dropped");
+                  statusUpdateCall("dropped");
+                }}
+              />
+            ) : (
+              <VisibilityOutlinedIcon
+                onClick={() => {
                   setStatus("watched");
                   statusUpdateCall("watched");
-                } else {
-                  setStatus("dropped");
-                  statusUpdateCall("dropped");
-                }
-              }}
-            />
+                }}
+              />
+            )}
           </IconButton>
           <IconButton>
-            <FavoriteBorderOutlinedIcon
-              onClick={() => {
-                if (!isFavorited) {
-                  setIsFavorited(true);
-                  statusUpdateCall(true);
-                } else {
+            {isFavorited ? (
+              <FavoriteIcon
+                onClick={() => {
                   setIsFavorited(false);
                   statusUpdateCall(false);
-                }
-              }}
-            />
+                }}
+              />
+            ) : (
+              <FavoriteBorderOutlinedIcon
+                onClick={() => {
+                  setIsFavorited(true);
+                  statusUpdateCall(true);
+                }}
+              />
+            )}
           </IconButton>
           <IconButton>
             <StarIcon /> Rate

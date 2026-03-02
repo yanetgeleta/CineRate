@@ -14,6 +14,9 @@ import ReviewModal from "../components/ReviewModal";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 // This is the page that shows details of a specific movie when clicked on
 function MovieDetail() {
@@ -99,43 +102,55 @@ function MovieDetail() {
             <Button key={genre.id}>{genre.name}</Button>
           ))}
           <IconButton>
-            <BookmarkAddOutlinedIcon
-              onClick={() => {
-                if (!status || status === "dropped" || status === "watched") {
+            {status === "watchlist" ? (
+              <BookmarkAddIcon
+                onClick={() => {
+                  setStatus("dropped");
+                  statusUpdateCall("dropped");
+                }}
+              />
+            ) : (
+              <BookmarkAddOutlinedIcon
+                onClick={() => {
                   setStatus("watchlist");
                   statusUpdateCall("watchlist");
-                } else {
-                  setStatus("dropped");
-                  statusUpdateCall("dropped");
-                }
-              }}
-            />{" "}
+                }}
+              />
+            )}
           </IconButton>
           <IconButton>
-            <VisibilityOutlinedIcon
-              onClick={() => {
-                if (!status || status === "dropped" || status === "watchlist") {
+            {status === "watched" ? (
+              <VisibilityIcon
+                onClick={() => {
+                  setStatus("dropped");
+                  statusUpdateCall("dropped");
+                }}
+              />
+            ) : (
+              <VisibilityOutlinedIcon
+                onClick={() => {
                   setStatus("watched");
                   statusUpdateCall("watched");
-                } else {
-                  setStatus("dropped");
-                  statusUpdateCall("dropped");
-                }
-              }}
-            />
+                }}
+              />
+            )}
           </IconButton>
           <IconButton>
-            <FavoriteBorderOutlinedIcon
-              onClick={() => {
-                if (!isFavorited) {
-                  setIsFavorited(true);
-                  statusUpdateCall(true);
-                } else {
+            {isFavorited ? (
+              <FavoriteIcon
+                onClick={() => {
                   setIsFavorited(false);
                   statusUpdateCall(false);
-                }
-              }}
-            />
+                }}
+              />
+            ) : (
+              <FavoriteBorderOutlinedIcon
+                onClick={() => {
+                  setIsFavorited(true);
+                  statusUpdateCall(true);
+                }}
+              />
+            )}
           </IconButton>
           <IconButton>
             <StarIcon /> Rate
