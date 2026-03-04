@@ -10,11 +10,10 @@ import {
   discoverFilm,
   filmDetailGetter,
 } from "../services/tmdbServices.js";
-import { ensureAuthenticated } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 const routerFunction = (path, importFunction, errorMessage) => {
-  router.get(path, ensureAuthenticated, async (req, res) => {
+  router.get(path, async (req, res) => {
     try {
       const tmdbRes = await importFunction(req);
       // console.log(res);

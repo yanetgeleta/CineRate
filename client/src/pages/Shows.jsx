@@ -6,15 +6,7 @@ import GenresFilter from "../components/GenresFilter";
 import FilterAndSort from "../components/FilterAndSort";
 import { ClipLoader } from "react-spinners";
 import { useState } from "react";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import Pagination from "@mui/material/Pagination";
-import { Link } from "react-router-dom";
-import IconButton from "@mui/material/IconButton";
-import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import FilmItem from "../components/FilmItem";
 // This is a dedicated page for shows
 const Shows = () => {
@@ -31,22 +23,6 @@ const Shows = () => {
 
   const basePosterPath = "https://image.tmdb.org/t/p/";
   const smallBannerWidth = "w300";
-
-  async function statusUpdateCall(filmId, updatedStatus) {
-    const body = {
-      filmId: filmId,
-      mediaType: "tv",
-      filmStatus: updatedStatus,
-    };
-    const response = await fetch("/api/library/update/film/status", {
-      method: "POST",
-      body: JSON.stringify(body),
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  }
 
   useEffect(() => {
     async function genreIdGetter() {
@@ -125,13 +101,18 @@ const Shows = () => {
       ) : (
         <div>
           <h1>Browse Tv Shows</h1>
-          <div className="grid grid-cols-5 gap-4 p-4">
-            {showData &&
-              showData.results.map((show) => (
-                /* 2. THE ITEM: Each child automatically fills one grid cell */
-                <FilmItem film={show} filmType="show" />
-              ))}
-          </div>
+
+          {showData &&
+            showData.results.map((show) => (
+              /* 2. THE ITEM: Each child automatically fills one grid cell */
+              <FilmItem
+                mediaType="tv"
+                basePosterPath={basePosterPath}
+                smallBannerWidth={smallBannerWidth}
+                film={show}
+                filmType="show"
+              />
+            ))}
         </div>
       )}
       <Pagination

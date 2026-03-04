@@ -2,7 +2,6 @@ import { Strategy as LocalStrategy } from "passport-local";
 import passport from "passport";
 import bcrypt from "bcrypt";
 import { Strategy as GoogleStrategy } from "passport-google-oauth2";
-import db from "./database.js";
 import env from "dotenv";
 import path from "path";
 import User from "../models/userModel.js";

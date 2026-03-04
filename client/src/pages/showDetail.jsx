@@ -27,6 +27,7 @@ function ShowDetail() {
   const [showGenres, setShowGenres] = useState(null);
   const { user } = useAuth();
   const [status, setStatus] = useState(null);
+  const [isFavorited, setIsFavorited] = useState(null);
 
   async function statusUpdateCall(updatedStatus) {
     const body = {
@@ -153,7 +154,7 @@ function ShowDetail() {
             <StarIcon /> Rate
           </IconButton>
           <IconButton>
-            <CreateIcon /> Write a Review
+            <CreateIcon />
           </IconButton>
           <Button>Details</Button>
           <Button>Cast & Crew</Button>

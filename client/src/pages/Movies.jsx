@@ -2,19 +2,10 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../layouts/Navbar";
 import Button from "../components/Button";
 import FilterAndSort from "../components/FilterAndSort";
-import FilmCard from "../components/FilmCard";
 import GenresFilter from "../components/GenresFilter";
 import Slider from "@mui/material/Slider";
 import { ClipLoader } from "react-spinners";
 import Pagination from "@mui/material/Pagination";
-import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import { Link } from "react-router-dom";
-import IconButton from "@mui/material/IconButton";
-import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import FilmItem from "../components/FilmItem";
 
 // This is dedicated page just for movies\
@@ -29,8 +20,6 @@ const Movies = () => {
   const [moviesData, setMoviesData] = useState(null);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [status, setStatus] = useState(null);
-  const [isFavorited, setIsFavorited] = useState(null);
 
   const basePosterPath = "https://image.tmdb.org/t/p/";
   const smallBannerWidth = "w300";
@@ -136,11 +125,21 @@ const Movies = () => {
       ) : (
         <div>
           <h1>Browse Movies</h1>
-          {moviesData &&
-            moviesData.results.map((movie) => {
-              <FilmItem filmType="movie" key={movie.id} film={movie} />;
-            })}
-
+          <div className="grid grid-cols-5 gap-4 p-4">
+            {moviesData &&
+              moviesData.results.map((movie) => {
+                return (
+                  <FilmItem
+                    mediaType="movie"
+                    basePosterPath={basePosterPath}
+                    smallBannerWidth={smallBannerWidth}
+                    filmType="movie"
+                    key={movie.id}
+                    film={movie}
+                  />
+                );
+              })}
+          </div>
           {/* The film cards obviously will be looped through */}
           {/* We need a pagination */}
         </div>
