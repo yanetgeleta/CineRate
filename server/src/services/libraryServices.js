@@ -12,7 +12,11 @@ export const updateUserLibary = async (req, res) => {
   const userRow = req.user.row;
   const userId = userRow.replace("(", "").split(",")[0];
   try {
-    if (body.filmStatus === true || body.filmStatus === false) {
+    // so it works with postman (postman sends true as "true" which are strings)
+    if (body.filmStatus === "true") body.filmStatus = true;
+    if (body.filmStatus === "false") body.filmStatus = false;
+
+    if (typeof body.filmStatus === "boolean") {
       const userLibrary = await Library.updateFavorite(
         userId,
         body.filmId,
@@ -31,6 +35,25 @@ export const updateUserLibary = async (req, res) => {
     }
   } catch (err) {
     console.log(new Error("Failed to update user_library"), err.message);
-    throw new Error("Failed to updated user_library");
+    throw new Error(
+      "Failed to updated user_library with status and/or favorites",
+    );
+  }
+};
+export const allLibrary = async (req) => {
+  const userRow = req.user.row;
+  const userId = userRow.replace("(", "").split(",")[0];
+  try {
+    const ratings = await Library.userRatingsData(userId);
+    const reviews = await Library.userReviewsData(userId);
+    const userLibrary = await Library.userLibraryData(userId);
+    return {
+      data: { ratings: ratings, reviews: reviews, userLibrary: userLibrary },
+    };
+  } catch (err) {
+    console.error(err.message);
+    throw new Error({
+      message: "Error at all Libraray service fetching user data",
+    });
   }
 };

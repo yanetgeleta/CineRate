@@ -23,6 +23,45 @@ const Library = {
     );
     return result.rows[0];
   },
+  userRatingsData: async (userId) => {
+    const result = await db.query(
+      `select * from ratings
+      where user_id = $1`,
+      [userId],
+    );
+    const ratingsArray = result.rows;
+    const ratingsObj = ratingsArray.reduce((acc, current) => {
+      acc[current.id] = current;
+      return acc;
+    }, {});
+    return ratingsObj;
+  },
+  userReviewsData: async (userId) => {
+    const result = await db.query(
+      `select * from reviews
+      where user_id = $1`,
+      [userId],
+    );
+    const reviewsArray = result.rows;
+    const reviewsObj = reviewsArray.reduce((acc, current) => {
+      acc[current.id] = current;
+      return acc;
+    }, {});
+    return reviewsObj;
+  },
+  userLibraryData: async (userId) => {
+    const result = await db.query(
+      `select * from user_library
+      where user_id = $1`,
+      [userId],
+    );
+    const libraryArray = result.rows;
+    const libraryObj = libraryArray.reduce((acc, current) => {
+      acc[current.id] = current;
+      return acc;
+    }, {});
+    return libraryObj;
+  },
 };
 
 export default Library;
