@@ -31,7 +31,7 @@ const Library = {
     );
     const ratingsArray = result.rows;
     const ratingsObj = ratingsArray.reduce((acc, current) => {
-      acc[current.id] = current;
+      acc[current.tmdb_id] = current;
       return acc;
     }, {});
     return ratingsObj;
@@ -42,12 +42,7 @@ const Library = {
       where user_id = $1`,
       [userId],
     );
-    const reviewsArray = result.rows;
-    const reviewsObj = reviewsArray.reduce((acc, current) => {
-      acc[current.id] = current;
-      return acc;
-    }, {});
-    return reviewsObj;
+    return result.rows;
   },
   userLibraryData: async (userId) => {
     const result = await db.query(
@@ -57,10 +52,18 @@ const Library = {
     );
     const libraryArray = result.rows;
     const libraryObj = libraryArray.reduce((acc, current) => {
-      acc[current.id] = current;
+      acc[current.tmdb_id] = current;
       return acc;
     }, {});
     return libraryObj;
+  },
+  filmReviewsData: async (filmId) => {
+    const result = await db.query(
+      `select * from reviews
+      where tmdb_id = $1`,
+      [filmId],
+    );
+    return result.rows;
   },
 };
 

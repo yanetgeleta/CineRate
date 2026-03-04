@@ -5,6 +5,7 @@ import {
   updateRating,
   updateReview,
 } from "../services/reviewsRatingServices.js";
+import { allFilmReviews } from "../services/libraryServices.js";
 
 const router = express.Router();
 
@@ -32,6 +33,18 @@ router.post("/update/rating", ensureAuthenticated, async (req, res) => {
     res.json(userRating);
   } catch (err) {
     console.error(err.message);
+    throw new Error(
+      "Error at rating route trying to update rating by calling service",
+    );
+  }
+});
+router.get("/film/reviews", ensureAuthenticated, async (req, res) => {
+  try {
+    const filmReviews = await allFilmReviews(req);
+    res.json(filmReviews);
+  } catch (err) {
+    console.log(err.message);
+    throw new Error("Error calling film reviews at route", err.message);
   }
 });
 export default router;

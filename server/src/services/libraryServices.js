@@ -51,9 +51,22 @@ export const allLibrary = async (req) => {
       data: { ratings: ratings, reviews: reviews, userLibrary: userLibrary },
     };
   } catch (err) {
-    console.error(err.message);
+    console.log(err.message);
     throw new Error({
       message: "Error at all Libraray service fetching user data",
+    });
+  }
+};
+export const allFilmReviews = async (req) => {
+  try {
+    const filmId = req.filmId;
+    const filmReviewsData = await Library.filmReviewsData(filmId);
+    return filmReviewsData;
+  } catch (err) {
+    console.log(err.message);
+    throw new Error({
+      message:
+        "Error at all films reviews service fetching reviews data from model ",
     });
   }
 };
