@@ -1,9 +1,4 @@
-import env from "dotenv";
-import path from "path";
-import db from "../config/database.js";
-import passport from "passport";
 import Library from "../models/userLibraryModel.js";
-import { ensureAuthenticated } from "../middleware/authMiddleware.js";
 
 // env.config({ path: path.resolve(process.cwd(), ".env") });
 
@@ -47,9 +42,7 @@ export const allLibrary = async (req) => {
     const ratings = await Library.userRatingsData(userId);
     const reviews = await Library.userReviewsData(userId);
     const userLibrary = await Library.userLibraryData(userId);
-    return {
-      data: { ratings: ratings, reviews: reviews, userLibrary: userLibrary },
-    };
+    return { ratings: ratings, reviews: reviews, userLibrary: userLibrary };
   } catch (err) {
     console.log(err.message);
     throw new Error({
@@ -57,9 +50,10 @@ export const allLibrary = async (req) => {
     });
   }
 };
+// gets all the comment made to a single film
 export const allFilmReviews = async (req) => {
   try {
-    const filmId = req.filmId;
+    const filmId = req.query.filmId;
     const filmReviewsData = await Library.filmReviewsData(filmId);
     return filmReviewsData;
   } catch (err) {

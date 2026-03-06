@@ -57,6 +57,7 @@ const Library = {
     }, {});
     return libraryObj;
   },
+  // get all the reviews for a single film
   filmReviewsData: async (filmId) => {
     const result = await db.query(
       `select * from reviews
