@@ -7,19 +7,34 @@ import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Button from "./Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import { useLibrary } from "../context/LibraryContex";
+import { useAuth } from "../context/AuthContext";
 
 function CarouselItem({ item, filmType, ...otherProps }) {
   const { getFilmStatus, statusUpdateCall, loading } = useLibrary();
   const filmStatus = getFilmStatus(item.id);
   const [isFavorited, setIsFavorited] = useState(filmStatus.is_favorited);
   const [status, setStatus] = useState(filmStatus.status);
-
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const handleInteraction = (action) => {
+    if (!user) {
+      navigate("/loginsignup");
+      return;
+    }
+    if (typeof action === "boolean") {
+      setIsFavorited(action);
+    } else {
+      setStatus(action);
+    }
+    statusUpdateCall(item.id, item.media_type || filmType, action);
+  };
   if (loading) {
     return <p>Loading...</p>;
   }
+
   // Add a clip loader later on
   return (
     <div>
@@ -53,19 +68,13 @@ function CarouselItem({ item, filmType, ...otherProps }) {
         {status === "watchlist" ? (
           <BookmarkAddIcon
             onClick={() => {
-              setStatus("dropped");
-              statusUpdateCall(item.id, item.media_type || filmType, "dropped");
+              handleInteraction("dropped");
             }}
           />
         ) : (
           <BookmarkAddOutlinedIcon
             onClick={() => {
-              setStatus("watchlist");
-              statusUpdateCall(
-                item.id,
-                item.media_type || filmType,
-                "watchlist",
-              );
+              handleInteraction("watchlist");
             }}
           />
         )}
@@ -74,15 +83,13 @@ function CarouselItem({ item, filmType, ...otherProps }) {
         {status === "watched" ? (
           <VisibilityIcon
             onClick={() => {
-              setStatus("dropped");
-              statusUpdateCall(item.id, item.media_type || filmType, "dropped");
+              handleInteraction("dropped");
             }}
           />
         ) : (
           <VisibilityOutlinedIcon
             onClick={() => {
-              setStatus("watched");
-              statusUpdateCall(item.id, item.media_type || filmType, "watched");
+              handleInteraction("watched");
             }}
           />
         )}
@@ -91,15 +98,13 @@ function CarouselItem({ item, filmType, ...otherProps }) {
         {isFavorited ? (
           <FavoriteIcon
             onClick={() => {
-              setIsFavorited(false);
-              statusUpdateCall(item.id, item.media_type || filmType, false);
+              handleInteraction(false);
             }}
           />
         ) : (
           <FavoriteBorderOutlinedIcon
             onClick={() => {
-              setIsFavorited(true);
-              statusUpdateCall(item.id, item.media_type || filmType, true);
+              handleInteraction(true);
             }}
           />
         )}

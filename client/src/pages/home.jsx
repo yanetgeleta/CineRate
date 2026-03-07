@@ -151,7 +151,7 @@ function Home() {
 
   return (
     <div>
-      <Navbar user={user} />
+      <Navbar />
       {/* Banner for trending movies and shows daily */}
       {loading ? (
         <ClipLoader

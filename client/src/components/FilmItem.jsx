@@ -6,32 +6,33 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
+import { useLibrary } from "../context/LibraryContex";
+import { useAuth } from "../context/AuthContext";
 
-function FilmItem({
-  film,
-  filmType,
-  basePosterPath,
-  smallBannerWidth,
-  mediaType,
-}) {
-  const [status, setStatus] = useState(null);
-  const [isFavorited, setIsFavorited] = useState(null);
-  async function statusUpdateCall(filmId, updatedStatus) {
-    const body = {
-      filmId: filmId,
-      mediaType: mediaType,
-      filmStatus: updatedStatus,
-    };
-    const response = await fetch("/api/library/update/film/status", {
-      method: "POST",
-      body: JSON.stringify(body),
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+function FilmItem({ film, filmType, basePosterPath, smallBannerWidth }) {
+  const { getFilmStatus, statusUpdateCall, loading } = useLibrary();
+  const filmStatus = getFilmStatus(film.id);
+  const [status, setStatus] = useState(filmStatus.status);
+  const [isFavorited, setIsFavorited] = useState(filmStatus.is_favorited);
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleInteraction = (action) => {
+    if (!user) {
+      navigate("/loginsignup");
+      return;
+    }
+    if (typeof action === "boolean") {
+      setIsFavorited(action);
+    } else {
+      setStatus(action);
+    }
+    statusUpdateCall(film.id, film.media_type || filmType, action);
+  };
+  if (loading) {
+    return <p>Loading...</p>;
   }
   return (
     <div className="flex flex-col border border-gray-200 rounded p-2">
@@ -51,15 +52,13 @@ function FilmItem({
         {status === "watchlist" ? (
           <BookmarkAddIcon
             onClick={() => {
-              setStatus("dropped");
-              statusUpdateCall(film.id, "dropped");
+              handleInteraction("dropped");
             }}
           />
         ) : (
           <BookmarkAddOutlinedIcon
             onClick={() => {
-              setStatus("watchlist");
-              statusUpdateCall(film.id, "watchlist");
+              handleInteraction("watchlist");
             }}
           />
         )}
@@ -68,15 +67,13 @@ function FilmItem({
         {status === "watched" ? (
           <VisibilityIcon
             onClick={() => {
-              setStatus("dropped");
-              statusUpdateCall(film.id, "dropped");
+              handleInteraction("dropped");
             }}
           />
         ) : (
           <VisibilityOutlinedIcon
             onClick={() => {
-              setStatus("watched");
-              statusUpdateCall(film.id, "watched");
+              handleInteraction("watched");
             }}
           />
         )}
@@ -85,15 +82,13 @@ function FilmItem({
         {isFavorited ? (
           <FavoriteIcon
             onClick={() => {
-              setIsFavorited(false);
-              statusUpdateCall(film.id, false);
+              handleInteraction(false);
             }}
           />
         ) : (
           <FavoriteBorderOutlinedIcon
             onClick={() => {
-              setIsFavorited(true);
-              statusUpdateCall(film.id, true);
+              handleInteraction(true);
             }}
           />
         )}

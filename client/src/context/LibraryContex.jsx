@@ -17,7 +17,9 @@ export const LibraryProvider = ({ children }) => {
   useEffect(() => {
     async function fetchUserLibrary() {
       if (!user) {
-        setUserLibrary(null);
+        setUserRatings({});
+        setUserReviews({});
+        setUserStatus({});
         setLoading(false);
         return;
       }
@@ -47,6 +49,13 @@ export const LibraryProvider = ({ children }) => {
   // film rating, status values for a single movie for the current user
   // Used in pages where ratings of one movie for user is needed
   const getFilmRating = (filmId) => {
+    if (!userRatings) {
+      return {
+        film_type: null,
+        rating: null,
+        tmdb_id: filmId,
+      };
+    }
     return (
       userRatings[filmId] || {
         film_type: null,
@@ -56,6 +65,13 @@ export const LibraryProvider = ({ children }) => {
     );
   };
   const getFilmStatus = (filmId) => {
+    if (!userStatus) {
+      return {
+        status: null,
+        is_favorited: false,
+        tmdb_id: filmId,
+      };
+    }
     return (
       userStatus[filmId] || {
         status: null,

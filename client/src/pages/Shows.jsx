@@ -101,18 +101,18 @@ const Shows = () => {
       ) : (
         <div>
           <h1>Browse Tv Shows</h1>
-
-          {showData &&
-            showData.results.map((show) => (
-              /* 2. THE ITEM: Each child automatically fills one grid cell */
-              <FilmItem
-                mediaType="tv"
-                basePosterPath={basePosterPath}
-                smallBannerWidth={smallBannerWidth}
-                film={show}
-                filmType="show"
-              />
-            ))}
+          <div className="grid grid-cols-5 gap-4 p-4">
+            {showData &&
+              showData.results.map((show) => (
+                /* 2. THE ITEM: Each child automatically fills one grid cell */
+                <FilmItem
+                  basePosterPath={basePosterPath}
+                  smallBannerWidth={smallBannerWidth}
+                  film={show}
+                  filmType="tv"
+                />
+              ))}
+          </div>
         </div>
       )}
       <Pagination

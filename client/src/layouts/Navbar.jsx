@@ -6,8 +6,10 @@ import ProfilePic from "../components/ProfilePic";
 import NotificationRing from "../components/NotificationRing";
 import Input from "../components/Input";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
-function Navbar({ user }) {
+function Navbar() {
+  const { user } = useAuth();
   return (
     <div>
       <Brand />
@@ -19,6 +21,7 @@ function Navbar({ user }) {
         <>
           <NotificationRing />
           <ProfilePic />
+          <Button>Log out</Button>
         </>
       )}
 
