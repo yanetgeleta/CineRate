@@ -11,25 +11,28 @@ import Home from "./pages/home";
 import Footer from "./layouts/Footer";
 import { AuthProvider } from "./context/AuthContext";
 import Genres from "./pages/Genres";
+import { LibraryProvider } from "./context/LibraryContex";
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/moviedetail/:movieId" element={<MovieDetail />} />
-          <Route path="/showdetail/:showId" element={<ShowDetail />} />
-          <Route path="/loginsignup" element={<LoginSignUp />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/otheruser" element={<OtherUser />} />
-          <Route path="/movies" element={<Movies />} />
-          <Route path="/shows" element={<Shows />} />
-          <Route path="/dashboard" element={<Home />} />
-          <Route path="/genres" element={<Genres />} />
-        </Routes>
-        <Footer />
-      </Router>
+      <LibraryProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/moviedetail/:movieId" element={<MovieDetail />} />
+            <Route path="/showdetail/:showId" element={<ShowDetail />} />
+            <Route path="/loginsignup" element={<LoginSignUp />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/otheruser" element={<OtherUser />} />
+            <Route path="/movies" element={<Movies />} />
+            <Route path="/shows" element={<Shows />} />
+            <Route path="/dashboard" element={<Home />} />
+            <Route path="/genres" element={<Genres />} />
+          </Routes>
+          <Footer />
+        </Router>
+      </LibraryProvider>
     </AuthProvider>
   );
 }

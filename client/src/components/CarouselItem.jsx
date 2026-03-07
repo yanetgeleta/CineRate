@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FilmCard from "./FilmCard";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
@@ -9,27 +9,18 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import Button from "./Button";
 import { Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
-import { SwiperSlide } from "swiper/react";
+import { useLibrary } from "../context/LibraryContex";
 
 function CarouselItem({ item, filmType, ...otherProps }) {
-  const [isFavorited, setIsFavorited] = useState(null);
-  const [status, setStatus] = useState(null);
+  const { getFilmStatus, statusUpdateCall, loading } = useLibrary();
+  const filmStatus = getFilmStatus(item.id);
+  const [isFavorited, setIsFavorited] = useState(filmStatus.is_favorited);
+  const [status, setStatus] = useState(filmStatus.status);
 
-  async function statusUpdateCall(filmId, mediaType, updatedStatus) {
-    const body = {
-      filmId: filmId,
-      mediaType: mediaType || filmType,
-      filmStatus: updatedStatus,
-    };
-    const response = await fetch("/api/library/update/film/status", {
-      method: "POST",
-      body: JSON.stringify(body),
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  if (loading) {
+    return <p>Loading...</p>;
   }
+  // Add a clip loader later on
   return (
     <div>
       <Link
@@ -63,14 +54,18 @@ function CarouselItem({ item, filmType, ...otherProps }) {
           <BookmarkAddIcon
             onClick={() => {
               setStatus("dropped");
-              statusUpdateCall(item.id, item.media_type, "dropped");
+              statusUpdateCall(item.id, item.media_type || filmType, "dropped");
             }}
           />
         ) : (
           <BookmarkAddOutlinedIcon
             onClick={() => {
               setStatus("watchlist");
-              statusUpdateCall(item.id, item.media_type, "watchlist");
+              statusUpdateCall(
+                item.id,
+                item.media_type || filmType,
+                "watchlist",
+              );
             }}
           />
         )}
@@ -80,14 +75,14 @@ function CarouselItem({ item, filmType, ...otherProps }) {
           <VisibilityIcon
             onClick={() => {
               setStatus("dropped");
-              statusUpdateCall(item.id, item.media_type, "dropped");
+              statusUpdateCall(item.id, item.media_type || filmType, "dropped");
             }}
           />
         ) : (
           <VisibilityOutlinedIcon
             onClick={() => {
               setStatus("watched");
-              statusUpdateCall(item.id, item.media_type, "watched");
+              statusUpdateCall(item.id, item.media_type || filmType, "watched");
             }}
           />
         )}
@@ -97,14 +92,14 @@ function CarouselItem({ item, filmType, ...otherProps }) {
           <FavoriteIcon
             onClick={() => {
               setIsFavorited(false);
-              statusUpdateCall(item.id, item.media_type, false);
+              statusUpdateCall(item.id, item.media_type || filmType, false);
             }}
           />
         ) : (
           <FavoriteBorderOutlinedIcon
             onClick={() => {
               setIsFavorited(true);
-              statusUpdateCall(item.id, item.media_type, true);
+              statusUpdateCall(item.id, item.media_type || filmType, true);
             }}
           />
         )}

@@ -1,11 +1,11 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "./AuthContext";
 
 const LibraryContext = createContext(null);
-const [reviewsObj, setReviewsObj] = useState(null);
 
 export const LibraryProvider = ({ children }) => {
   const { user } = useAuth();
+  const [reviewsObj, setReviewsObj] = useState(null);
   const [userLibrary, setUserLibrary] = useState(null);
   const [userRatings, setUserRatings] = useState(null);
   const [userReviews, setUserReviews] = useState(null);
@@ -26,7 +26,10 @@ export const LibraryProvider = ({ children }) => {
           credentials: "include",
         });
         const libraryObj = await response.json();
-        setUserLibrary(libraryObj);
+
+        setUserRatings(libraryObj.ratings);
+        setUserReviews(libraryObj.reviews);
+        setUserStatus(libraryObj.userStatusLibrary);
       } catch (err) {
         throw new Error({
           message: "Error fetching user library at Library context!",
@@ -43,19 +46,21 @@ export const LibraryProvider = ({ children }) => {
 
   // film rating, status values for a single movie for the current user
   // Used in pages where ratings of one movie for user is needed
-  const getFilmRating = () => {
+  const getFilmRating = (filmId) => {
     return (
-      userLibrary.ratings.filmId || {
+      userRatings[filmId] || {
         film_type: null,
         rating: null,
+        tmdb_id: filmId,
       }
     );
   };
   const getFilmStatus = (filmId) => {
     return (
-      userLibrary.userLibrary.filmId || {
+      userStatus[filmId] || {
         status: null,
         is_favorited: false,
+        tmdb_id: filmId,
       }
     );
   };
@@ -72,17 +77,47 @@ export const LibraryProvider = ({ children }) => {
       throw new Error("Error trying to get film reviews from Library context");
     }
   };
-  const statusUpdateCall = async (filmId) => {
+  const statusUpdateCall = async (filmId, mediaType, updatedStatus) => {
+    const updates =
+      typeof updatedStatus === "boolean"
+        ? { is_favorited: updatedStatus }
+        : { status: updatedStatus };
+    const prevUserStatus = { userStatus };
+    setUserStatus({
+      ...userStatus,
+      [filmId]: { ...userStatus.filmId, ...updates },
+    });
     const body = {
       filmId: filmId,
       mediaType: mediaType,
       filmStatus: updatedStatus,
     };
-    const response = await fetch("/api/library/update/film/status", {
-      method: "POST",
-      body: JSON.stringify(body),
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-    });
+    try {
+      // the response is unneccessarily long, with user id and stuff
+      const response = await fetch("/api/library/update/film/status", {
+        method: "POST",
+        body: JSON.stringify(body),
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (!response.ok) throw new Error("Failed to update the status database");
+    } catch (err) {
+      console.error("Library context error trying to update status table");
+      setUserLibrary(prevUserStatus);
+    }
   };
+  return (
+    <LibraryContext.Provider
+      value={{
+        getFilmRating,
+        getFilmReviews,
+        getFilmStatus,
+        statusUpdateCall,
+        loading,
+      }}
+    >
+      {children}
+    </LibraryContext.Provider>
+  );
 };
+export const useLibrary = () => useContext(LibraryContext);

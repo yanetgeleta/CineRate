@@ -25,16 +25,12 @@ const Library = {
   },
   userRatingsData: async (userId) => {
     const result = await db.query(
-      `select * from ratings
+      `select film_type, rating, tmdb_id from ratings
       where user_id = $1`,
       [userId],
     );
     const ratingsArray = result.rows;
-    const ratingsObj = ratingsArray.reduce((acc, current) => {
-      acc[current.tmdb_id] = current;
-      return acc;
-    }, {});
-    return ratingsObj;
+    return ratingsArray;
   },
   userReviewsData: async (userId) => {
     const result = await db.query(
@@ -46,16 +42,12 @@ const Library = {
   },
   userLibraryData: async (userId) => {
     const result = await db.query(
-      `select * from user_library
+      `select status, is_favorited, tmdb_id from user_library
       where user_id = $1`,
       [userId],
     );
     const libraryArray = result.rows;
-    const libraryObj = libraryArray.reduce((acc, current) => {
-      acc[current.tmdb_id] = current;
-      return acc;
-    }, {});
-    return libraryObj;
+    return libraryArray;
   },
   // get all the reviews for a single film
   filmReviewsData: async (filmId) => {

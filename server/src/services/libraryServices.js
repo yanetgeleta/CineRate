@@ -39,10 +39,23 @@ export const allLibrary = async (req) => {
   const userRow = req.user.row;
   const userId = userRow.replace("(", "").split(",")[0];
   try {
-    const ratings = await Library.userRatingsData(userId);
     const reviews = await Library.userReviewsData(userId);
-    const userLibrary = await Library.userLibraryData(userId);
-    return { ratings: ratings, reviews: reviews, userLibrary: userLibrary };
+
+    const ratingsArr = await Library.userRatingsData(userId);
+    const ratings = ratingsArr.reduce((acc, current) => {
+      acc[current.tmdb_id] = current;
+      return acc;
+    }, {});
+    const userLibraryArr = await Library.userLibraryData(userId);
+    const userLibrary = userLibraryArr.reduce((acc, current) => {
+      acc[current.tmdb_id] = current;
+      return acc;
+    }, {});
+    return {
+      ratings: ratings,
+      reviews: reviews,
+      userStatusLibrary: userLibrary,
+    };
   } catch (err) {
     console.log(err.message);
     throw new Error({
