@@ -4,7 +4,7 @@ import Button from "../components/Button";
 import Navbar from "../layouts/Navbar";
 import StarIcon from "@mui/icons-material/Star";
 import CreateIcon from "@mui/icons-material/Create";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import FilmDetailsComp from "../components/FilmDetailsComp";
 import FilmCastCrewComp from "../components/FilmCastCrewComp";
@@ -16,34 +16,42 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import { useLibrary } from "../context/LibraryContex";
 // This is a page that shows details of shows
 function ShowDetail() {
   const { showId } = useParams();
+  const { getFilmStatus, getFilmRating, getFilmReviews, statusUpdateCall } =
+    useLibrary();
+  const filmStatus = getFilmStatus(showId);
+  const filmRating = getFilmRating(showId);
+
   const [showData, setShowData] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const [showGenres, setShowGenres] = useState(null);
+  const { user } = useAuth();
+
+  const [status, setStatus] = useState(filmStatus.status);
+  const [isFavorited, setIsFavorited] = useState(filmStatus.is_favorited);
+
+  const navigate = useNavigate();
+
   const basePosterPath = "https://image.tmdb.org/t/p/";
   const heroBannerWidth = "w1280";
   const smallBannerWidth = "w300";
-  const [showGenres, setShowGenres] = useState(null);
-  const { user } = useAuth();
-  const [status, setStatus] = useState(null);
-  const [isFavorited, setIsFavorited] = useState(null);
 
-  async function statusUpdateCall(updatedStatus) {
-    const body = {
-      filmId: showId,
-      mediaType: "tv",
-      filmStatus: updatedStatus,
-    };
-    const response = await fetch("/api/library/update/film/status", {
-      method: "POST",
-      body: JSON.stringify(body),
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  }
+  const handleStatusFavorite = (action) => {
+    if (!user) {
+      navigate("/loginsignup");
+      return;
+    }
+    if (typeof action === "boolean") {
+      setIsFavorited(action);
+    } else {
+      setStatus(action);
+    }
+    statusUpdateCall(showId, "tv", action);
+  };
 
   useEffect(() => {
     const fetchShowData = async () => {
@@ -103,15 +111,13 @@ function ShowDetail() {
             {status === "watchlist" ? (
               <BookmarkAddIcon
                 onClick={() => {
-                  setStatus("dropped");
-                  statusUpdateCall("dropped");
+                  handleStatusFavorite("dropped");
                 }}
               />
             ) : (
               <BookmarkAddOutlinedIcon
                 onClick={() => {
-                  setStatus("watchlist");
-                  statusUpdateCall("watchlist");
+                  handleStatusFavorite("watchlist");
                 }}
               />
             )}
@@ -120,15 +126,13 @@ function ShowDetail() {
             {status === "watched" ? (
               <VisibilityIcon
                 onClick={() => {
-                  setStatus("dropped");
-                  statusUpdateCall("dropped");
+                  handleStatusFavorite("dropped");
                 }}
               />
             ) : (
               <VisibilityOutlinedIcon
                 onClick={() => {
-                  setStatus("watched");
-                  statusUpdateCall("watched");
+                  handleStatusFavorite("watched");
                 }}
               />
             )}
@@ -137,15 +141,13 @@ function ShowDetail() {
             {isFavorited ? (
               <FavoriteIcon
                 onClick={() => {
-                  setIsFavorited(false);
-                  statusUpdateCall(false);
+                  handleStatusFavorite(false);
                 }}
               />
             ) : (
               <FavoriteBorderOutlinedIcon
                 onClick={() => {
-                  setIsFavorited(true);
-                  statusUpdateCall(true);
+                  handleStatusFavorite(true);
                 }}
               />
             )}

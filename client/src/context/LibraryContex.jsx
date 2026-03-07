@@ -89,6 +89,7 @@ export const LibraryProvider = ({ children }) => {
 
       const resultData = await response.json();
       setReviewsObj(resultData);
+      return resultData;
     } catch (err) {
       throw new Error("Error trying to get film reviews from Library context");
     }

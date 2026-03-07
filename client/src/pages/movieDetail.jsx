@@ -4,7 +4,7 @@ import FilmCard from "../components/FilmCard";
 import Button from "../components/Button";
 import StarIcon from "@mui/icons-material/Star";
 import CreateIcon from "@mui/icons-material/Create";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import FilmDetailsComp from "../components/FilmDetailsComp";
 import FilmCastCrewComp from "../components/FilmCastCrewComp";
@@ -17,47 +17,69 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import { useLibrary } from "../context/LibraryContex";
 
 // This is the page that shows details of a specific movie when clicked on
 function MovieDetail() {
   const { movieId } = useParams();
+  const {
+    getFilmStatus,
+    getFilmRating,
+    getFilmReviews,
+    statusUpdateCall,
+    loading,
+  } = useLibrary();
+  const filmStatus = getFilmStatus(movieId);
+  const filmRating = getFilmRating(movieId);
+  // const filmReviews = getFilmReviews(movieId);
+
+  const [status, setStatus] = useState(filmStatus.status);
+  const [isFavorited, setIsFavorited] = useState(filmStatus.is_favorited);
+
+  const { user } = useAuth();
   const [movieData, setMovieData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [pageLoading, setPageLoading] = useState(true);
+  const [movieGenres, setMovieGenres] = useState(null);
+  const [isReviewOpen, setIsReviewOpen] = useState(false);
+
+  // const [reviews, setReviews] = useState(
+  //   filmReviews.map((review) => {
+  //     return review.review_text;
+  //   }),
+  // );
+  // const [rating, setRating] = useState(filmRating.rating);
+  const navigate = useNavigate();
+
   const basePosterPath = "https://image.tmdb.org/t/p/";
   const heroBannerWidth = "w1280";
   const smallBannerWidth = "w300";
-  const [movieGenres, setMovieGenres] = useState(null);
-  const { user } = useAuth();
-  const [isReviewOpen, setIsReviewOpen] = useState(false);
-  const [status, setStatus] = useState(null);
-  const [isFavorited, setIsFavorited] = useState(null);
 
-  async function statusUpdateCall(updatedStatus) {
-    const body = {
-      filmId: movieId,
-      mediaType: "movie",
-      filmStatus: updatedStatus,
-    };
-    const response = await fetch("/api/library/update/film/status", {
-      method: "POST",
-      body: JSON.stringify(body),
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  }
+  const handleStatusFavorite = (action) => {
+    if (!user) {
+      navigate("/loginsignup");
+      return;
+    }
+    if (typeof action === "boolean") {
+      setIsFavorited(action);
+    } else {
+      setStatus(action);
+    }
+    statusUpdateCall(movieId, "movie", action);
+  };
+  const handleRating = () => {};
+  const handleReview = () => {};
 
   useEffect(() => {
     const fetchMovieData = async () => {
-      setLoading(true);
+      setPageLoading(true);
       try {
         const queryObj = { filmId: movieId, filmType: "movie" };
         const params = new URLSearchParams(queryObj);
         const response = await fetch(`/api/tmdb/film/detail?${params}`);
         if (!response.ok) {
           console.log(new Error("Failed to fetch movie detail"));
-          setLoading(false);
+          setPageLoading(false);
+          return;
         }
         const json = await response.json();
         const data = await json.filmData;
@@ -69,17 +91,27 @@ function MovieDetail() {
           err.message,
         );
       } finally {
-        setLoading(false);
+        setPageLoading(false);
       }
     };
     fetchMovieData();
   }, [movieId]);
+  // useEffect(() => {
+  //   if (filmStatus) {
+  //     setStatus(filmStatus.status);
+  //     setIsFavorited(filmStatus.is_favorited);
+  //   }
+  // }, [filmStatus]);
+
+  // if (loading) {
+  //   return <p>Loading...</p>;
+  // }
   return (
     <div>
-      <Navbar user={user} />
-      {loading ? (
+      <Navbar />
+      {pageLoading ? (
         <ClipLoader
-          loading={loading}
+          loading={pageLoading}
           aria-label="Loading Movie Detail Spinner"
           data-testid="loader"
         />
@@ -105,15 +137,13 @@ function MovieDetail() {
             {status === "watchlist" ? (
               <BookmarkAddIcon
                 onClick={() => {
-                  setStatus("dropped");
-                  statusUpdateCall("dropped");
+                  handleStatusFavorite("dropped");
                 }}
               />
             ) : (
               <BookmarkAddOutlinedIcon
                 onClick={() => {
-                  setStatus("watchlist");
-                  statusUpdateCall("watchlist");
+                  handleStatusFavorite("watchlist");
                 }}
               />
             )}
@@ -122,15 +152,13 @@ function MovieDetail() {
             {status === "watched" ? (
               <VisibilityIcon
                 onClick={() => {
-                  setStatus("dropped");
-                  statusUpdateCall("dropped");
+                  handleStatusFavorite("dropped");
                 }}
               />
             ) : (
               <VisibilityOutlinedIcon
                 onClick={() => {
-                  setStatus("watched");
-                  statusUpdateCall("watched");
+                  handleStatusFavorite("watched");
                 }}
               />
             )}
@@ -139,15 +167,13 @@ function MovieDetail() {
             {isFavorited ? (
               <FavoriteIcon
                 onClick={() => {
-                  setIsFavorited(false);
-                  statusUpdateCall(false);
+                  handleStatusFavorite(false);
                 }}
               />
             ) : (
               <FavoriteBorderOutlinedIcon
                 onClick={() => {
-                  setIsFavorited(true);
-                  statusUpdateCall(true);
+                  handleStatusFavorite(true);
                 }}
               />
             )}
