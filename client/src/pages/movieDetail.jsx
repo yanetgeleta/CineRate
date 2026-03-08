@@ -31,7 +31,7 @@ function MovieDetail() {
   } = useLibrary();
   const filmStatus = getFilmStatus(movieId);
   const filmRating = getFilmRating(movieId);
-  // const filmReviews = getFilmReviews(movieId);
+  const filmReviews = getFilmReviews(movieId);
 
   const [status, setStatus] = useState(filmStatus.status);
   const [isFavorited, setIsFavorited] = useState(filmStatus.is_favorited);
@@ -42,12 +42,18 @@ function MovieDetail() {
   const [movieGenres, setMovieGenres] = useState(null);
   const [isReviewOpen, setIsReviewOpen] = useState(false);
 
-  // const [reviews, setReviews] = useState(
-  //   filmReviews.map((review) => {
-  //     return review.review_text;
+  // First get the reviews that are mine and put them up top so i can edit them or delete them
+  // Second get the other people's reviews just for views
+  // const [myReviews, setMyReviews] = useState(
+  //   filmReviews.filter((review) => {
+  //     return review.user_id === user.id;
   //   }),
   // );
-  // const [rating, setRating] = useState(filmRating.rating);
+  const [reviews, setReviews] = useState(filmReviews);
+  // If a user exists we update these
+  const [myReviews, setMyReviews] = useState(null);
+  const [otherReviews, setOtherReviews] = useState(null);
+  const [rating, setRating] = useState(filmRating.rating);
   const navigate = useNavigate();
 
   const basePosterPath = "https://image.tmdb.org/t/p/";
@@ -67,7 +73,12 @@ function MovieDetail() {
     statusUpdateCall(movieId, "movie", action);
   };
   const handleRating = () => {};
-  const handleReview = () => {};
+  const handleReview = (review) => {
+    if (!user) {
+      navigate("/loginsignup");
+      return;
+    }
+  };
 
   useEffect(() => {
     const fetchMovieData = async () => {
@@ -96,16 +107,6 @@ function MovieDetail() {
     };
     fetchMovieData();
   }, [movieId]);
-  // useEffect(() => {
-  //   if (filmStatus) {
-  //     setStatus(filmStatus.status);
-  //     setIsFavorited(filmStatus.is_favorited);
-  //   }
-  // }, [filmStatus]);
-
-  // if (loading) {
-  //   return <p>Loading...</p>;
-  // }
   return (
     <div>
       <Navbar />
@@ -193,6 +194,7 @@ function MovieDetail() {
           <Button>Reviews</Button>
           <FilmDetailsComp filmData={movieData} />
           <FilmCastCrewComp filmCredits={movieData.credits} />
+          {/* A modal that gets rendered conditionally for review writing purpose */}
           <ReviewModal
             title={movieData?.title || movieData?.name || "Loading..."}
             cardSrc={
@@ -204,6 +206,8 @@ function MovieDetail() {
             onClose={() => {
               setIsReviewOpen(false);
             }}
+            onReviewSubmit={handleReview}
+            onRatingSubmit={handleRating}
           />
         </div>
       )}

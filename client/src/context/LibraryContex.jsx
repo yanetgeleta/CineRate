@@ -6,6 +6,7 @@ const LibraryContext = createContext(null);
 export const LibraryProvider = ({ children }) => {
   const { user } = useAuth();
   const [reviewsObj, setReviewsObj] = useState(null);
+  const [userReviewsObj, setUserReviewsObj] = useState(null);
   const [userLibrary, setUserLibrary] = useState(null);
   const [userRatings, setUserRatings] = useState(null);
   const [userReviews, setUserReviews] = useState(null);

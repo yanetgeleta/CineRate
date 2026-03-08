@@ -4,12 +4,18 @@ import Rating from "@mui/material/Rating";
 import Modal from "./Modal";
 import Button from "./Button";
 
-function ReviewModal({ isOpen, onClose, title, cardSrc }) {
+function ReviewModal({
+  isOpen,
+  onClose,
+  title,
+  cardSrc,
+  onReviewSubmit,
+  onRatingSubmit,
+}) {
   const [review, setReview] = useState(null);
   const reviewOnChange = (e) => {
     setReview(e.target.value);
   };
-  const onSubmit = () => {};
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div>
@@ -20,7 +26,13 @@ function ReviewModal({ isOpen, onClose, title, cardSrc }) {
         <textarea aria-label="film-review" onChange={reviewOnChange}>
           {review}
         </textarea>
-        <Button onClick={onSubmit}>Submit</Button>
+        <Button
+          onClick={() => {
+            onReviewSubmit(review);
+          }}
+        >
+          Submit
+        </Button>
         <Rating name="film-rating" precision={0.5} />
       </div>
     </Modal>

@@ -30,5 +30,42 @@ const ReviewRating = {
     );
     return result.rows[0];
   },
+  // all the comments to a single film by user
+  userFilmReview: async (filmId, userId) => {
+    const result = await db.query(
+      `select * from reviews
+      where tmdb_id = $1 and user_id = $2`,
+      [filmId, userId],
+    );
+    return result.rows;
+  },
+  // gets all the reviews for a single film
+  filmReviewsData: async (filmId) => {
+    const result = await db.query(
+      `select id, review_text, created_at, user_id from reviews
+      where tmdb_id = $1`,
+      [filmId],
+    );
+    return result.rows;
+  },
+  // All the comments made by a user
+  userReviewsData: async (userId) => {
+    const result = await db.query(
+      `select * from reviews
+      where user_id = $1`,
+      [userId],
+    );
+    return result.rows;
+  },
+  // all the ratings made by a user
+  userRatingsData: async (userId) => {
+    const result = await db.query(
+      `select film_type, rating, tmdb_id from ratings
+      where user_id = $1`,
+      [userId],
+    );
+    const ratingsArray = result.rows;
+    return ratingsArray;
+  },
 };
 export default ReviewRating;

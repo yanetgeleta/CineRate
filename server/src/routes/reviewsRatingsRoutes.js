@@ -2,6 +2,7 @@ import express from "express";
 import { ensureAuthenticated } from "../middleware/authMiddleware.js";
 import {
   addReviews,
+  getFilmReviewByUser,
   updateRating,
   updateReview,
 } from "../services/reviewsRatingServices.js";
@@ -46,6 +47,15 @@ router.get("/film/reviews", ensureAuthenticated, async (req, res) => {
   } catch (err) {
     console.log(err.message);
     throw new Error("Error calling film reviews at route", err.message);
+  }
+});
+// route to user film reviews (all comments by user to a film)
+router.get("/user/film/reviews", ensureAuthenticated, async (req, res) => {
+  try {
+    const userFilmReviews = await getFilmReviewByUser(req);
+    res.json(userFilmReviews);
+  } catch (err) {
+    throw new Error("Error calling film reviews at home");
   }
 });
 export default router;

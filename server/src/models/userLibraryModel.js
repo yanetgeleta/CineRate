@@ -23,23 +23,7 @@ const Library = {
     );
     return result.rows[0];
   },
-  userRatingsData: async (userId) => {
-    const result = await db.query(
-      `select film_type, rating, tmdb_id from ratings
-      where user_id = $1`,
-      [userId],
-    );
-    const ratingsArray = result.rows;
-    return ratingsArray;
-  },
-  userReviewsData: async (userId) => {
-    const result = await db.query(
-      `select * from reviews
-      where user_id = $1`,
-      [userId],
-    );
-    return result.rows;
-  },
+  // status and favorites of movies and shows for a user
   userLibraryData: async (userId) => {
     const result = await db.query(
       `select status, is_favorited, tmdb_id from user_library
@@ -48,15 +32,6 @@ const Library = {
     );
     const libraryArray = result.rows;
     return libraryArray;
-  },
-  // get all the reviews for a single film
-  filmReviewsData: async (filmId) => {
-    const result = await db.query(
-      `select * from reviews
-      where tmdb_id = $1`,
-      [filmId],
-    );
-    return result.rows;
   },
 };
 
