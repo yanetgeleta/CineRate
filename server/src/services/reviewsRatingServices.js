@@ -53,7 +53,7 @@ export const updateRating = async (req, res) => {
 // get all the comments made to a single movie by user
 export const getFilmReviewByUser = async (req) => {
   try {
-    const { filmId } = req.body;
+    const { filmId } = req.query;
     const userRow = req.user.row;
     const userId = userRow.replace("(", "").split(",")[0];
     const reviews = await ReviewRating.userFilmReview(filmId, userId);

@@ -6,7 +6,7 @@ const LibraryContext = createContext(null);
 export const LibraryProvider = ({ children }) => {
   const { user } = useAuth();
   const [reviewsObj, setReviewsObj] = useState(null);
-  const [userReviewsObj, setUserReviewsObj] = useState(null);
+  const [userFilmReviews, setUserFilmReviews] = useState(null);
   const [userLibrary, setUserLibrary] = useState(null);
   const [userRatings, setUserRatings] = useState(null);
   const [userReviews, setUserReviews] = useState(null);
@@ -95,6 +95,18 @@ export const LibraryProvider = ({ children }) => {
       throw new Error("Error trying to get film reviews from Library context");
     }
   };
+  // gets user review for a single film
+  const getUserFilmReviews = async (filmId) => {
+    try {
+      const response = await fetch(
+        `/api/reviews/user/film/reviews?filmId=${filmId}`,
+      );
+      const userFilmReviewsObj = await response.json();
+      setUserFilmReviews(userFilmReviewsObj);
+    } catch (err) {
+      throw new Error("Couldnt fetch user reviews for film", err.message);
+    }
+  };
   const statusUpdateCall = async (filmId, mediaType, updatedStatus) => {
     const updates =
       typeof updatedStatus === "boolean"
@@ -131,6 +143,7 @@ export const LibraryProvider = ({ children }) => {
         getFilmReviews,
         getFilmStatus,
         statusUpdateCall,
+        getUserFilmReviews,
         loading,
       }}
     >
