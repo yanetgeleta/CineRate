@@ -3,7 +3,7 @@ import Library from "../models/userLibraryModel.js";
 
 // we need: filmId, filmType, rating(if), review(if)
 // to add review to the database
-export const addReviews = async (req, res) => {
+export const addReviews = async (req) => {
   try {
     const { filmId, filmType, review } = req.body;
     const userRow = req.user.row;
@@ -24,18 +24,24 @@ export const addReviews = async (req, res) => {
   }
 };
 // to update review that was existing on the database
-export const updateReview = async (req, res) => {
+export const updateReview = async (req) => {
   try {
-    const { reviewId, newReview } = req.body;
-    const reviewRow = await ReviewRating.updateReview(reviewId, newReview);
+    const { reviewId } = req.params;
+    const { reviewText } = req.body;
+    const date = new Date().toISOString();
+    const reviewRow = await ReviewRating.updateReview(
+      reviewId,
+      reviewText,
+      date,
+    );
     return reviewRow;
   } catch (err) {
     console.log(err.message);
-    throw new Error("Couldn't update the database with new review");
+    throw new Error("Couldn't update the database with new review", err);
   }
 };
 // to make a new rating or update and exisiting one
-export const updateRating = async (req, res) => {
+export const updateRating = async (req) => {
   const { filmId, filmType, rating } = req.body;
   const userRow = req.user.row;
   const userId = userRow.replace("(", "").split(",")[0];
@@ -56,8 +62,8 @@ export const getFilmReviewByUser = async (req) => {
     const { filmId } = req.query;
     const userRow = req.user.row;
     const userId = userRow.replace("(", "").split(",")[0];
-    const reviews = await ReviewRating.userFilmReview(filmId, userId);
-    return reviews;
+    const reviewsArr = await ReviewRating.userFilmReview(filmId, userId);
+    return reviewsArr;
   } catch (err) {
     throw new Error("Error get user film reviews from the databse");
   }

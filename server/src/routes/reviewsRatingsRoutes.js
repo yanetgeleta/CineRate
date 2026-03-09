@@ -2,11 +2,11 @@ import express from "express";
 import { ensureAuthenticated } from "../middleware/authMiddleware.js";
 import {
   addReviews,
+  allFilmReviews,
   getFilmReviewByUser,
   updateRating,
   updateReview,
 } from "../services/reviewsRatingServices.js";
-import { allFilmReviews } from "../services/libraryServices.js";
 
 const router = express.Router();
 
@@ -19,15 +19,21 @@ router.post("/add/review", ensureAuthenticated, async (req, res) => {
     throw new Error("Error at route trying to add a review for user");
   }
 });
-router.post("/update/review", ensureAuthenticated, async (req, res) => {
-  try {
-    const userReview = await updateReview(req);
-    res.json(userReview);
-  } catch (err) {
-    console.error(err.message);
-    throw new Error("Error at route trying to update review for user");
-  }
-});
+// updates review text of specific film
+router.patch(
+  "/update/review/:reviewId",
+  ensureAuthenticated,
+  async (req, res) => {
+    try {
+      const userReview = await updateReview(req);
+      res.json(userReview);
+    } catch (err) {
+      console.error(err.message);
+      throw new Error("Error at route trying to update review for user");
+    }
+  },
+);
+// updates rating of specific film
 router.post("/update/rating", ensureAuthenticated, async (req, res) => {
   try {
     const userRating = await updateRating(req);

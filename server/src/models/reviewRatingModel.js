@@ -21,12 +21,13 @@ const ReviewRating = {
     );
     return result.rows[0];
   },
-  updateReview: async (reviewId, newReview) => {
+  // updates an existing review row
+  updateReview: async (reviewId, newReview, dateTime) => {
     const result = await db.query(
       `update reviews
-      set review_text = $1
-      where id = $2 returning *`,
-      [newReview, reviewId],
+      set review_text = $1, created_at = $2
+      where id = $3 returning *`,
+      [newReview, dateTime, reviewId],
     );
     return result.rows[0];
   },

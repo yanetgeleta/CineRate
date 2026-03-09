@@ -27,11 +27,14 @@ function MovieDetail() {
     getFilmRating,
     getFilmReviews,
     statusUpdateCall,
+    getUserFilmReviews,
+    updateReviewCall,
     loading,
   } = useLibrary();
   const filmStatus = getFilmStatus(movieId);
   const filmRating = getFilmRating(movieId);
   const filmReviews = getFilmReviews(movieId);
+  const userFilmReviews = getUserFilmReviews(movieId);
 
   const [status, setStatus] = useState(filmStatus.status);
   const [isFavorited, setIsFavorited] = useState(filmStatus.is_favorited);
@@ -44,11 +47,6 @@ function MovieDetail() {
 
   // First get the reviews that are mine and put them up top so i can edit them or delete them
   // Second get the other people's reviews just for views
-  // const [myReviews, setMyReviews] = useState(
-  //   filmReviews.filter((review) => {
-  //     return review.user_id === user.id;
-  //   }),
-  // );
   const [reviews, setReviews] = useState(filmReviews);
   // If a user exists we update these
   const [myReviews, setMyReviews] = useState(null);
@@ -59,6 +57,14 @@ function MovieDetail() {
   const basePosterPath = "https://image.tmdb.org/t/p/";
   const heroBannerWidth = "w1280";
   const smallBannerWidth = "w300";
+
+  if (user) {
+    setMyReviews(userFilmReviews);
+    const notMine = filmReviews.filter((review) => {
+      return review.user_id !== user.id;
+    });
+    setOtherReviews(notMine);
+  }
 
   const handleStatusFavorite = (action) => {
     if (!user) {
@@ -71,13 +77,17 @@ function MovieDetail() {
       setStatus(action);
     }
     statusUpdateCall(movieId, "movie", action);
+    setMyReviews();
   };
   const handleRating = () => {};
-  const handleReview = (review) => {
+  const handleReview = (review, reviewId) => {
     if (!user) {
       navigate("/loginsignup");
       return;
     }
+    updateReviewCall(movieId, review, reviewId, "movie");
+    const userReviews = getUserFilmReviews();
+    setMyReviews(userReviews);
   };
 
   useEffect(() => {

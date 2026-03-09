@@ -1,6 +1,6 @@
 import express from "express";
-import { allLibrary, updateUserLibary } from "../services/libraryServices.js";
 import { ensureAuthenticated } from "../middleware/authMiddleware.js";
+import { allLibrary, updateUserLibary } from "../services/libraryServices.js";
 
 const router = express.Router();
 
@@ -13,6 +13,7 @@ router.post("/update/film/status", ensureAuthenticated, async (req, res) => {
     throw new Error("Error at the library route trying to call service");
   }
 });
+// get all the ratings, reviews and status updates made by the user
 router.get("/all", ensureAuthenticated, async (req, res) => {
   try {
     const libraryRes = await allLibrary(req);

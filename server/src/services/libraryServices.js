@@ -1,3 +1,4 @@
+import ReviewRating from "../models/reviewRatingModel.js";
 import Library from "../models/userLibraryModel.js";
 
 // env.config({ path: path.resolve(process.cwd(), ".env") });
@@ -39,9 +40,9 @@ export const allLibrary = async (req) => {
   const userRow = req.user.row;
   const userId = userRow.replace("(", "").split(",")[0];
   try {
-    const reviews = await Library.userReviewsData(userId);
+    const reviews = await ReviewRating.userReviewsData(userId);
 
-    const ratingsArr = await Library.userRatingsData(userId);
+    const ratingsArr = await ReviewRating.userRatingsData(userId);
     const ratings = ratingsArr.reduce((acc, current) => {
       acc[current.tmdb_id] = current;
       return acc;
@@ -60,20 +61,6 @@ export const allLibrary = async (req) => {
     console.log(err.message);
     throw new Error({
       message: "Error at all Libraray service fetching user data",
-    });
-  }
-};
-// gets all the comment made to a single film
-export const allFilmReviews = async (req) => {
-  try {
-    const filmId = req.query.filmId;
-    const filmReviewsData = await Library.filmReviewsData(filmId);
-    return filmReviewsData;
-  } catch (err) {
-    console.log(err.message);
-    throw new Error({
-      message:
-        "Error at all films reviews service fetching reviews data from model ",
     });
   }
 };
