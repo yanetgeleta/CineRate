@@ -22,7 +22,6 @@ export const LibraryProvider = ({ children }) => {
         setUserRatings({});
         setUserReviews({});
         setUserStatus({});
-        setUserFilmReviews([]);
         setLoading(false);
         return;
       }
@@ -83,32 +82,7 @@ export const LibraryProvider = ({ children }) => {
       }
     );
   };
-  // Gets all the comments for the single movie/tv
-  const getFilmReviews = async (filmId) => {
-    try {
-      const response = await fetch(
-        `/api/reviews/film/reviews?filmId=${filmId}`,
-      );
-
-      const resultData = await response.json();
-      setFilmReviewsObj(resultData);
-      return resultData;
-    } catch (err) {
-      throw new Error("Error trying to get film reviews from Library context");
-    }
-  };
-  // gets user review for a single film
-  const getUserFilmReviews = async (filmId) => {
-    try {
-      const response = await fetch(
-        `/api/reviews/user/film/reviews?filmId=${filmId}`,
-      );
-      const userFilmReviews = await response.json();
-      setUserFilmReviews(userFilmReviews);
-    } catch (err) {
-      throw new Error("Couldnt fetch user reviews for film", err.message);
-    }
-  };
+  // updates the local variables first and then sends to the backend
   const statusUpdateCall = async (filmId, mediaType, updatedStatus) => {
     const updates =
       typeof updatedStatus === "boolean"
@@ -143,9 +117,9 @@ export const LibraryProvider = ({ children }) => {
     const reviewIdSet = new Set(userFilmReviews.map((r) => r.id));
     const prevUserReviews = userFilmReviews;
 
-    if (reviewIdSet.has(reviewId)) {
+    if (reviewId && reviewIdSet.has(reviewId)) {
       setUserFilmReviews((prevReviews) => {
-        prevReviews.map((review) => {
+        return prevReviews.map((review) => {
           review.id === reviewId
             ? { ...review, review_text: reviewText }
             : review;
@@ -175,7 +149,7 @@ export const LibraryProvider = ({ children }) => {
         setUserFilmReviews(prevUserReviews);
         throw new Error("Error at context trying to update review for film");
       }
-    } else {
+    } else if (!reviewId) {
       const newReview = {
         id: null,
         tmdb_id: filmId,
@@ -184,9 +158,7 @@ export const LibraryProvider = ({ children }) => {
         created_at: new Date().toISOString(),
         user_id: user.id,
       };
-      setUserFilmReviews((prevReviews) => {
-        [...prevReviews, newReview];
-      });
+      setUserFilmReviews((prevReviews) => [...prevReviews, newReview]);
       try {
         const body = {
           filmId: filmId,
@@ -214,10 +186,8 @@ export const LibraryProvider = ({ children }) => {
     <LibraryContext.Provider
       value={{
         getFilmRating,
-        getFilmReviews,
         getFilmStatus,
         statusUpdateCall,
-        getUserFilmReviews,
         updateReviewCall,
         loading,
       }}

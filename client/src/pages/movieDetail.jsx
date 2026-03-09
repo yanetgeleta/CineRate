@@ -25,16 +25,12 @@ function MovieDetail() {
   const {
     getFilmStatus,
     getFilmRating,
-    getFilmReviews,
     statusUpdateCall,
-    getUserFilmReviews,
     updateReviewCall,
     loading,
   } = useLibrary();
   const filmStatus = getFilmStatus(movieId);
   const filmRating = getFilmRating(movieId);
-  const filmReviews = getFilmReviews(movieId);
-  const userFilmReviews = getUserFilmReviews(movieId);
 
   const [status, setStatus] = useState(filmStatus.status);
   const [isFavorited, setIsFavorited] = useState(filmStatus.is_favorited);
@@ -47,7 +43,7 @@ function MovieDetail() {
 
   // First get the reviews that are mine and put them up top so i can edit them or delete them
   // Second get the other people's reviews just for views
-  const [reviews, setReviews] = useState(filmReviews);
+  const [reviews, setReviews] = useState([]);
   // If a user exists we update these
   const [myReviews, setMyReviews] = useState(null);
   const [otherReviews, setOtherReviews] = useState(null);
@@ -58,13 +54,29 @@ function MovieDetail() {
   const heroBannerWidth = "w1280";
   const smallBannerWidth = "w300";
 
-  if (user) {
-    setMyReviews(userFilmReviews);
-    const notMine = filmReviews.filter((review) => {
-      return review.user_id !== user.id;
-    });
-    setOtherReviews(notMine);
-  }
+  useEffect(() => {
+    // Gets all the comments for the single movie
+    async function fetchFilmReviews() {
+      try {
+        const response = await fetch(
+          `/api/reviews/film/reviews?filmId=${movieId}`,
+        );
+        const resultData = await response.json();
+        setReviews(resultData);
+        setMyReviews(
+          user ? resultData.filter((r) => r.user_id === user.id) : [],
+        );
+        setOtherReviews(
+          user ? resultData.filter((r) => r.user_id !== user.id) : resultData,
+        );
+      } catch (err) {
+        throw new Error(
+          "Error trying to get film reviews from Library context",
+        );
+      }
+    }
+    fetchFilmReviews();
+  }, [movieId]);
 
   const handleStatusFavorite = (action) => {
     if (!user) {

@@ -23,12 +23,15 @@ function ReviewModal({
         <p>Your review for this film</p>
         <FilmCard src={cardSrc} />
         <h3>Your Review</h3>
-        <textarea aria-label="film-review" onChange={reviewOnChange}>
-          {review}
-        </textarea>
+        <textarea
+          aria-label="film-review"
+          onChange={reviewOnChange}
+          value={review}
+        />
         <Button
           onClick={() => {
-            onReviewSubmit(review);
+            onClose();
+            onReviewSubmit(review, null);
           }}
         >
           Submit
