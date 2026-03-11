@@ -18,6 +18,8 @@ import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useLibrary } from "../context/LibraryContex";
+import Rating from "@mui/material/Rating";
+import FilmReviewComp from "../components/FilmReviewComp";
 
 // This is the page that shows details of a specific movie when clicked on
 function MovieDetail() {
@@ -27,8 +29,8 @@ function MovieDetail() {
   const filmStatus = getFilmStatus(movieId);
   const filmRating = getFilmRating(movieId);
 
-  const [status, setStatus] = useState(filmStatus.status);
-  const [isFavorited, setIsFavorited] = useState(filmStatus.is_favorited);
+  // const [status, setStatus] = useState(filmStatus.status);
+  // const [isFavorited, setIsFavorited] = useState(filmStatus.is_favorited);
 
   const { user } = useAuth();
   const [movieData, setMovieData] = useState(null);
@@ -59,7 +61,6 @@ function MovieDetail() {
       try {
         const response = await fetch(
           `/api/reviews/film/reviews?filmId=${movieId}`,
-          { credentials: "include" },
         );
         if (!response.ok) {
           setReviews([]);
@@ -68,10 +69,10 @@ function MovieDetail() {
         const resultData = await response.json();
         setReviews(resultData);
         setMyReviews(
-          user ? resultData.filter((r) => r.user_id === user.id) : [],
+          user ? resultData.filter((r) => r.user_id === user.id) : null,
         );
         setOtherReviews(
-          user ? resultData.filter((r) => r.user_id !== user.id) : resultData,
+          user ? resultData.filter((r) => r.user_id != user.id) : null,
         );
       } catch (err) {
         setReviews([]);
@@ -110,34 +111,24 @@ function MovieDetail() {
     };
     fetchMovieData();
   }, [movieId]);
-  // add new review to the database and add it to the local state
-  useEffect(() => {
-    const makeNewReview = async () => {
-      try {
-        const body = { review: newReview, filmId: movieId, filmType: "movie" };
-        const addReviewsRes = await fetch(`/api/reviews/add/review`, {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        });
-        if (!addReviewsRes.ok) {
-          throw new Error("Error adding review for a movie");
-        }
-        const responseObj = await addReviewsRes.json();
-        setMyReviews((prev) => [...prev, responseObj]);
-        setReviews((prev) => [...prev, responseObj]);
-      } catch (err) {
-        throw new Error("Error adding review to the backend for a movie");
-      }
-    };
-    makeNewReview();
-  }, [movieId, newReviewTrigger]);
-  // update an exisitng one
-  useEffect(() => {
-    const updateReviews = async () => {
-      try {
-        const body = { reviewText: newReview };
+  // handles film status and favorite interactions
+  const handleStatusFavorite = (action) => {
+    if (!user) {
+      navigate("/loginsignup");
+      return;
+    }
+    statusUpdateCall(movieId, "movie", action);
+  };
+  const handleRating = () => {};
+  // handles: updating review, adding a new review
+  const handleReview = async (review, reviewId) => {
+    if (!user) {
+      navigate("/loginsignup");
+      return;
+    }
+    try {
+      if (reviewId) {
+        const body = { reviewText: review };
         const updateReviewRes = await fetch(
           `/api/reviews/update/review/${reviewId}`,
           {
@@ -153,37 +144,24 @@ function MovieDetail() {
         const responseObj = await updateReviewRes.json();
         setMyReviews((prev) => [...prev, responseObj]);
         setReviews((prev) => [...prev, responseObj]);
-      } catch (err) {
-        throw new Error("Error editing a review at the backend for a movie");
+      } else {
+        const body = { review: review, filmId: movieId, filmType: "movie" };
+        const addReviewsRes = await fetch(`/api/reviews/add/review`, {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        if (!addReviewsRes.ok) {
+          throw new Error("Error adding a new review for a movie");
+        }
+        const responseObj = await addReviewsRes.json();
+        setMyReviews((prev) => [...prev, responseObj]);
+        setReviews((prev) => [...prev, responseObj]);
       }
-    };
-    updateReviews();
-  }, [movieId, updateReviewTrigger]);
-
-  const handleStatusFavorite = (action) => {
-    if (!user) {
-      navigate("/loginsignup");
-      return;
+    } catch (err) {
+      throw new Error("Failed to add or update review for movie");
     }
-    if (typeof action === "boolean") {
-      setIsFavorited(action);
-    } else {
-      setStatus(action);
-    }
-    statusUpdateCall(movieId, "movie", action);
-    setMyReviews();
-  };
-  const handleRating = () => {};
-  const handleReview = async (review, reviewId) => {
-    if (!user) {
-      navigate("/loginsignup");
-      return;
-    }
-    // handle the new vs old review in here
-    setNewReview(review);
-    reviewId
-      ? setUpdateReviewTrigger((prev) => !prev)
-      : setNewReviewTrigger((prev) => !prev);
   };
 
   return (
@@ -214,7 +192,7 @@ function MovieDetail() {
             <Button key={genre.id}>{genre.name}</Button>
           ))}
           <IconButton>
-            {status === "watchlist" ? (
+            {filmStatus.status === "watchlist" ? (
               <BookmarkAddIcon
                 onClick={() => {
                   handleStatusFavorite("dropped");
@@ -229,7 +207,7 @@ function MovieDetail() {
             )}
           </IconButton>
           <IconButton>
-            {status === "watched" ? (
+            {filmStatus.status === "watched" ? (
               <VisibilityIcon
                 onClick={() => {
                   handleStatusFavorite("dropped");
@@ -244,7 +222,7 @@ function MovieDetail() {
             )}
           </IconButton>
           <IconButton>
-            {isFavorited ? (
+            {filmStatus.is_favorited ? (
               <FavoriteIcon
                 onClick={() => {
                   handleStatusFavorite(false);
@@ -258,9 +236,7 @@ function MovieDetail() {
               />
             )}
           </IconButton>
-          <IconButton>
-            <StarIcon /> Rate
-          </IconButton>
+          <Rating name="film-rating" precision={0.5} />
           <IconButton
             onClick={() => {
               setIsReviewOpen(true);
@@ -273,6 +249,11 @@ function MovieDetail() {
           <Button>Reviews</Button>
           {/* <FilmDetailsComp filmData={movieData} /> */}
           {/* <FilmCastCrewComp filmCredits={movieData.credits} /> */}
+          <FilmReviewComp
+            reviews={reviews}
+            otherReviews={otherReviews}
+            myReviews={myReviews}
+          />
           {/* A modal that gets rendered conditionally for review writing purpose */}
           <ReviewModal
             title={movieData?.title || movieData?.name || "Loading..."}

@@ -87,9 +87,9 @@ export const LibraryProvider = ({ children }) => {
         ? { is_favorited: updatedStatus }
         : { status: updatedStatus };
     const prevUserStatus = { userStatus };
-    setUserStatus({
-      ...userStatus,
-      [filmId]: { ...userStatus.filmId, ...updates },
+    setUserStatus((prev) => {
+      const prevData = prev[filmId] || {};
+      return { ...prev, [filmId]: { prevData, ...updates } };
     });
     const body = {
       filmId: filmId,
@@ -105,9 +105,13 @@ export const LibraryProvider = ({ children }) => {
         headers: { "Content-Type": "application/json" },
       });
       if (!response.ok) throw new Error("Failed to update the status database");
+      const responseObj = await response.json();
+      setUserStatus((prev) => {
+        return { ...prev, [filmId]: responseObj };
+      });
     } catch (err) {
       console.error("Library context error trying to update status table");
-      setUserLibrary(prevUserStatus);
+      setUserStatus(prevUserStatus);
     }
   };
   return (
