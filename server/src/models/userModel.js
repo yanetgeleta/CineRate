@@ -54,10 +54,10 @@ const User = {
   },
   byId: async (id) => {
     const result = await db.query(
-      `select (id, email, auth_provider, google_id, display_name, profile_pic_url, created_at, username) from users where id = $1`,
+      `select id, email, auth_provider, google_id, display_name, profile_pic_url, created_at, username from users where id = $1`,
       [id],
     );
-    if (!result.rows.length) {
+    if (result.rows.length === 0) {
       return null;
     }
     return result.rows[0];

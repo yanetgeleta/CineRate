@@ -5,8 +5,7 @@ import Library from "../models/userLibraryModel.js";
 
 export const updateUserLibary = async (req, res) => {
   const body = req.body;
-  const userRow = req.user.row;
-  const userId = userRow.replace("(", "").split(",")[0];
+  const userId = req.user.id;
   try {
     // so it works with postman (postman sends true as "true" which are strings)
     if (body.filmStatus === "true") body.filmStatus = true;
@@ -37,8 +36,7 @@ export const updateUserLibary = async (req, res) => {
   }
 };
 export const allLibrary = async (req) => {
-  const userRow = req.user.row;
-  const userId = userRow.replace("(", "").split(",")[0];
+  const userId = req.user.id;
   try {
     const reviews = await ReviewRating.userReviewsData(userId);
 

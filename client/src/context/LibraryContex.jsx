@@ -82,15 +82,7 @@ export const LibraryProvider = ({ children }) => {
   };
   // updates the local variables first and then sends to the backend
   const statusUpdateCall = async (filmId, mediaType, updatedStatus) => {
-    const updates =
-      typeof updatedStatus === "boolean"
-        ? { is_favorited: updatedStatus }
-        : { status: updatedStatus };
-    const prevUserStatus = { userStatus };
-    setUserStatus((prev) => {
-      const prevData = prev[filmId] || {};
-      return { ...prev, [filmId]: { prevData, ...updates } };
-    });
+    //  No need for local fall backs, the response will come back in time (trust)
     const body = {
       filmId: filmId,
       mediaType: mediaType,

@@ -6,8 +6,7 @@ import Library from "../models/userLibraryModel.js";
 export const addReviews = async (req) => {
   try {
     const { filmId, filmType, review } = req.body;
-    const userRow = req.user.row;
-    const userId = userRow.replace("(", "").split(",")[0];
+    const userId = req.user.id;
     const reviewRow = await ReviewRating.addReview(
       userId,
       filmId,
@@ -43,8 +42,7 @@ export const updateReview = async (req) => {
 // to make a new rating or update and exisiting one
 export const updateRating = async (req) => {
   const { filmId, filmType, rating } = req.body;
-  const userRow = req.user.row;
-  const userId = userRow.replace("(", "").split(",")[0];
+  const userId = req.user.id;
   const ratingRow = await ReviewRating.addUpdateRating(
     userId,
     filmId,
@@ -60,8 +58,7 @@ export const updateRating = async (req) => {
 export const getFilmReviewByUser = async (req) => {
   try {
     const { filmId } = req.query;
-    const userRow = req.user.row;
-    const userId = userRow.replace("(", "").split(",")[0];
+    const userId = req.user.id;
     const reviewsArr = await ReviewRating.userFilmReview(filmId, userId);
     return reviewsArr;
   } catch (err) {

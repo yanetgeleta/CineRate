@@ -41,14 +41,9 @@ function MovieDetail() {
   // First get the reviews that are mine and put them up top so i can edit them or delete them
   // Second get the other people's reviews just for views
   const [reviews, setReviews] = useState([]);
-  // If a user exists we update these
-  const [myReviews, setMyReviews] = useState(null);
-  const [otherReviews, setOtherReviews] = useState(null);
   const [rating, setRating] = useState(filmRating.rating);
   const [refreshTrigger, setRefreshTrigger] = useState(false);
   const [newReview, setNewReview] = useState("");
-  const [newReviewTrigger, setNewReviewTrigger] = useState(false);
-  const [updateReviewTrigger, setUpdateReviewTrigger] = useState(false);
   const navigate = useNavigate();
 
   const basePosterPath = "https://image.tmdb.org/t/p/";
@@ -68,12 +63,6 @@ function MovieDetail() {
         }
         const resultData = await response.json();
         setReviews(resultData);
-        setMyReviews(
-          user ? resultData.filter((r) => r.user_id === user.id) : null,
-        );
-        setOtherReviews(
-          user ? resultData.filter((r) => r.user_id != user.id) : null,
-        );
       } catch (err) {
         setReviews([]);
         throw new Error(
@@ -163,6 +152,13 @@ function MovieDetail() {
       throw new Error("Failed to add or update review for movie");
     }
   };
+
+  const myReviews = user
+    ? reviews.filter((r) => String(r.user_id) === String(user.id))
+    : null;
+  const otherReviews = user
+    ? reviews.filter((r) => String(r.user_id) !== String(user.id))
+    : null;
 
   return (
     <div>
