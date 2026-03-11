@@ -12,7 +12,7 @@ function ReviewModal({
   onReviewSubmit,
   onRatingSubmit,
 }) {
-  const [review, setReview] = useState(null);
+  const [review, setReview] = useState("");
   const reviewOnChange = (e) => {
     setReview(e.target.value);
   };
@@ -30,8 +30,8 @@ function ReviewModal({
         />
         <Button
           onClick={() => {
-            onClose();
             onReviewSubmit(review, null);
+            onClose();
           }}
         >
           Submit
