@@ -30,7 +30,7 @@ function ReviewModal({
         />
         <Button
           onClick={() => {
-            onReviewSubmit(review, null);
+            onReviewSubmit(review);
             onClose();
           }}
         >
