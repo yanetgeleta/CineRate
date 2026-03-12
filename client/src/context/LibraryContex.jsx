@@ -5,7 +5,6 @@ const LibraryContext = createContext(null);
 
 export const LibraryProvider = ({ children }) => {
   const { user } = useAuth();
-  const [userLibrary, setUserLibrary] = useState(null);
   const [userRatings, setUserRatings] = useState(null);
   const [userReviews, setUserReviews] = useState(null);
   const [userStatus, setUserStatus] = useState(null);
@@ -42,9 +41,6 @@ export const LibraryProvider = ({ children }) => {
     }
     fetchUserLibrary();
   }, [user]);
-  // We want the status update to be here so we can update the local and database at the same time while also having hte changes at reload and user changes
-  // Instead of one interation, get one for status update, one for rating, and another for reviews
-  // We also have a revies getter route at reviewRating route if need be
 
   // film rating, status values for a single movie for the current user
   // Used in pages where ratings of one movie for user is needed

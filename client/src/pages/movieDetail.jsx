@@ -108,7 +108,32 @@ function MovieDetail() {
     }
     statusUpdateCall(movieId, "movie", action);
   };
-  const handleRating = () => {};
+  // sends rating and updates the database
+  const handleRating = async (newRating) => {
+    if (!user) {
+      navigate("/loginsignup");
+      return;
+    }
+    if (!newRating || newRating === 0) {
+      return;
+    }
+    try {
+      const body = { filmId: movieId, filmType: "movie", rating: newRating };
+      const updateRatingRes = await fetch("/api/reviews/update/rating", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (!updateRatingRes.ok) {
+        throw new Error("Couldn't update rating for a movie");
+      }
+      const updatedRatingObj = await updateRatingRes.json();
+      setRating(updateRatingRes.rating);
+    } catch (err) {
+      throw new Error("Error updating user rating");
+    }
+  };
   // handles: updating review, adding a new review
   const handleReview = async (review, reviewId) => {
     if (!user) {
@@ -131,7 +156,6 @@ function MovieDetail() {
           throw new Error("Error editing review for a movie");
         }
         const responseObj = await updateReviewRes.json();
-        setMyReviews((prev) => [...prev, responseObj]);
         setReviews((prev) => [...prev, responseObj]);
       } else {
         const body = { review: review, filmId: movieId, filmType: "movie" };
@@ -145,7 +169,6 @@ function MovieDetail() {
           throw new Error("Error adding a new review for a movie");
         }
         const responseObj = await addReviewsRes.json();
-        setMyReviews((prev) => [...prev, responseObj]);
         setReviews((prev) => [...prev, responseObj]);
       }
     } catch (err) {
@@ -232,7 +255,7 @@ function MovieDetail() {
               />
             )}
           </IconButton>
-          <Rating name="film-rating" precision={0.5} />
+          <Rating name="film-rating" precision={0.5} value={rating} />
           <IconButton
             onClick={() => {
               setIsReviewOpen(true);
@@ -264,6 +287,7 @@ function MovieDetail() {
             }}
             onReviewSubmit={handleReview}
             onRatingSubmit={handleRating}
+            prevRating={rating}
           />
         </div>
       )}

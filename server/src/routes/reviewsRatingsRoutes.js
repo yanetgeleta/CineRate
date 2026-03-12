@@ -46,7 +46,7 @@ router.post("/update/rating", ensureAuthenticated, async (req, res) => {
   }
 });
 // route: all reviews for a single movie
-router.get("/film/reviews", ensureAuthenticated, async (req, res) => {
+router.get("/film/reviews", async (req, res) => {
   try {
     const filmReviews = await allFilmReviews(req);
     res.json(filmReviews);

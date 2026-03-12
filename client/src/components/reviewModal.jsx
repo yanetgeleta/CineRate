@@ -11,10 +11,15 @@ function ReviewModal({
   cardSrc,
   onReviewSubmit,
   onRatingSubmit,
+  prevRating,
 }) {
   const [review, setReview] = useState("");
+  const [rating, setRating] = useState(prevRating || 0);
   const reviewOnChange = (e) => {
     setReview(e.target.value);
+  };
+  const ratingOnChange = (e, value) => {
+    setRating(value);
   };
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -31,12 +36,20 @@ function ReviewModal({
         <Button
           onClick={() => {
             onReviewSubmit(review);
+            onRatingSubmit(rating);
             onClose();
           }}
         >
           Submit
         </Button>
-        <Rating name="film-rating" precision={0.5} />
+        <Rating
+          onChange={(event, newValue) => {
+            ratingOnChange(event, newValue);
+          }}
+          name="film-rating"
+          precision={0.5}
+          value={rating}
+        />
       </div>
     </Modal>
   );

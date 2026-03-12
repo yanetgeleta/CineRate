@@ -7,6 +7,28 @@ import CommentIcon from "@mui/icons-material/Comment";
 
 function FilmReviewComp({ myReviews, otherReviews, reviews }) {
   const { user } = useAuth();
+  if (!myReviews) {
+    return (
+      <div>
+        <h3>Reviews</h3>
+        {reviews.map((review) => {
+          return (
+            <div>
+              <img /> <h3>FName LName</h3>
+              <p>2 days ago</p>
+              <p>{review.review_text}</p>
+              <IconButton>
+                <ThumbUpIcon />
+              </IconButton>
+              <IconButton>
+                <CommentIcon />
+              </IconButton>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
   return (
     <div>
       {user && myReviews && (
@@ -16,12 +38,19 @@ function FilmReviewComp({ myReviews, otherReviews, reviews }) {
           <h3>My Reviews</h3>
           {myReviews.map((review) => {
             return (
-              <div>
-                <img /> <h3>FName LName</h3> <sub>YOU</sub>{" "}
+              <div
+                style={{
+                  border: "1px solid",
+                  width: "25vw",
+                  marginBottom: "2em",
+                }}
+                key={review.id}
+              >
+                <img /> <h3>{user.display_name}</h3> <sub>YOU</sub>{" "}
                 <IconButton>
                   <EditIcon />
                 </IconButton>
-                <p>2 days ago</p>
+                <p>{review.created_at}</p>
                 <p>{review.review_text}</p>
                 <IconButton>
                   <ThumbUpIcon />
@@ -53,14 +82,6 @@ function FilmReviewComp({ myReviews, otherReviews, reviews }) {
                 </IconButton>
               </div>
             );
-          })}
-        </div>
-      )}
-      {!myReviews && (
-        <div>
-          <h3>Reviews</h3>
-          {reviews.map((review) => {
-            return <p>{review.review_text}</p>;
           })}
         </div>
       )}
