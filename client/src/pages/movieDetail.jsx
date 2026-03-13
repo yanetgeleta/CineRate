@@ -20,6 +20,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useLibrary } from "../context/LibraryContex";
 import Rating from "@mui/material/Rating";
 import FilmReviewComp from "../components/FilmReviewComp";
+import EditReviewModal from "../components/EditReviewModal";
 
 // This is the page that shows details of a specific movie when clicked on
 function MovieDetail() {
@@ -37,6 +38,8 @@ function MovieDetail() {
   const [pageLoading, setPageLoading] = useState(true);
   const [movieGenres, setMovieGenres] = useState(null);
   const [isReviewOpen, setIsReviewOpen] = useState(false);
+  const [isEditReviewOpen, setIsEditReviewOpen] = useState(false);
+  const [editedReview, setEditedReview] = useState(null);
 
   // First get the reviews that are mine and put them up top so i can edit them or delete them
   // Second get the other people's reviews just for views
@@ -176,6 +179,10 @@ function MovieDetail() {
       throw new Error("Failed to add or update review for movie");
     }
   };
+  const openEditReview = (reviewObj) => {
+    setIsEditReviewOpen(true);
+    setEditedReview(reviewObj);
+  };
 
   const myReviews = user
     ? reviews.filter((r) => String(r.user_id) === String(user.id))
@@ -280,23 +287,38 @@ function MovieDetail() {
             reviews={reviews}
             otherReviews={otherReviews}
             myReviews={myReviews}
+            openEditReview={openEditReview}
           />
           {/* A modal that gets rendered conditionally for review writing purpose */}
-          <ReviewModal
-            title={movieData?.title || movieData?.name || "Loading..."}
-            cardSrc={
-              movieData
-                ? `${basePosterPath}${smallBannerWidth}${movieData.poster_path}`
-                : ""
-            }
-            isOpen={isReviewOpen}
-            onClose={() => {
-              setIsReviewOpen(false);
-            }}
-            onReviewSubmit={handleReview}
-            onRatingSubmit={handleRating}
-            prevRating={rating}
-          />
+          {isReviewOpen && (
+            <ReviewModal
+              title={movieData?.title || movieData?.name || "Loading..."}
+              cardSrc={
+                movieData
+                  ? `${basePosterPath}${smallBannerWidth}${movieData.poster_path}`
+                  : ""
+              }
+              isOpen={isReviewOpen}
+              onClose={() => {
+                setIsReviewOpen(false);
+              }}
+              onReviewSubmit={handleReview}
+              onRatingSubmit={handleRating}
+              prevRating={rating}
+            />
+          )}
+          {isEditReviewOpen && (
+            <EditReviewModal
+              isOpen={isEditReviewOpen}
+              onClose={() => {
+                setIsEditReviewOpen(false);
+              }}
+              onReviewSubmit={handleReview}
+              onRatingSubmit={handleRating}
+              prevRating={rating}
+              prevReview={editedReview}
+            />
+          )}
         </div>
       )}
     </div>

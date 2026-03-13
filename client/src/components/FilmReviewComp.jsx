@@ -6,8 +6,17 @@ import IconButton from "@mui/material/IconButton";
 import CommentIcon from "@mui/icons-material/Comment";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-function FilmReviewComp({ myReviews, otherReviews, reviews }) {
+function FilmReviewComp({
+  myReviews,
+  otherReviews,
+  reviews,
+  openEditReview,
+  handleReview,
+}) {
   const { user } = useAuth();
+  const editHandler = (review) => {
+    openEditReview(review);
+  };
   if (!myReviews) {
     return (
       <div>
@@ -48,7 +57,11 @@ function FilmReviewComp({ myReviews, otherReviews, reviews }) {
                 key={review.id}
               >
                 <img /> <h3>{user.display_name}</h3> <sub>YOU</sub>{" "}
-                <IconButton>
+                <IconButton
+                  onClick={() => {
+                    editHandler(review);
+                  }}
+                >
                   <EditIcon />
                 </IconButton>
                 <IconButton>
