@@ -35,6 +35,7 @@ function ReviewModal({
         />
         <Button
           onClick={() => {
+            setReview("");
             onReviewSubmit(review);
             onRatingSubmit(rating);
             onClose();

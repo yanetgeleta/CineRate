@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 function Navbar() {
-  const { user } = useAuth();
+  const { user, logout, login } = useAuth();
   return (
     <div>
       <Brand />
@@ -21,7 +21,13 @@ function Navbar() {
         <>
           <NotificationRing />
           <ProfilePic />
-          <Button>Log out</Button>
+          <Button
+            onClick={() => {
+              logout();
+            }}
+          >
+            Log out
+          </Button>
         </>
       )}
 

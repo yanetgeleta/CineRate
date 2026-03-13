@@ -13,16 +13,17 @@ import {
   FreeMode,
 } from "swiper/modules";
 import CarouselItem from "./CarouselItem";
+import { useAuth } from "../context/AuthContext";
 
 const Carousel = ({
   settings,
   items,
-  user,
   onTrailerButtonClick,
   bannerWidth,
   basePath,
   filmType,
 }) => {
+  const { user } = useAuth();
   if (!items || items.length === 0) return null;
   return (
     <Swiper

@@ -129,7 +129,7 @@ function MovieDetail() {
         throw new Error("Couldn't update rating for a movie");
       }
       const updatedRatingObj = await updateRatingRes.json();
-      setRating(updateRatingRes.rating);
+      setRating(updatedRatingObj.rating);
     } catch (err) {
       throw new Error("Error updating user rating");
     }
@@ -140,6 +140,7 @@ function MovieDetail() {
       navigate("/loginsignup");
       return;
     }
+    if (!review || review.trim() === "") return;
     try {
       if (reviewId) {
         const body = { reviewText: review };
@@ -255,7 +256,14 @@ function MovieDetail() {
               />
             )}
           </IconButton>
-          <Rating name="film-rating" precision={0.5} value={rating} />
+          <Rating
+            onChange={(event, newValue) => {
+              handleRating(newValue);
+            }}
+            name="film-rating"
+            precision={0.5}
+            value={rating}
+          />
           <IconButton
             onClick={() => {
               setIsReviewOpen(true);

@@ -65,7 +65,13 @@ function CarouselItem({ item, filmType, ...otherProps }) {
         </div>
       </Link>
       <IconButton>
-        {status === "watchlist" ? (
+        {!user ? (
+          <BookmarkAddOutlinedIcon
+            onClick={() => {
+              handleInteraction("watchlist");
+            }}
+          />
+        ) : status === "watchlist" ? (
           <BookmarkAddIcon
             onClick={() => {
               handleInteraction("dropped");
@@ -80,7 +86,13 @@ function CarouselItem({ item, filmType, ...otherProps }) {
         )}
       </IconButton>
       <IconButton>
-        {status === "watched" ? (
+        {!user ? (
+          <VisibilityOutlinedIcon
+            onClick={() => {
+              handleInteraction("watched");
+            }}
+          />
+        ) : status === "watched" ? (
           <VisibilityIcon
             onClick={() => {
               handleInteraction("dropped");
@@ -95,7 +107,13 @@ function CarouselItem({ item, filmType, ...otherProps }) {
         )}
       </IconButton>
       <IconButton>
-        {isFavorited ? (
+        {!user ? (
+          <FavoriteBorderOutlinedIcon
+            onClick={() => {
+              handleInteraction(true);
+            }}
+          />
+        ) : isFavorited ? (
           <FavoriteIcon
             onClick={() => {
               handleInteraction(false);

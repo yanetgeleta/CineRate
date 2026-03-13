@@ -167,7 +167,6 @@ function Home() {
             basePath={basePosterPath}
             items={trendingToday?.results}
             settings={heroBannerSettings}
-            user={user}
           />
           {trailerURL && isPlayerOpen && (
             // isnall and import the necessary tailwind dependencies to makes this classname desing work

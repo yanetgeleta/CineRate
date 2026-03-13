@@ -4,6 +4,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import IconButton from "@mui/material/IconButton";
 import CommentIcon from "@mui/icons-material/Comment";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function FilmReviewComp({ myReviews, otherReviews, reviews }) {
   const { user } = useAuth();
@@ -49,6 +50,9 @@ function FilmReviewComp({ myReviews, otherReviews, reviews }) {
                 <img /> <h3>{user.display_name}</h3> <sub>YOU</sub>{" "}
                 <IconButton>
                   <EditIcon />
+                </IconButton>
+                <IconButton>
+                  <DeleteIcon />
                 </IconButton>
                 <p>{review.created_at}</p>
                 <p>{review.review_text}</p>
