@@ -26,8 +26,16 @@ const ReviewRating = {
     const result = await db.query(
       `update reviews
       set review_text = $1, created_at = $2
-      where id = $3 returning *`,
+      where id = $3 returning id, review_text, created_at, user_id`,
       [newReview, dateTime, reviewId],
+    );
+    return result.rows[0];
+  },
+  deleteReview: async (reviewId) => {
+    const result = await db.query(
+      `delete from reviews
+      where id = $1 returning *`,
+      [reviewId],
     );
     return result.rows[0];
   },

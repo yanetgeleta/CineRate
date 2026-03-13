@@ -53,6 +53,10 @@ function MovieDetail() {
   const heroBannerWidth = "w1280";
   const smallBannerWidth = "w300";
 
+  // useEffect(() => {
+  //   setRating(filmRating.rating);
+  // }, [refreshTrigger]);
+
   // Gets all the comments for the single movie
   useEffect(() => {
     async function fetchFilmReviews() {
@@ -160,7 +164,8 @@ function MovieDetail() {
           throw new Error("Error editing review for a movie");
         }
         const responseObj = await updateReviewRes.json();
-        setReviews((prev) => [...prev, responseObj]);
+        // setReviews((prev) => [...prev, responseObj]);
+        setRefreshTrigger((prev) => !prev);
       } else {
         const body = { review: review, filmId: movieId, filmType: "movie" };
         const addReviewsRes = await fetch(`/api/reviews/add/review`, {
@@ -178,6 +183,20 @@ function MovieDetail() {
     } catch (err) {
       throw new Error("Failed to add or update review for movie");
     }
+  };
+  const handleDeleteReview = async (reviewId) => {
+    const deleteReviewRes = await fetch(
+      `/api/reviews/delete/review/${reviewId}`,
+      {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      },
+    );
+    if (!deleteReviewRes.ok) {
+      throw new Error("Error deleting a review");
+    }
+    setRefreshTrigger((prev) => !prev);
   };
   const openEditReview = (reviewObj) => {
     setIsEditReviewOpen(true);
@@ -288,6 +307,7 @@ function MovieDetail() {
             otherReviews={otherReviews}
             myReviews={myReviews}
             openEditReview={openEditReview}
+            onDelete={handleDeleteReview}
           />
           {/* A modal that gets rendered conditionally for review writing purpose */}
           {isReviewOpen && (

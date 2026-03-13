@@ -79,3 +79,11 @@ export const allFilmReviews = async (req) => {
     });
   }
 };
+export const deleteReview = async (req) => {
+  try {
+    const { reviewId } = req.params;
+    const deletedReview = await ReviewRating.deleteReview(reviewId);
+  } catch (err) {
+    throw new Error({ message: "Error deleting review from the database" });
+  }
+};

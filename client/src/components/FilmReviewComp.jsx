@@ -12,6 +12,7 @@ function FilmReviewComp({
   reviews,
   openEditReview,
   handleReview,
+  onDelete,
 }) {
   const { user } = useAuth();
   const editHandler = (review) => {
@@ -64,7 +65,11 @@ function FilmReviewComp({
                 >
                   <EditIcon />
                 </IconButton>
-                <IconButton>
+                <IconButton
+                  onClick={() => {
+                    onDelete(review.id);
+                  }}
+                >
                   <DeleteIcon />
                 </IconButton>
                 <p>{review.created_at}</p>

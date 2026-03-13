@@ -3,6 +3,7 @@ import { ensureAuthenticated } from "../middleware/authMiddleware.js";
 import {
   addReviews,
   allFilmReviews,
+  deleteReview,
   getFilmReviewByUser,
   updateRating,
   updateReview,
@@ -30,6 +31,19 @@ router.patch(
     } catch (err) {
       console.error(err.message);
       throw new Error("Error at route trying to update review for user");
+    }
+  },
+);
+// delete review with review id
+router.delete(
+  "/delete/review/:reviewId",
+  ensureAuthenticated,
+  async (req, res) => {
+    try {
+      const deletedReview = await deleteReview(req);
+      res.json(deleteReview);
+    } catch (err) {
+      throw new Error("Error at route trying to delete a review");
     }
   },
 );
