@@ -1,26 +1,26 @@
 import React from "react";
-import Brand from "../components/Brand";
-import NavLink from "../components/NavLink";
 import Button from "../components/Button";
 import ProfilePic from "../components/ProfilePic";
 import NotificationRing from "../components/NotificationRing";
 import Input from "../components/Input";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 function Navbar() {
   const { user, logout, login } = useAuth();
   return (
     <div>
-      <Brand />
-      <NavLink path="/movies" name="Movies" />
-      <NavLink path="/shows" name="TV Shows" />
-      <NavLink path="/genres" name="Genres" />
+      <NavLink to="/">CineRate</NavLink>
+      <NavLink to="/movies">Movies</NavLink>
+      <NavLink to="/shows">Shows</NavLink>
+      <NavLink to="/genres">Genres</NavLink>
       <Input />
       {user && (
         <>
           <NotificationRing />
-          <ProfilePic />
+          <NavLink to="/profile">
+            <ProfilePic />
+          </NavLink>
           <Button
             onClick={() => {
               logout();

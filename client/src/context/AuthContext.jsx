@@ -29,8 +29,8 @@ export const AuthProvider = ({ children }) => {
     checkUserLoggedIn();
   }, []);
 
-  const login = async (credentials) => {
-    const userData = { id: credentials.id, name: credentials.name }; //more inforarmation will be collected later on
+  const login = async (userData) => {
+    //more inforarmation will be collected later on
     setUser(userData);
   };
   const logout = async () => {
