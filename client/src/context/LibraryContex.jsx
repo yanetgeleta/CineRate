@@ -99,7 +99,30 @@ export const LibraryProvider = ({ children }) => {
       });
     } catch (err) {
       console.error("Library context error trying to update status table");
-      setUserStatus(prevUserStatus);
+      // setUserStatus(prevUserStatus);
+    }
+  };
+  const ratingUpdateCall = async (newRating, filmType, filmId) => {
+    try {
+      const body = { filmId: filmId, filmType: filmType, rating: newRating };
+      const updateRatingRes = await fetch("/api/reviews/update/rating", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (!updateRatingRes.ok) {
+        throw new Error("Couldn't update rating for a film at library context");
+      }
+      const updatedRatingObj = await updateRatingRes.json();
+      const newRatingObj = { [updatedRatingObj.tmdb_id]: updatedRatingObj };
+      setUserRatings((prev) => {
+        return { ...prev, ...newRatingObj };
+      });
+      // setRating(updatedRatingObj.rating);
+      // setRefreshTrigger((prev) => !prev);
+    } catch (err) {
+      throw new Error("Error updating user rating");
     }
   };
   return (
@@ -108,6 +131,7 @@ export const LibraryProvider = ({ children }) => {
         getFilmRating,
         getFilmStatus,
         statusUpdateCall,
+        ratingUpdateCall,
         loading,
       }}
     >

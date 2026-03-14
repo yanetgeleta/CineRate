@@ -64,69 +64,85 @@ function CarouselItem({ item, filmType, ...otherProps }) {
           )}
         </div>
       </Link>
-      <IconButton>
-        {!user ? (
-          <BookmarkAddOutlinedIcon
-            onClick={() => {
-              handleInteraction("watchlist");
-            }}
-          />
-        ) : status === "watchlist" ? (
-          <BookmarkAddIcon
-            onClick={() => {
-              handleInteraction("dropped");
-            }}
-          />
-        ) : (
-          <BookmarkAddOutlinedIcon
-            onClick={() => {
-              handleInteraction("watchlist");
-            }}
-          />
-        )}
-      </IconButton>
-      <IconButton>
-        {!user ? (
-          <VisibilityOutlinedIcon
-            onClick={() => {
-              handleInteraction("watched");
-            }}
-          />
-        ) : status === "watched" ? (
-          <VisibilityIcon
-            onClick={() => {
-              handleInteraction("dropped");
-            }}
-          />
-        ) : (
-          <VisibilityOutlinedIcon
-            onClick={() => {
-              handleInteraction("watched");
-            }}
-          />
-        )}
-      </IconButton>
-      <IconButton>
-        {!user ? (
-          <FavoriteBorderOutlinedIcon
-            onClick={() => {
-              handleInteraction(true);
-            }}
-          />
-        ) : isFavorited ? (
-          <FavoriteIcon
-            onClick={() => {
-              handleInteraction(false);
-            }}
-          />
-        ) : (
-          <FavoriteBorderOutlinedIcon
-            onClick={() => {
-              handleInteraction(true);
-            }}
-          />
-        )}
-      </IconButton>
+      {!user ? (
+        <IconButton
+          onClick={() => {
+            handleInteraction("watchlist");
+          }}
+        >
+          <BookmarkAddOutlinedIcon />
+        </IconButton>
+      ) : status === "watchlist" ? (
+        <IconButton
+          onClick={() => {
+            handleInteraction("dropped");
+          }}
+        >
+          <BookmarkAddIcon />
+        </IconButton>
+      ) : (
+        <IconButton
+          onClick={() => {
+            handleInteraction("watchlist");
+          }}
+        >
+          {" "}
+          <BookmarkAddOutlinedIcon />
+        </IconButton>
+      )}
+      {!user ? (
+        <IconButton
+          onClick={() => {
+            handleInteraction("watched");
+          }}
+        >
+          <VisibilityOutlinedIcon />
+        </IconButton>
+      ) : status === "watched" ? (
+        <IconButton
+          onClick={() => {
+            handleInteraction("dropped");
+          }}
+        >
+          {" "}
+          <VisibilityIcon />
+        </IconButton>
+      ) : (
+        <IconButton
+          onClick={() => {
+            handleInteraction("watched");
+          }}
+        >
+          {" "}
+          <VisibilityOutlinedIcon />
+        </IconButton>
+      )}
+      {!user ? (
+        <IconButton
+          onClick={() => {
+            handleInteraction(true);
+          }}
+        >
+          <FavoriteBorderOutlinedIcon />
+        </IconButton>
+      ) : isFavorited ? (
+        <IconButton
+          onClick={() => {
+            handleInteraction(false);
+          }}
+        >
+          {" "}
+          <FavoriteIcon />
+        </IconButton>
+      ) : (
+        <IconButton
+          onClick={() => {
+            handleInteraction(true);
+          }}
+        >
+          <FavoriteBorderOutlinedIcon />
+        </IconButton>
+      )}
     </div>
   );
 }

@@ -20,17 +20,17 @@ function FilmReviewComp({
   };
   if (!myReviews) {
     return (
-      <div
-        style={{
-          border: "1px solid",
-          width: "45vw",
-          marginBottom: "2em",
-        }}
-      >
+      <div>
         <h3>Reviews</h3>
         {reviews.map((review) => {
           return (
-            <div>
+            <div
+              style={{
+                border: "1px solid",
+                width: "45vw",
+                marginBottom: "2em",
+              }}
+            >
               <img src={review.profile_pic_url} />{" "}
               <h3>{review.display_name}</h3>
               <p>{review.created_at}</p>

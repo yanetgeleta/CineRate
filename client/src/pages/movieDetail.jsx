@@ -25,8 +25,13 @@ import EditReviewModal from "../components/EditReviewModal";
 // This is the page that shows details of a specific movie when clicked on
 function MovieDetail() {
   const { movieId } = useParams();
-  const { getFilmStatus, getFilmRating, statusUpdateCall, loading } =
-    useLibrary();
+  const {
+    getFilmStatus,
+    getFilmRating,
+    ratingUpdateCall,
+    statusUpdateCall,
+    loading,
+  } = useLibrary();
   const filmStatus = getFilmStatus(movieId);
   const filmRating = getFilmRating(movieId);
 
@@ -68,13 +73,15 @@ function MovieDetail() {
         setReviews(resultData);
       } catch (err) {
         setReviews([]);
-        throw new Error(
-          "Error trying to get film reviews from Library context",
-        );
+        throw new Error("Error trying to get film reviews at movie details");
       }
     }
     fetchFilmReviews();
   }, [movieId, refreshTrigger]);
+  // useEffect(() => {
+  //   setRating(filmRating.rating);
+  // }, [rating, filmRating.rating, refreshTrigger]);
+
   // fetches all the movie data from the backend
   useEffect(() => {
     const fetchMovieData = async () => {
@@ -111,7 +118,7 @@ function MovieDetail() {
     }
     statusUpdateCall(movieId, "movie", action);
   };
-  // sends rating and updates the database
+  // sends rating and updates to the database
   const handleRating = async (newRating) => {
     if (!user) {
       navigate("/loginsignup");
@@ -120,22 +127,7 @@ function MovieDetail() {
     if (!newRating || newRating === 0) {
       return;
     }
-    try {
-      const body = { filmId: movieId, filmType: "movie", rating: newRating };
-      const updateRatingRes = await fetch("/api/reviews/update/rating", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      if (!updateRatingRes.ok) {
-        throw new Error("Couldn't update rating for a movie");
-      }
-      const updatedRatingObj = await updateRatingRes.json();
-      setRating(updatedRatingObj.rating);
-    } catch (err) {
-      throw new Error("Error updating user rating");
-    }
+    ratingUpdateCall(newRating, "movie", movieId);
   };
   // handles: updating review, adding a new review
   const handleReview = async (review, reviewId) => {
@@ -233,58 +225,65 @@ function MovieDetail() {
           {movieGenres.map((genre) => (
             <Button key={genre.id}>{genre.name}</Button>
           ))}
-          <IconButton>
-            {filmStatus.status === "watchlist" ? (
-              <BookmarkAddIcon
-                onClick={() => {
-                  handleStatusFavorite("dropped");
-                }}
-              />
-            ) : (
-              <BookmarkAddOutlinedIcon
-                onClick={() => {
-                  handleStatusFavorite("watchlist");
-                }}
-              />
-            )}
-          </IconButton>
-          <IconButton>
-            {filmStatus.status === "watched" ? (
-              <VisibilityIcon
-                onClick={() => {
-                  handleStatusFavorite("dropped");
-                }}
-              />
-            ) : (
-              <VisibilityOutlinedIcon
-                onClick={() => {
-                  handleStatusFavorite("watched");
-                }}
-              />
-            )}
-          </IconButton>
-          <IconButton>
-            {filmStatus.is_favorited ? (
-              <FavoriteIcon
-                onClick={() => {
-                  handleStatusFavorite(false);
-                }}
-              />
-            ) : (
-              <FavoriteBorderOutlinedIcon
-                onClick={() => {
-                  handleStatusFavorite(true);
-                }}
-              />
-            )}
-          </IconButton>
+          {filmStatus.status === "watchlist" ? (
+            <IconButton
+              onClick={() => {
+                handleStatusFavorite("dropped");
+              }}
+            >
+              {" "}
+              <BookmarkAddIcon />
+            </IconButton>
+          ) : (
+            <IconButton
+              onClick={() => {
+                handleStatusFavorite("watchlist");
+              }}
+            >
+              <BookmarkAddOutlinedIcon />
+            </IconButton>
+          )}
+          {filmStatus.status === "watched" ? (
+            <IconButton
+              onClick={() => {
+                handleStatusFavorite("dropped");
+              }}
+            >
+              <VisibilityIcon />
+            </IconButton>
+          ) : (
+            <IconButton
+              onClick={() => {
+                handleStatusFavorite("watched");
+              }}
+            >
+              <VisibilityOutlinedIcon />
+            </IconButton>
+          )}
+          {filmStatus.is_favorited ? (
+            <IconButton
+              onClick={() => {
+                handleStatusFavorite(false);
+              }}
+            >
+              <FavoriteIcon />
+            </IconButton>
+          ) : (
+            <IconButton
+              onClick={() => {
+                handleStatusFavorite(true);
+              }}
+            >
+              <FavoriteBorderOutlinedIcon />
+            </IconButton>
+          )}
           <Rating
             onChange={(event, newValue) => {
               handleRating(newValue);
             }}
             name="film-rating"
             precision={0.5}
-            value={rating}
+            value={filmRating.rating}
           />
           <IconButton
             onClick={() => {
@@ -320,7 +319,7 @@ function MovieDetail() {
               }}
               onReviewSubmit={handleReview}
               onRatingSubmit={handleRating}
-              prevRating={rating}
+              prevRating={filmRating.rating}
             />
           )}
           {isEditReviewOpen && (
@@ -331,7 +330,7 @@ function MovieDetail() {
               }}
               onReviewSubmit={handleReview}
               onRatingSubmit={handleRating}
-              prevRating={rating}
+              prevRating={filmRating.rating}
               prevReview={editedReview}
             />
           )}

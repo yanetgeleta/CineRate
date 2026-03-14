@@ -8,7 +8,7 @@ const ReviewRating = {
        ON CONFLICT (user_id, tmdb_id) 
        DO UPDATE SET 
         rating = EXCLUDED.rating
-       RETURNING *`,
+       RETURNING film_type, rating, tmdb_id`,
       [userId, filmId, filmType, rating],
     );
     return result.rows[0];
