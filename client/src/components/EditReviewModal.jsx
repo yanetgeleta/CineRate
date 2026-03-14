@@ -51,6 +51,7 @@ function EditReviewModal({
           onClick={() => {
             onReviewSubmit(reviewText, prevReview.id);
             onRatingSubmit(rating);
+            onClose();
           }}
         >
           Save Changes

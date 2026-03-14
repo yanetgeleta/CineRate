@@ -46,16 +46,12 @@ function MovieDetail() {
   const [reviews, setReviews] = useState([]);
   const [rating, setRating] = useState(filmRating.rating);
   const [refreshTrigger, setRefreshTrigger] = useState(false);
-  const [newReview, setNewReview] = useState("");
+  // const [newReview, setNewReview] = useState("");
   const navigate = useNavigate();
 
   const basePosterPath = "https://image.tmdb.org/t/p/";
   const heroBannerWidth = "w1280";
   const smallBannerWidth = "w300";
-
-  // useEffect(() => {
-  //   setRating(filmRating.rating);
-  // }, [refreshTrigger]);
 
   // Gets all the comments for the single movie
   useEffect(() => {
@@ -66,7 +62,7 @@ function MovieDetail() {
         );
         if (!response.ok) {
           setReviews([]);
-          throw new Error("Error fetching film reviews at Movie Detai");
+          throw new Error("Error fetching film reviews at Movie Details");
         }
         const resultData = await response.json();
         setReviews(resultData);

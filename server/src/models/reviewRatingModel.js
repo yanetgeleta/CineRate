@@ -51,7 +51,9 @@ const ReviewRating = {
   // gets all the reviews for a single film
   filmReviewsData: async (filmId) => {
     const result = await db.query(
-      `select id, review_text, created_at, user_id from reviews
+      `select r.id, r.review_text, r.created_at, r.user_id, u.display_name, u.profile_pic_url, u.email, u.username
+      from reviews as r
+      join users as u on r.user_id = u.id
       where tmdb_id = $1`,
       [filmId],
     );

@@ -20,13 +20,20 @@ function FilmReviewComp({
   };
   if (!myReviews) {
     return (
-      <div>
+      <div
+        style={{
+          border: "1px solid",
+          width: "45vw",
+          marginBottom: "2em",
+        }}
+      >
         <h3>Reviews</h3>
         {reviews.map((review) => {
           return (
             <div>
-              <img /> <h3>FName LName</h3>
-              <p>2 days ago</p>
+              <img src={review.profile_pic_url} />{" "}
+              <h3>{review.display_name}</h3>
+              <p>{review.created_at}</p>
               <p>{review.review_text}</p>
               <IconButton>
                 <ThumbUpIcon />
@@ -52,7 +59,7 @@ function FilmReviewComp({
               <div
                 style={{
                   border: "1px solid",
-                  width: "25vw",
+                  width: "45vw",
                   marginBottom: "2em",
                 }}
                 key={review.id}
@@ -92,9 +99,16 @@ function FilmReviewComp({
           <h3>Other Reviews</h3>
           {otherReviews.map((review) => {
             return (
-              <div>
-                <img /> <h3>FName LName</h3>
-                <p>2 days ago</p>
+              <div
+                style={{
+                  border: "1px solid",
+                  width: "45vw",
+                  marginBottom: "2em",
+                }}
+              >
+                <img src={review.profile_pic_url} />{" "}
+                <h3>{review.display_name}</h3>
+                <p>{review.created_at}</p>
                 <p>{review.review_text}</p>
                 <IconButton>
                   <ThumbUpIcon />
