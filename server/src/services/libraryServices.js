@@ -17,6 +17,8 @@ export const updateUserLibary = async (req, res) => {
         body.filmId,
         body.mediaType,
         body.filmStatus,
+        body.posterPath,
+        body.title,
       );
       return userLibrary;
     } else {
@@ -25,6 +27,8 @@ export const updateUserLibary = async (req, res) => {
         body.filmId,
         body.mediaType,
         body.filmStatus,
+        body.posterPath,
+        body.title,
       );
       return userLibrary;
     }

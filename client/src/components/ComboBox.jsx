@@ -12,9 +12,6 @@ const ComboBox = (props) => {
         id={props.name}
         value={props.currentValue || ""}
       >
-        {/* <option value="" hidden>
-          Select {props.label}
-        </option> */}
         {props.options.map((option, index) => {
           return (
             <option hidden={option.hidden} key={index} value={option.query}>

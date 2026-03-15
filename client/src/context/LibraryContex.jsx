@@ -77,12 +77,20 @@ export const LibraryProvider = ({ children }) => {
     );
   };
   // updates the local variables first and then sends to the backend
-  const statusUpdateCall = async (filmId, mediaType, updatedStatus) => {
+  const statusUpdateCall = async (
+    filmId,
+    mediaType,
+    updatedStatus,
+    posterPath,
+    title,
+  ) => {
     //  No need for local fall backs, the response will come back in time (trust)
     const body = {
       filmId: filmId,
       mediaType: mediaType,
       filmStatus: updatedStatus,
+      posterPath: posterPath,
+      title: title,
     };
     try {
       // the response is unneccessarily long, with user id and stuff
@@ -102,9 +110,21 @@ export const LibraryProvider = ({ children }) => {
       // setUserStatus(prevUserStatus);
     }
   };
-  const ratingUpdateCall = async (newRating, filmType, filmId) => {
+  const ratingUpdateCall = async (
+    newRating,
+    filmType,
+    filmId,
+    posterPath,
+    title,
+  ) => {
     try {
-      const body = { filmId: filmId, filmType: filmType, rating: newRating };
+      const body = {
+        filmId: filmId,
+        filmType: filmType,
+        rating: newRating,
+        posterPath: posterPath,
+        title: title,
+      };
       const updateRatingRes = await fetch("/api/reviews/update/rating", {
         method: "POST",
         credentials: "include",
@@ -132,6 +152,9 @@ export const LibraryProvider = ({ children }) => {
         getFilmStatus,
         statusUpdateCall,
         ratingUpdateCall,
+        userRatings,
+        userReviews,
+        userStatus,
         loading,
       }}
     >

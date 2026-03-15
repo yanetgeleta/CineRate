@@ -5,16 +5,25 @@ import Library from "../models/userLibraryModel.js";
 // to add review to the database
 export const addReviews = async (req) => {
   try {
-    const { filmId, filmType, review } = req.body;
+    const { filmId, filmType, review, posterPath, title } = req.body;
     const userId = req.user.id;
     const reviewRow = await ReviewRating.addReview(
       userId,
       filmId,
       filmType,
       review,
+      posterPath,
+      title,
     );
     // If a person wrote a review, it means they have watched the film
-    await Library.updateFilmStatus(userId, filmId, filmType, "watched");
+    await Library.updateFilmStatus(
+      userId,
+      filmId,
+      filmType,
+      "watched",
+      posterPath,
+      title,
+    );
     // we get only the relevant data from the model
     return reviewRow;
   } catch (err) {
@@ -41,20 +50,29 @@ export const updateReview = async (req) => {
 };
 // to make a new rating or update and exisiting one
 export const updateRating = async (req) => {
-  const { filmId, filmType, rating } = req.body;
+  const { filmId, filmType, rating, posterPath, title } = req.body;
   const userId = req.user.id;
   const ratingRow = await ReviewRating.addUpdateRating(
     userId,
     filmId,
     filmType,
     rating,
+    posterPath,
+    title,
   );
   // If a person rated a film, it means they have watched the film
-  await Library.updateFilmStatus(userId, filmId, filmType, "watched");
+  await Library.updateFilmStatus(
+    userId,
+    filmId,
+    filmType,
+    "watched",
+    posterPath,
+    title,
+  );
   // we get the relevant data from the model
   return ratingRow;
 };
-// get all the comments made to a single movie by user
+// get all the comments made to a single film by user
 export const getFilmReviewByUser = async (req) => {
   try {
     const { filmId } = req.query;
@@ -79,6 +97,7 @@ export const allFilmReviews = async (req) => {
     });
   }
 };
+// deletes a review using the review id
 export const deleteReview = async (req) => {
   try {
     const { reviewId } = req.params;

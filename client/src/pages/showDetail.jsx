@@ -108,7 +108,13 @@ function ShowDetail() {
       navigate("/loginsignup");
       return;
     }
-    statusUpdateCall(showId, "tv", action);
+    statusUpdateCall(
+      showId,
+      "tv",
+      action,
+      showData.poster_path,
+      showData.title || showData.name,
+    );
   };
   // new review and edit existing one for a show
   const handleReview = async (review, reviewId) => {
@@ -136,7 +142,13 @@ function ShowDetail() {
         // setReviews((prev) => [...prev, responseObj]);
         setRefreshTrigger((prev) => !prev);
       } else {
-        const body = { review: review, filmId: showId, filmType: "tv" };
+        const body = {
+          review: review,
+          filmId: showId,
+          filmType: "tv",
+          posterPath: showData.poster_path,
+          title: showData.title || showData.name,
+        };
         const addReviewsRes = await fetch(`/api/reviews/add/review`, {
           method: "POST",
           credentials: "include",
@@ -162,7 +174,13 @@ function ShowDetail() {
     if (!newRating || newRating === 0) {
       return;
     }
-    ratingUpdateCall(newRating, "tv", showId);
+    ratingUpdateCall(
+      newRating,
+      "tv",
+      showId,
+      showData.poster_path,
+      showData.title || showData.name,
+    );
   };
   const handleDeleteReview = async (reviewId) => {
     const deleteReviewRes = await fetch(

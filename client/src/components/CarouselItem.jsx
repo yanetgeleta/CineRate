@@ -29,7 +29,13 @@ function CarouselItem({ item, filmType, ...otherProps }) {
     } else {
       setStatus(action);
     }
-    statusUpdateCall(item.id, item.media_type || filmType, action);
+    statusUpdateCall(
+      item.id,
+      item.media_type || filmType,
+      action,
+      item.poster_path,
+      item.title || item.name,
+    );
   };
   if (loading) {
     return <p>Loading...</p>;

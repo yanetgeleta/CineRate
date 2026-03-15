@@ -18,7 +18,7 @@ function Navbar() {
       {user && (
         <>
           <NotificationRing />
-          <NavLink to="/profile">
+          <NavLink to={`/profile/${user.id}`}>
             <ProfilePic />
           </NavLink>
           <Button

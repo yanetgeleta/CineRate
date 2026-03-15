@@ -29,7 +29,13 @@ function FilmItem({ film, filmType, basePosterPath, smallBannerWidth }) {
     } else {
       setStatus(action);
     }
-    statusUpdateCall(film.id, film.media_type || filmType, action);
+    statusUpdateCall(
+      film.id,
+      film.media_type || filmType,
+      action,
+      film.poster_path,
+      film.title || film.name,
+    );
   };
   if (loading) {
     return <p>Loading...</p>;

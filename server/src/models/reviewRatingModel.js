@@ -1,23 +1,30 @@
 import db from "../config/database.js";
 
 const ReviewRating = {
-  addUpdateRating: async (userId, filmId, filmType, rating) => {
+  addUpdateRating: async (
+    userId,
+    filmId,
+    filmType,
+    rating,
+    posterPath,
+    title,
+  ) => {
     const result = await db.query(
-      `INSERT INTO ratings (user_id, tmdb_id, film_type, rating) 
-       VALUES ($1, $2, $3, $4)
+      `INSERT INTO ratings (user_id, tmdb_id, film_type, rating, poster_path, title) 
+       VALUES ($1, $2, $3, $4, $5, $6)
        ON CONFLICT (user_id, tmdb_id) 
        DO UPDATE SET 
         rating = EXCLUDED.rating
-       RETURNING film_type, rating, tmdb_id`,
-      [userId, filmId, filmType, rating],
+       RETURNING film_type, rating, tmdb_id, poster_path, title`,
+      [userId, filmId, filmType, rating, posterPath, title],
     );
     return result.rows[0];
   },
-  addReview: async (userId, filmId, filmType, review) => {
+  addReview: async (userId, filmId, filmType, review, posterPath, title) => {
     const result = await db.query(
-      `insert into reviews(user_id, tmdb_id, film_type, review_text)
-      values ($1,$2,$3,$4) returning *`,
-      [userId, filmId, filmType, review],
+      `insert into reviews(user_id, tmdb_id, film_type, review_text, poster_path, title)
+      values ($1,$2,$3,$4,$5, $6) returning *`,
+      [userId, filmId, filmType, review, posterPath, title],
     );
     return result.rows[0];
   },
@@ -40,6 +47,7 @@ const ReviewRating = {
     return result.rows[0];
   },
   // all the comments to a single film by user
+  // not using it currently
   userFilmReview: async (filmId, userId) => {
     const result = await db.query(
       `select * from reviews
@@ -71,7 +79,7 @@ const ReviewRating = {
   // all the ratings made by a user
   userRatingsData: async (userId) => {
     const result = await db.query(
-      `select film_type, rating, tmdb_id from ratings
+      `select film_type, rating, tmdb_id, poster_path, title from ratings
       where user_id = $1`,
       [userId],
     );

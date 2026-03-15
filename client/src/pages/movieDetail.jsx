@@ -116,7 +116,13 @@ function MovieDetail() {
       navigate("/loginsignup");
       return;
     }
-    statusUpdateCall(movieId, "movie", action);
+    statusUpdateCall(
+      movieId,
+      "movie",
+      action,
+      movieData.poster_path,
+      movieData.title || movieData.name,
+    );
   };
   // sends rating and updates to the database
   const handleRating = async (newRating) => {
@@ -127,7 +133,13 @@ function MovieDetail() {
     if (!newRating || newRating === 0) {
       return;
     }
-    ratingUpdateCall(newRating, "movie", movieId);
+    ratingUpdateCall(
+      newRating,
+      "movie",
+      movieId,
+      movieData.poster_path,
+      movieData.title || movieData,
+    );
   };
   // handles: updating review, adding a new review
   const handleReview = async (review, reviewId) => {
@@ -137,6 +149,7 @@ function MovieDetail() {
     }
     if (!review || review.trim() === "") return;
     try {
+      // Meaning it's an edit
       if (reviewId) {
         const body = { reviewText: review };
         const updateReviewRes = await fetch(
@@ -155,7 +168,14 @@ function MovieDetail() {
         // setReviews((prev) => [...prev, responseObj]);
         setRefreshTrigger((prev) => !prev);
       } else {
-        const body = { review: review, filmId: movieId, filmType: "movie" };
+        // a new review
+        const body = {
+          review: review,
+          filmId: movieId,
+          filmType: "movie",
+          posterPath: movieData.poster_path,
+          title: movieData.title || movieData.name,
+        };
         const addReviewsRes = await fetch(`/api/reviews/add/review`, {
           method: "POST",
           credentials: "include",

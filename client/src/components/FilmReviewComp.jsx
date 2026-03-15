@@ -19,6 +19,7 @@ function FilmReviewComp({
     openEditReview(review);
   };
   if (!myReviews) {
+    // When I haven't made a comment, or there is no user
     return (
       <div>
         <h3>Reviews</h3>
@@ -64,7 +65,8 @@ function FilmReviewComp({
                 }}
                 key={review.id}
               >
-                <img /> <h3>{user.display_name}</h3> <sub>YOU</sub>{" "}
+                <img src={review.profile_pic_url} />{" "}
+                <h3>{user.display_name}</h3> <sub>YOU</sub>{" "}
                 <IconButton
                   onClick={() => {
                     editHandler(review);

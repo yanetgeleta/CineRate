@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 const LoginForm = (props) => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useAuth();
 
@@ -13,12 +13,13 @@ const LoginForm = (props) => {
     event.preventDefault();
 
     try {
+      const body = { username, password };
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(body),
         credentials: "include",
       });
 
@@ -44,9 +45,9 @@ const LoginForm = (props) => {
           <Input
             type="text"
             placeholder="Enter your email or username"
-            id="login-email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            id="login-username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </label>
         <label htmlFor="login-password">

@@ -33,10 +33,12 @@ export const AuthProvider = ({ children }) => {
     //more inforarmation will be collected later on
     setUser(userData);
   };
+  // some browsers send get requests before loading leading users being logged out on the first render
+  // so changed to post to logout
   const logout = async () => {
     try {
       await fetch("/api/auth/logout", {
-        method: "GET",
+        method: "POST",
         credentials: "include",
       });
     } catch (err) {
