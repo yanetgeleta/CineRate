@@ -1,10 +1,20 @@
 import React from "react";
 import FilmCard from "./FilmCard";
+import Rating from "@mui/material/Rating";
 
-function ProfileFilms() {
+function ProfileFilms({ posterBase, list }) {
   return (
     <div>
-      <FilmCard src />
+      {list.map((film, index) => {
+        return (
+          <div key={film.tmdb_id}>
+            <FilmCard src={`${posterBase}${film.poster_path}`} />
+            <p>{film.title}</p>
+            {/* for the movies the user has rated */}
+            {/* <Rating readOnly value={}/> */}
+          </div>
+        );
+      })}
     </div>
   );
 }

@@ -10,6 +10,7 @@ import { useAuth } from "../context/AuthContext";
 import FilterAndSort from "../components/FilterAndSort";
 import { useLibrary } from "../context/LibraryContex";
 import ProfileFilms from "../components/ProfileFilms";
+import { useState } from "react";
 // This is a page that shows user details/profile
 function Profile() {
   const sorting = [
@@ -36,13 +37,24 @@ function Profile() {
   const { userRatings, userReviews, userStatus } = useLibrary();
 
   const userStatusArr = Object.values(userStatus);
+  const ratingsArr = Object.values(userRatings);
   const watchedArr = userStatusArr.filter((film) => film.status === "watched");
   const watchlistArr = userStatusArr.filter(
     (film) => film.status === "watchlist",
   );
-  const favoriteArr = userStatusArr.filter(
+  const favoritesArr = userStatusArr.filter(
     (film) => film.is_favorited === true,
   );
+
+  const basePosterPath = "https://image.tmdb.org/t/p/";
+  const smallBannerWidth = "w300";
+
+  const [listOnDisplay, setListOnDisplay] = useState(watchlistArr);
+
+  const filmsWatched = watchedArr.length;
+  const filmsToWatch = watchlistArr.length;
+  const reviewsWritten = userReviews.length;
+  const filmsRated = ratingsArr.length;
 
   return (
     <div>
@@ -52,17 +64,48 @@ function Profile() {
       <p>{user.created_at}</p>
       <Button>Edit Profile</Button>
       {/* pull out the watched, reviews lines from the database for the user */}
-      <StatBox statName="Films Watched" statNumber="25" />
-      <StatBox statName="Reviews Written" statNumber="10" />
+      <StatBox statName="Films Watched" statNumber={filmsWatched} />
+      <StatBox statName="Films To Watch" statNumber={filmsToWatch} />
+      <StatBox statName="Films Rated" statNumber={filmsRated} />
+      <StatBox statName="Reviews Written" statNumber={reviewsWritten} />
       {/* <StatBox statName="Lists Created" statNumber="5" /> */}
-      <Button>Watched</Button>
-      <Button>Want to Watch</Button>
-      <Button>Favorites</Button>
-      <Button>Reviews</Button>
-      <ComboBox label="Sort by" name="sort" options={sorting} />
-      <ComboBox label="Genre" name="genre" options={genres} />
+
+      <Button
+        onClick={() => {
+          setListOnDisplay(watchlistArr);
+        }}
+      >
+        Want to Watch
+      </Button>
+      <Button
+        onClick={() => {
+          setListOnDisplay(watchedArr);
+        }}
+      >
+        Watched
+      </Button>
+      <Button
+        onClick={() => {
+          setListOnDisplay(favoritesArr);
+        }}
+      >
+        Favorites
+      </Button>
+      <Button
+        onClick={() => {
+          setListOnDisplay(userReviews);
+        }}
+      >
+        Reviews
+      </Button>
+      {/* Sort and filter methods will a next version features */}
+      {/* <ComboBox label="Sort by" name="sort" options={sorting} />
+      <ComboBox label="Genre" name="genre" options={genres} /> */}
       {/* {userStatusArr.map(())} */}
-      <ProfileFilms />
+      <ProfileFilms
+        list={listOnDisplay}
+        posterBase={`${basePosterPath}${smallBannerWidth}`}
+      />
     </div>
   );
 }
