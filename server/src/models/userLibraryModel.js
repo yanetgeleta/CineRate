@@ -40,7 +40,7 @@ const Library = {
   // status and favorites of movies and shows for a user
   userLibraryData: async (userId) => {
     const result = await db.query(
-      `select status, is_favorited, tmdb_id, poster_path, title from user_library
+      `select status, is_favorited, film_type, tmdb_id, poster_path, title from user_library
       where user_id = $1`,
       [userId],
     );
