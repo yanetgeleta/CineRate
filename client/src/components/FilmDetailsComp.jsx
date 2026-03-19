@@ -27,18 +27,20 @@ function FilmDetailsComp({ filmData }) {
       {!filmData.number_of_seasons && (
         <div>
           <h3>Cast</h3>
-          {topCast.map((actor, index) => {
-            return (
-              <div key={index}>
-                {/* https://image.tmdb.org/t/p/w780/ */}
-                <img
-                  src={`https://image.tmdb.org/t/p/w185/${actor.profile_path}`}
-                />
-                <p>{actor.name}</p>
-                <p>{actor.character}</p>
-              </div>
-            );
-          })}
+          <div className="grid grid-cols-5 gap-4 p-4">
+            {topCast.map((actor, index) => {
+              return (
+                <div key={index}>
+                  {/* https://image.tmdb.org/t/p/w780/ */}
+                  <img
+                    src={`https://image.tmdb.org/t/p/w185/${actor.profile_path}`}
+                  />
+                  <p>{actor.name}</p>
+                  <p>{actor.character}</p>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>

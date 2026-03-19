@@ -21,6 +21,7 @@ import Rating from "@mui/material/Rating";
 import FilmReviewComp from "../components/FilmReviewComp";
 import ReviewModal from "../components/ReviewModal";
 import EditReviewModal from "../components/EditReviewModal";
+import ConfirmModal from "../components/ConfirmModal";
 // This is a page that shows details of shows
 function ShowDetail() {
   const { showId } = useParams();
@@ -30,6 +31,8 @@ function ShowDetail() {
   const filmRating = getFilmRating(showId);
 
   const [reviews, setReviews] = useState([]);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteReviewId, setDeleteReviewId] = useState(null);
   // const [rating, setRating] = useState(filmRating.rating);
   const [showData, setShowData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -182,6 +185,10 @@ function ShowDetail() {
       showData.title || showData.name,
     );
   };
+  const openDelete = (reviewId) => {
+    setDeleteReviewId(reviewId);
+    setDeleteModalOpen(true);
+  };
   const handleDeleteReview = async (reviewId) => {
     const deleteReviewRes = await fetch(
       `/api/reviews/delete/review/${reviewId}`,
@@ -302,15 +309,15 @@ function ShowDetail() {
           <Button>Cast & Crew</Button>
           <Button>Seasons</Button>
           <Button>Reviews</Button>
-          {/* <FilmDetailsComp filmData={showData} />
-          <FilmCastCrewComp filmCredits={showData.credits} /> */}
+          <FilmDetailsComp filmData={showData} />
+          <FilmCastCrewComp filmCredits={showData.credits} />
           {/* Each button will render its respective information */}
           <FilmReviewComp
             reviews={reviews}
             otherReviews={otherReviews}
             myReviews={myReviews}
             openEditReview={openEditReview}
-            onDelete={handleDeleteReview}
+            onDelete={openDelete}
           />
           {isReviewOpen && (
             <ReviewModal
@@ -341,6 +348,21 @@ function ShowDetail() {
               prevReview={editedReview}
             />
           )}
+          <ConfirmModal
+            isOpen={deleteModalOpen}
+            title={"Delete Review"}
+            desc={"This will permanently delete this review from the database"}
+            message={"Are you sure you want to delete this review?"}
+            continueMsg={"Yes"}
+            cancelMsg={"Cancel"}
+            handleCancel={() => {
+              setDeleteModalOpen(false);
+            }}
+            handleContinue={() => {
+              handleDeleteReview(deleteReviewId);
+              setDeleteModalOpen(false);
+            }}
+          />
         </div>
       )}
     </div>

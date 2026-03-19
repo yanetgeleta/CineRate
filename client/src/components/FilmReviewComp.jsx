@@ -36,12 +36,13 @@ function FilmReviewComp({
               <h3>{review.display_name}</h3>
               <p>{review.created_at}</p>
               <p>{review.review_text}</p>
-              <IconButton>
+              {/* <IconButton>
                 <ThumbUpIcon />
               </IconButton>
               <IconButton>
                 <CommentIcon />
-              </IconButton>
+              </IconButton> */}
+              {/* Second version features */}
             </div>
           );
         })}
@@ -77,18 +78,19 @@ function FilmReviewComp({
                 <IconButton
                   onClick={() => {
                     onDelete(review.id);
+                    // onDelete();
                   }}
                 >
                   <DeleteIcon />
                 </IconButton>
                 <p>{review.created_at}</p>
                 <p>{review.review_text}</p>
-                <IconButton>
+                {/* <IconButton>
                   <ThumbUpIcon />
                 </IconButton>
                 <IconButton>
                   <CommentIcon />
-                </IconButton>
+                </IconButton> */}
               </div>
             );
           })}
@@ -112,12 +114,12 @@ function FilmReviewComp({
                 <h3>{review.display_name}</h3>
                 <p>{review.created_at}</p>
                 <p>{review.review_text}</p>
-                <IconButton>
+                {/* <IconButton>
                   <ThumbUpIcon />
                 </IconButton>
                 <IconButton>
                   <CommentIcon />
-                </IconButton>
+                </IconButton> */}
               </div>
             );
           })}

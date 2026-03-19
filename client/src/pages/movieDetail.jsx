@@ -21,6 +21,7 @@ import { useLibrary } from "../context/LibraryContex";
 import Rating from "@mui/material/Rating";
 import FilmReviewComp from "../components/FilmReviewComp";
 import EditReviewModal from "../components/EditReviewModal";
+import ConfirmModal from "../components/ConfirmModal";
 
 // This is the page that shows details of a specific movie when clicked on
 function MovieDetail() {
@@ -45,6 +46,8 @@ function MovieDetail() {
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [isEditReviewOpen, setIsEditReviewOpen] = useState(false);
   const [editedReview, setEditedReview] = useState(null);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteReviewId, setDeleteReviewId] = useState(null);
 
   // First get the reviews that are mine and put them up top so i can edit them or delete them
   // Second get the other people's reviews just for views
@@ -192,6 +195,10 @@ function MovieDetail() {
       throw new Error("Failed to add or update review for movie");
     }
   };
+  const openDelete = (reviewId) => {
+    setDeleteReviewId(reviewId);
+    setDeleteModalOpen(true);
+  };
   const handleDeleteReview = async (reviewId) => {
     const deleteReviewRes = await fetch(
       `/api/reviews/delete/review/${reviewId}`,
@@ -316,14 +323,14 @@ function MovieDetail() {
           <Button>Details</Button>
           <Button>Cast & Crew</Button>
           <Button>Reviews</Button>
-          {/* <FilmDetailsComp filmData={movieData} /> */}
-          {/* <FilmCastCrewComp filmCredits={movieData.credits} /> */}
+          <FilmDetailsComp filmData={movieData} />
+          <FilmCastCrewComp filmCredits={movieData.credits} />
           <FilmReviewComp
             reviews={reviews}
             otherReviews={otherReviews}
             myReviews={myReviews}
             openEditReview={openEditReview}
-            onDelete={handleDeleteReview}
+            onDelete={openDelete}
           />
           {/* A modal that gets rendered conditionally for review writing purpose */}
           {isReviewOpen && (
@@ -355,6 +362,21 @@ function MovieDetail() {
               prevReview={editedReview}
             />
           )}
+          <ConfirmModal
+            isOpen={deleteModalOpen}
+            title={"Delete Review"}
+            desc={"This will permanently delete this review from the database"}
+            message={"Are you sure you want to delete this review?"}
+            continueMsg={"Yes"}
+            cancelMsg={"Cancel"}
+            handleCancel={() => {
+              setDeleteModalOpen(false);
+            }}
+            handleContinue={() => {
+              handleDeleteReview(deleteReviewId);
+              setDeleteModalOpen(false);
+            }}
+          />
         </div>
       )}
     </div>

@@ -6,6 +6,9 @@ import Input from "../components/Input";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
+import IconButton from "@mui/material/IconButton";
 
 function Navbar() {
   const { user, logout, login } = useAuth();
@@ -13,6 +16,7 @@ function Navbar() {
   const { pathname } = useLocation();
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [darkMode, setDarkMode] = useState(false);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -23,10 +27,12 @@ function Navbar() {
 
   return (
     <div>
-      <NavLink to="/">CineRate</NavLink>
+      <NavLink className={""} to="/">
+        CineRate
+      </NavLink>
       <NavLink to="/movies">Movies</NavLink>
       <NavLink to="/shows">Shows</NavLink>
-      <NavLink to="/genres">Genres</NavLink>
+      {/* <NavLink to="/genres">Genres</NavLink> */}
       {pathname !== "/search" && (
         <form onSubmit={handleSearch}>
           <input
@@ -40,9 +46,18 @@ function Navbar() {
           />
         </form>
       )}
+      {darkMode ? (
+        <IconButton onClick={() => [setDarkMode((pre) => !pre)]}>
+          <LightModeOutlinedIcon />{" "}
+        </IconButton>
+      ) : (
+        <IconButton onClick={() => [setDarkMode((pre) => !pre)]}>
+          <DarkModeOutlinedIcon />
+        </IconButton>
+      )}
       {user && (
         <>
-          <NotificationRing />
+          {/* <NotificationRing /> */}
           <NavLink to={`/profile/${user.id}`}>
             <ProfilePic />
           </NavLink>

@@ -9,7 +9,7 @@ function ProfileReviews({ review, posterBase }) {
       >
         <img src={`${posterBase}${review.poster_path}`} />
         <h2>{review.title}</h2>
-        <p>{review.review_tex}</p>
+        <p>{review.review_text}</p>
         <p>Review at {review.created_at}</p>
       </Link>
     </div>

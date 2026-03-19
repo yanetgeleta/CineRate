@@ -56,20 +56,22 @@ function CarouselItem({ item, filmType, ...otherProps }) {
             <>
               <p>{item.overview}</p>
               <p>{item.media_type === "tv" ? "Show" : "Movie"}</p>
-              <Button
-                onClick={() => {
-                  otherProps.onTrailerButtonClick({
-                    filmId: item.id,
-                    filmType: item.media_type,
-                  });
-                }}
-              >
-                Watch Trailer
-              </Button>
             </>
           )}
         </div>
       </Link>
+      {otherProps.bannerWidth === "w1280" && (
+        <Button
+          onClick={() => {
+            otherProps.onTrailerButtonClick({
+              filmId: item.id,
+              filmType: item.media_type,
+            });
+          }}
+        >
+          Watch Trailer
+        </Button>
+      )}
       {!user ? (
         <IconButton
           onClick={() => {

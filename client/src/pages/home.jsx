@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import Carousel from "../components/Carousel";
 import Trailer from "../components/Video";
 import { ClipLoader } from "react-spinners";
+import CloseIcon from "@mui/icons-material/Close";
 // This is the home page that users see when they search for site
 
 function Home() {
@@ -171,18 +172,19 @@ function Home() {
           {trailerURL && isPlayerOpen && (
             // isnall and import the necessary tailwind dependencies to makes this classname desing work
             <div className="fixed inset-0 z-50 w-screen h-screen bg-black/80 flex items-center justify-center">
-              <Button
+              <IconButton
                 onClick={() => {
                   setIsPlayerOpen(false);
                   setTrailerURL(null);
                 }}
               >
-                X
-              </Button>
+                {" "}
+                <CloseIcon />{" "}
+              </IconButton>
               <Trailer options={videoJsOptions} onReady={playerOnReady} />
             </div>
           )}
-          <h2>Your Watchlist</h2>
+          {/* <h2>Your Watchlist</h2> */}
           <h2>Trending</h2>
           <Carousel
             bannerWidth={smallBannerWidth}
@@ -202,7 +204,7 @@ function Home() {
             user={user}
           />
           {/* Multiple data will come for newly releases movies */}
-          <h2>Because you watched</h2>
+          {/* <h2>Because you watched</h2> */}
           {/* You can use the recommendations end point along with one of the movies they watched id  */}
           <h2>Top Rated Movies</h2>
           <Carousel
