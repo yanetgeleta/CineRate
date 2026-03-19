@@ -48,7 +48,7 @@ function FilmItem({ film, filmType, basePosterPath, smallBannerWidth }) {
         <FilmCard
           src={`${basePosterPath}${smallBannerWidth}${film.poster_path}`}
         />
-        <p className="font-bold">{film.title}</p>
+        <p className="font-bold">{film.title || film.name}</p>
         <p className="text-sm text-gray-600 italic">
           Rating: {film.vote_average}
           {/* We will change this to be our own rating */}

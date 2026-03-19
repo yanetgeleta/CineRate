@@ -108,3 +108,16 @@ export const filmDetailGetter = async (req, res) => {
     console.log(new Error(`Couldn't fetch details for ${id}`, err.message));
   }
 };
+// search for movies and shows
+export const multiSearch = async (req) => {
+  try {
+    const { query, page } = req.query;
+    const params = new URLSearchParams(req.query);
+    const path = `${baseURL}/search/multi?${params}`;
+    const searchRes = await axios.get(path, config);
+    return searchRes;
+    // return { data: { searchResult: searchRes.data } };
+  } catch (err) {
+    throw new Error("Error searching at service");
+  }
+};

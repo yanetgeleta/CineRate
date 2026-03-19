@@ -8,6 +8,8 @@ import GoogleIcon from "@mui/icons-material/Google";
 // This is where users login and signup
 function LoginSignUp() {
   const navigate = useNavigate();
+  // const location = useLocation();
+  // Use this location to find where the request for authentication came from and redirect them there
   const { state } = useLocation();
   const [mode, setMode] = useState(state?.initialMode || "login");
 

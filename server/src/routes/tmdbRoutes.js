@@ -9,6 +9,7 @@ import {
   genreIdGetter,
   discoverFilm,
   filmDetailGetter,
+  multiSearch,
 } from "../services/tmdbServices.js";
 
 const router = express.Router();
@@ -17,7 +18,7 @@ const routerFunction = (path, importFunction, errorMessage) => {
     try {
       const tmdbRes = await importFunction(req);
       // console.log(res);
-      const data = await tmdbRes.data;
+      const data = tmdbRes.data;
       // console.log(data);
       res.json(data);
     } catch (err) {
@@ -67,5 +68,10 @@ routerFunction(
   "/film/detail",
   filmDetailGetter,
   "Failed to fetch details for the film",
+);
+routerFunction(
+  "/search",
+  multiSearch,
+  "Failed to get search value from service at route",
 );
 export default router;

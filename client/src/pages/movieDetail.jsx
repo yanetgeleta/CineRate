@@ -242,6 +242,7 @@ function MovieDetail() {
           <p>{movieData.vote_average}</p>
           {/* Will be replace by my own rating */}
           <p>{movieData.release_date}</p>
+          {/* <p>{movieData.overview}</p> */}
           {movieGenres.map((genre) => (
             <Button key={genre.id}>{genre.name}</Button>
           ))}

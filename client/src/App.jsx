@@ -12,6 +12,7 @@ import Footer from "./layouts/Footer";
 import { AuthProvider } from "./context/AuthContext";
 import Genres from "./pages/Genres";
 import { LibraryProvider } from "./context/LibraryContex";
+import SearchPage from "./pages/searchPage";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="/shows" element={<Shows />} />
             <Route path="/dashboard" element={<Home />} />
             <Route path="/genres" element={<Genres />} />
+            <Route path="/search" element={<SearchPage />} />
           </Routes>
           <Footer />
         </Router>
