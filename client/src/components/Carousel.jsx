@@ -14,6 +14,7 @@ import {
 } from "swiper/modules";
 import CarouselItem from "./CarouselItem";
 import { useAuth } from "../context/AuthContext";
+import HeroCarouselItem from "./HeroCarouselItem";
 
 const Carousel = ({
   settings,
@@ -32,14 +33,25 @@ const Carousel = ({
     >
       {items.map((item) => (
         <SwiperSlide key={item.id}>
-          <CarouselItem
-            basePath={basePath}
-            bannerWidth={bannerWidth}
-            onTrailerButtonClick={onTrailerButtonClick}
-            key={item.id}
-            item={item}
-            filmType={filmType}
-          />
+          {bannerWidth === "w1280" ? (
+            <HeroCarouselItem
+              basePath={basePath}
+              bannerWidth={bannerWidth}
+              onTrailerButtonClick={onTrailerButtonClick}
+              key={item.id}
+              item={item}
+              filmType={filmType}
+            />
+          ) : (
+            <CarouselItem
+              basePath={basePath}
+              bannerWidth={bannerWidth}
+              onTrailerButtonClick={onTrailerButtonClick}
+              key={item.id}
+              item={item}
+              filmType={filmType}
+            />
+          )}
         </SwiperSlide>
       ))}
     </Swiper>

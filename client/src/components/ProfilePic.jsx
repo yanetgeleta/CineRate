@@ -4,10 +4,6 @@ import { useAuth } from "../context/AuthContext";
 
 const ProfilePic = () => {
   const { user } = useAuth();
-  return (
-    <button>
-      <img src={user.profile_pic_url} />
-    </button>
-  );
+  return <img className="size-12" src={user.profile_pic_url} />;
 };
 export default ProfilePic;

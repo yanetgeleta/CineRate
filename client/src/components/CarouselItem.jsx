@@ -11,6 +11,8 @@ import { Link, useNavigate } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import { useLibrary } from "../context/LibraryContex";
 import { useAuth } from "../context/AuthContext";
+import AddIcon from "@mui/icons-material/Add";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
 function CarouselItem({ item, filmType, ...otherProps }) {
   const { getFilmStatus, statusUpdateCall, loading } = useLibrary();
@@ -44,34 +46,19 @@ function CarouselItem({ item, filmType, ...otherProps }) {
   // Add a clip loader later on
   return (
     <div>
-      <Link
-        to={`/${item.media_type === "movie" || filmType === "movie" ? "moviedetail" : "showdetail"}/${item.id}`}
-      >
-        <div>
-          <FilmCard
-            src={`${otherProps.basePath}${otherProps.bannerWidth}${otherProps.bannerWidth === "w1280" ? item.backdrop_path : item.poster_path}`}
-          />
-          <h2>{item.title || item.name}</h2>
-          {otherProps.bannerWidth === "w1280" && (
-            <>
-              <p>{item.overview}</p>
-              <p>{item.media_type === "tv" ? "Show" : "Movie"}</p>
-            </>
-          )}
-        </div>
-      </Link>
-      {otherProps.bannerWidth === "w1280" && (
-        <Button
-          onClick={() => {
-            otherProps.onTrailerButtonClick({
-              filmId: item.id,
-              filmType: item.media_type,
-            });
-          }}
+      <div className="relative group">
+        <Link
+          to={`/${item.media_type === "movie" || filmType === "movie" ? "moviedetail" : "showdetail"}/${item.id}`}
         >
-          Watch Trailer
-        </Button>
-      )}
+          <FilmCard
+            src={`${otherProps.basePath}${otherProps.bannerWidth}${item.poster_path}`}
+          />
+          <div>
+            <h2>{item.title || item.name}</h2>
+          </div>
+        </Link>
+      </div>
+
       {!user ? (
         <IconButton
           onClick={() => {

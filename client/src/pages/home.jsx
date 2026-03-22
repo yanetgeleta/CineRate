@@ -7,6 +7,7 @@ import Carousel from "../components/Carousel";
 import Trailer from "../components/Video";
 import { ClipLoader } from "react-spinners";
 import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 // This is the home page that users see when they search for site
 
 function Home() {
@@ -161,27 +162,51 @@ function Home() {
           data-testid="loader"
         />
       ) : (
-        <div>
-          <Carousel
-            onTrailerButtonClick={trailerButtonHandler}
-            bannerWidth={heroBannerWidth}
-            basePath={basePosterPath}
-            items={trendingToday?.results}
-            settings={heroBannerSettings}
-          />
+        <main className="pt-20 md:mx-20">
+          {/* Hero section */}
+          <section className="relative w-full overflow-hidden px-8 flex items-end">
+            {" "}
+            <Carousel
+              onTrailerButtonClick={trailerButtonHandler}
+              bannerWidth={heroBannerWidth}
+              basePath={basePosterPath}
+              items={trendingToday?.results}
+              settings={heroBannerSettings}
+            />
+          </section>
+
           {trailerURL && isPlayerOpen && (
-            // isnall and import the necessary tailwind dependencies to makes this classname desing work
-            <div className="fixed inset-0 z-50 w-screen h-screen bg-black/80 flex items-center justify-center">
-              <IconButton
-                onClick={() => {
-                  setIsPlayerOpen(false);
-                  setTrailerURL(null);
-                }}
-              >
-                {" "}
-                <CloseIcon />{" "}
-              </IconButton>
-              <Trailer options={videoJsOptions} onReady={playerOnReady} />
+            /* OVERLAY CONTAINER: Fixed to the viewport, z-50 ensures it covers the navbar */
+            <div className="fixed inset-0 z-50 w-screen h-screen bg-black/90 flex items-center justify-center">
+              {/* CLOSE BUTTON CONTAINER: Positioned absolute to the SCREEN, safely outside the video */}
+              {/* Using an arbitrary Tailwind value z-[60] ensures it sits above the video player */}
+              <div className="absolute top-6 right-6 z-[60]">
+                <IconButton
+                  onClick={() => {
+                    setIsPlayerOpen(false);
+                    setTrailerURL(null);
+                  }}
+                  /* Use MUI's sx prop to style the button safely, avoiding Tailwind conflicts on MUI components */
+                  sx={{
+                    backgroundColor: "white",
+                    color: "#fbbf24", // amber-400 equivalent
+                    "&:hover": {
+                      backgroundColor: "#f3f4f6", // gray-100 on hover
+                    },
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </div>
+
+              {/* VIDEO CONTAINER: Centered by the flex parent. 'w-full max-w-5xl' makes it responsive */}
+              <div className="w-screen max-w-5xl relative aspect-video shadow-2xl px-4">
+                <Trailer
+                  options={videoJsOptions}
+                  onReady={playerOnReady}
+                  trailerURL={trailerURL}
+                />
+              </div>
             </div>
           )}
           {/* <h2>Your Watchlist</h2> */}
@@ -225,7 +250,7 @@ function Home() {
             user={user}
           />
           {/* Multiple films from topMovies and topShows */}
-        </div>
+        </main>
       )}
     </div>
   );

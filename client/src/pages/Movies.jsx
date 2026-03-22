@@ -130,7 +130,6 @@ const Movies = () => {
               moviesData.results.map((movie) => {
                 return (
                   <FilmItem
-                    mediaType="movie"
                     basePosterPath={basePosterPath}
                     smallBannerWidth={smallBannerWidth}
                     filmType="movie"
