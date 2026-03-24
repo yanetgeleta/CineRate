@@ -60,11 +60,11 @@ const HeroCarouselItem = ({
             src={`${basePath}${bannerWidth}${item.backdrop_path}`}
           />
           <div className="hidden group-hover:block z-10 absolute bottom-15 left-2">
-            <h2 className="text-4xl md:text-8xl font-bold tracking-tighter mb-6 leading-[0.9] text-on-surface">
+            <h2 className="text-4xl md:text-8xl font-bold tracking-tighter mb-6 leading-[0.9] text-[#dae2fd]">
               {item.title || item.name}
             </h2>
             <div>
-              <p className="hidden md:block text-lg text-on-surface-variant mb-8 max-w-xl leading-relaxed">
+              <p className="hidden md:block text-lg text-[#c2c6d6] mb-8 max-w-xl leading-relaxed">
                 {item.overview}
               </p>
               {/* <div className="border-primary px-8 py-3 rounded-xl font-bold flex items-center justify-center shadow-xl shadow-primary/10 hidden md:block md:w-1/11">
@@ -75,9 +75,9 @@ const HeroCarouselItem = ({
         </Link>
         <div className="hidden group-hover:flex gap-4 absolute bottom-6 left-2 z-20">
           <button
-            className="bg-primary text-on-primary px-8 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-primary-container transition-all hover:scale-105 active:scale-95 shadow-xl shadow-primary/10"
+            className="bg-[#adc6ff] text-[#002e6a] px-8 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-[#4d8eff] transition-all hover:scale-105 active:scale-95 shadow-xl shadow-[#adc6ff]/10"
             onClick={() => {
-              otherProps.onTrailerButtonClick({
+              onTrailerButtonClick({
                 filmId: item.id,
                 filmType: item.media_type,
               });
@@ -85,7 +85,7 @@ const HeroCarouselItem = ({
           >
             <PlayArrowIcon /> Watch Trailer
           </button>
-          <button className="bg-surface-container-high/60 backdrop-blur-md text-on-surface px-8 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-surface-bright transition-all hover:scale-105 active:scale-95">
+          <button className="bg-[#222a3d]/60 backdrop-blur-md text-[#dae2fd] px-8 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-[#31394d] transition-all hover:scale-105 active:scale-95">
             <AddIcon />
             Wathclist
           </button>

@@ -8,59 +8,6 @@
 
 @theme {
   /* =========================================
-     CUSTOM COLORS (Material Design Tokens)
-     Usage: bg-surface-bright, text-on-primary
-  ========================================= */
-
-  --color-on-tertiary: #502400;
-  --color-surface: #0b1326;
-  --color-on-error: #690005;
-  --color-tertiary-fixed: #ffdcc6;
-  --color-surface-bright: #31394d;
-  --color-surface-container-low: #131b2e;
-  --color-surface-variant: #2d3449;
-  --color-surface-container: #171f33;
-  --color-surface-container-lowest: #060e20;
-  --color-on-primary-container: #00285d;
-  --color-on-tertiary-container: #461f00;
-  --color-tertiary-fixed-dim: #ffb786;
-  --color-on-secondary-fixed: #0b1c30;
-  --color-outline-variant: #424754;
-  --color-inverse-on-surface: #283044;
-  --color-inverse-primary: #005ac2;
-  --color-error-container: #93000a;
-  --color-on-secondary-container: #a9bad3;
-  --color-on-tertiary-fixed-variant: #723600;
-  --color-primary-fixed: #d8e2ff;
-  --color-on-surface-variant: #c2c6d6;
-  --color-on-tertiary-fixed: #311400;
-  --color-surface-container-high: #222a3d;
-  --color-primary-container: #4d8eff;
-  --color-secondary: #b7c8e1;
-  --color-tertiary-container: #df7412;
-  --color-outline: #8c909f;
-  --color-inverse-surface: #dae2fd;
-  --color-tertiary: #ffb786;
-  --color-secondary-container: #3a4a5f;
-  --color-on-primary-fixed: #001a42;
-  --color-on-secondary: #213145;
-  --color-on-primary: #002e6a;
-  --color-on-surface: #dae2fd;
-  --color-surface-tint: #adc6ff;
-  --color-primary-fixed-dim: #adc6ff;
-  --color-on-background: #dae2fd;
-  --color-on-primary-fixed-variant: #004395;
-  --color-primary: #adc6ff;
-  --color-surface-dim: #0b1326;
-  --color-secondary-fixed: #d3e4fe;
-  --color-on-secondary-fixed-variant: #38485d;
-  --color-background: #0b1326;
-  --color-error: #ffb4ab;
-  --color-surface-container-highest: #2d3449;
-  --color-on-error-container: #ffdad6;
-  --color-secondary-fixed-dim: #b7c8e1;
-
-  /* =========================================
      CUSTOM FONTS
      Usage: font-headline, font-body
   ========================================= */
@@ -73,13 +20,6 @@
      CUSTOM BORDER RADIUS
      Usage: rounded, rounded-lg, rounded-full
   ========================================= */
-
-  /* Overrides the default `rounded` class */
-  --radius: 0.25rem;
-
-  --radius-lg: 0.5rem;
-  --radius-xl: 0.75rem;
-  --radius-full: 9999px;
 }
 
 /* 
@@ -87,7 +27,7 @@
   Applies your background and text color automatically 
 */
 body {
-  background-color: var(--color-background);
-  color: var(--color-on-background);
-  font-family: var(--font-body);
+  background-color: #0b1326;
+  color: #dae2fd;
+  font-family: "Inter", sans-serif;
 }

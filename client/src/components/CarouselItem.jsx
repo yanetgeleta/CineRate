@@ -45,99 +45,105 @@ function CarouselItem({ item, filmType, ...otherProps }) {
 
   // Add a clip loader later on
   return (
-    <div>
-      <div className="relative group">
+    <div className="relative group transition-all duration-300">
+      <div>
         <Link
           to={`/${item.media_type === "movie" || filmType === "movie" ? "moviedetail" : "showdetail"}/${item.id}`}
         >
-          <FilmCard
-            src={`${otherProps.basePath}${otherProps.bannerWidth}${item.poster_path}`}
-          />
-          <div>
-            <h2>{item.title || item.name}</h2>
+          <div className=" shadow-lg transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl active:scale-95 group-hover:shadow-[#adc6ff]/20">
+            <FilmCard
+              imgClasses={"w-full h-full object-cover rounded-xl"}
+              src={`${otherProps.basePath}${otherProps.bannerWidth}${item.poster_path}`}
+            />
+          </div>
+          <div className="mt-4">
+            <h2 className="text-[#dae2fd] font-semibold text-base group-hover:text-[#adc6ff] transition-colors">
+              {item.title || item.name}
+            </h2>
           </div>
         </Link>
       </div>
-
-      {!user ? (
-        <IconButton
-          onClick={() => {
-            handleInteraction("watchlist");
-          }}
-        >
-          <BookmarkAddOutlinedIcon />
-        </IconButton>
-      ) : status === "watchlist" ? (
-        <IconButton
-          onClick={() => {
-            handleInteraction("dropped");
-          }}
-        >
-          <BookmarkAddIcon />
-        </IconButton>
-      ) : (
-        <IconButton
-          onClick={() => {
-            handleInteraction("watchlist");
-          }}
-        >
-          {" "}
-          <BookmarkAddOutlinedIcon />
-        </IconButton>
-      )}
-      {!user ? (
-        <IconButton
-          onClick={() => {
-            handleInteraction("watched");
-          }}
-        >
-          <VisibilityOutlinedIcon />
-        </IconButton>
-      ) : status === "watched" ? (
-        <IconButton
-          onClick={() => {
-            handleInteraction("dropped");
-          }}
-        >
-          {" "}
-          <VisibilityIcon />
-        </IconButton>
-      ) : (
-        <IconButton
-          onClick={() => {
-            handleInteraction("watched");
-          }}
-        >
-          {" "}
-          <VisibilityOutlinedIcon />
-        </IconButton>
-      )}
-      {!user ? (
-        <IconButton
-          onClick={() => {
-            handleInteraction(true);
-          }}
-        >
-          <FavoriteBorderOutlinedIcon />
-        </IconButton>
-      ) : isFavorited ? (
-        <IconButton
-          onClick={() => {
-            handleInteraction(false);
-          }}
-        >
-          {" "}
-          <FavoriteIcon />
-        </IconButton>
-      ) : (
-        <IconButton
-          onClick={() => {
-            handleInteraction(true);
-          }}
-        >
-          <FavoriteBorderOutlinedIcon />
-        </IconButton>
-      )}
+      <div className="hidden group-hover:flex absolute bottom-15 left-[23%] gap-1.5 bg-white/10 backdrop-blur-md rounded-sm group-hover:scale-105 transition-all duration-500 ">
+        {!user ? (
+          <IconButton
+            onClick={() => {
+              handleInteraction("watchlist");
+            }}
+          >
+            <BookmarkAddOutlinedIcon />
+          </IconButton>
+        ) : status === "watchlist" ? (
+          <IconButton
+            onClick={() => {
+              handleInteraction("dropped");
+            }}
+          >
+            <BookmarkAddIcon className="text-[#b7c8e1] text-3xl" />
+          </IconButton>
+        ) : (
+          <IconButton
+            onClick={() => {
+              handleInteraction("watchlist");
+            }}
+          >
+            {" "}
+            <BookmarkAddOutlinedIcon />
+          </IconButton>
+        )}
+        {!user ? (
+          <IconButton
+            onClick={() => {
+              handleInteraction("watched");
+            }}
+          >
+            <VisibilityOutlinedIcon />
+          </IconButton>
+        ) : status === "watched" ? (
+          <IconButton
+            onClick={() => {
+              handleInteraction("dropped");
+            }}
+          >
+            {" "}
+            <VisibilityIcon className="text-[#b7c8e1] text-3xl" />
+          </IconButton>
+        ) : (
+          <IconButton
+            onClick={() => {
+              handleInteraction("watched");
+            }}
+          >
+            {" "}
+            <VisibilityOutlinedIcon />
+          </IconButton>
+        )}
+        {!user ? (
+          <IconButton
+            onClick={() => {
+              handleInteraction(true);
+            }}
+          >
+            <FavoriteBorderOutlinedIcon />
+          </IconButton>
+        ) : isFavorited ? (
+          <IconButton
+            onClick={() => {
+              handleInteraction(false);
+            }}
+          >
+            {" "}
+            <FavoriteIcon className="text-red-700 text-3xl" />
+          </IconButton>
+        ) : (
+          <IconButton
+            onClick={() => {
+              handleInteraction(true);
+            }}
+          >
+            <FavoriteBorderOutlinedIcon />
+          </IconButton>
+        )}
+      </div>
     </div>
   );
 }

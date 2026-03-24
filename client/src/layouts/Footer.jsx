@@ -4,12 +4,14 @@ import { NavLink } from "react-router-dom";
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   return (
-    <div>
+    <section className="flex flex-col items-center gap-0.5 mt-4">
       <p>{currentYear} CineRate.All rights reserved</p>
-      <NavLink name="About" to="/about" />
-      <NavLink name="Privacy Policy" to="/privacy-policy" />
-      <NavLink name="Contact" to="/contact" />
-    </div>
+      <div className="flex gap-1.5">
+        <NavLink to={"/about"}>About</NavLink>
+        <NavLink to={"/privacy-policy"}>Privacy Policy</NavLink>
+        <NavLink to={"/contact"}>Contact</NavLink>
+      </div>
+    </section>
   );
 };
 

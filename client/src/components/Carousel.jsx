@@ -46,7 +46,6 @@ const Carousel = ({
             <CarouselItem
               basePath={basePath}
               bannerWidth={bannerWidth}
-              onTrailerButtonClick={onTrailerButtonClick}
               key={item.id}
               item={item}
               filmType={filmType}

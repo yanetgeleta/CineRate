@@ -151,6 +151,21 @@ function Home() {
     });
   }
 
+  const carouselData = [
+    { title: "Trending", items: trendingWeekly?.results, filmType: null },
+    { title: "New Releases", items: newMovies?.results, filmType: "movie" },
+    { title: "Top Rated Movies", items: topMovies?.results, filmType: "movie" },
+    { title: "Top Rated Shows", items: topShows?.results, filmType: "tv" },
+  ];
+  // <h2>Trending</h2>
+  //           <Carousel
+  //             bannerWidth={smallBannerWidth}
+  //             basePath={basePosterPath}
+  //             items={trendingWeekly?.results}
+  //             settings={posterSettings}
+  //             user={user}
+  //           />
+
   return (
     <div>
       <Navbar />
@@ -164,7 +179,7 @@ function Home() {
       ) : (
         <main className="pt-20 md:mx-20">
           {/* Hero section */}
-          <section className="relative w-full overflow-hidden px-8 flex items-end">
+          <section className="relative w-full overflow-hidden px-8 flex items-end mb-4.5">
             {" "}
             <Carousel
               onTrailerButtonClick={trailerButtonHandler}
@@ -210,45 +225,27 @@ function Home() {
             </div>
           )}
           {/* <h2>Your Watchlist</h2> */}
-          <h2>Trending</h2>
-          <Carousel
-            bannerWidth={smallBannerWidth}
-            basePath={basePosterPath}
-            items={trendingWeekly?.results}
-            settings={posterSettings}
-            user={user}
-          />
-          {/* Multiple data will come here from weeky, trending movies and shows will be shows here */}
-          <h2>New Releases</h2>
-          <Carousel
-            filmType="movie"
-            bannerWidth={smallBannerWidth}
-            basePath={basePosterPath}
-            items={newMovies?.results}
-            settings={posterSettings}
-            user={user}
-          />
-          {/* Multiple data will come for newly releases movies */}
-          {/* <h2>Because you watched</h2> */}
-          {/* You can use the recommendations end point along with one of the movies they watched id  */}
-          <h2>Top Rated Movies</h2>
-          <Carousel
-            filmType="movie"
-            bannerWidth={smallBannerWidth}
-            basePath={basePosterPath}
-            items={topMovies?.results}
-            settings={posterSettings}
-            user={user}
-          />
-          <h2>Top Rated Shows</h2>
-          <Carousel
-            filmType="tv"
-            bannerWidth={smallBannerWidth}
-            basePath={basePosterPath}
-            items={topShows?.results}
-            settings={posterSettings}
-            user={user}
-          />
+
+          {carouselData.map((film) => {
+            return (
+              <section className="px-8">
+                <div className="mb-4">
+                  <h2 className="text-2xl font-semibold tracking-tight text-[#dae2fd]">
+                    {film.title}
+                  </h2>
+                  <div class="h-1 w-12 bg-[#adc6ff] mt-2 rounded-full"></div>
+                </div>
+
+                <Carousel
+                  bannerWidth={smallBannerWidth}
+                  basePath={basePosterPath}
+                  items={film.items}
+                  settings={posterSettings}
+                  filmType={film.filmType}
+                />
+              </section>
+            );
+          })}
           {/* Multiple films from topMovies and topShows */}
         </main>
       )}
