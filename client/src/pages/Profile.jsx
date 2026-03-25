@@ -65,7 +65,7 @@ function Profile() {
 
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <ProfilePic />
 
       {loading ? (

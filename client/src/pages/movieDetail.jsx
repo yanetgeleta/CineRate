@@ -227,7 +227,7 @@ function MovieDetail() {
 
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       {pageLoading ? (
         <ClipLoader
           loading={pageLoading}

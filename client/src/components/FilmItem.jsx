@@ -41,11 +41,12 @@ function FilmItem({ film, filmType, basePosterPath, smallBannerWidth }) {
     return <p>Loading...</p>;
   }
   return (
-    <div className="flex flex-col border border-gray-200 rounded p-2">
+    <div className="group cursor-pointer">
       <Link
         to={`/${film.media_type === "movie" || filmType === "movie" ? "moviedetail" : "showdetail"}/${film.id}`}
       >
         <FilmCard
+          imgClasses="relative aspect-[2/3] rounded-2xl overflow-hidden mb-4 shadow-xl group-hover:shadow-[#adc6ff]/20 transition-all duration-300 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           src={`${basePosterPath}${smallBannerWidth}${film.poster_path}`}
         />
         <p className="font-bold">{film.title || film.name}</p>

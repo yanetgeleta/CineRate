@@ -12,6 +12,8 @@ import { useLibrary } from "../context/LibraryContex";
 import { useAuth } from "../context/AuthContext";
 import AddIcon from "@mui/icons-material/Add";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import BookmarkRemoveIcon from "@mui/icons-material/BookmarkRemove";
+import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 
 const HeroCarouselItem = ({
   basePath,
@@ -22,28 +24,27 @@ const HeroCarouselItem = ({
 }) => {
   const { getFilmStatus, statusUpdateCall, loading } = useLibrary();
   const filmStatus = getFilmStatus(item.id);
-  // const [isFavorited, setIsFavorited] = useState(filmStatus.is_favorited);
-  // const [status, setStatus] = useState(filmStatus.status);
   const navigate = useNavigate();
   const { user } = useAuth();
-  // const handleInteraction = (action) => {
-  //   if (!user) {
-  //     navigate("/loginsignup");
-  //     return;
-  //   }
-  //   if (typeof action === "boolean") {
-  //     setIsFavorited(action);
-  //   } else {
-  //     setStatus(action);
-  //   }
-  //   statusUpdateCall(
-  //     item.id,
-  //     item.media_type || filmType,
-  //     action,
-  //     item.poster_path,
-  //     item.title || item.name,
-  //   );
-  // };
+  const handleInteraction = (action) => {
+    if (!user) {
+      navigate("/loginsignup");
+      return;
+    }
+    // setStatus(action);
+    // if (typeof action === "boolean") {
+    //   setIsFavorited(action);
+    // } else {
+    //   setStatus(action);
+    // }
+    statusUpdateCall(
+      item.id,
+      item.media_type || filmType,
+      action,
+      item.poster_path,
+      item.title || item.name,
+    );
+  };
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -85,10 +86,27 @@ const HeroCarouselItem = ({
           >
             <PlayArrowIcon /> Watch Trailer
           </button>
-          <button className="bg-[#222a3d]/60 backdrop-blur-md text-[#dae2fd] px-8 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-[#31394d] transition-all hover:scale-105 active:scale-95">
-            <AddIcon />
-            Wathclist
-          </button>
+          {filmStatus.status !== "watchlist" ? (
+            <button
+              className="bg-[#222a3d]/60 backdrop-blur-md text-[#dae2fd] px-8 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-[#31394d] transition-all hover:scale-105 active:scale-95"
+              onClick={() => {
+                handleInteraction("watchlist");
+              }}
+            >
+              <BookmarkAddIcon />
+              Wathclist
+            </button>
+          ) : (
+            <button
+              className="bg-[#222a3d]/60 backdrop-blur-md text-[#dae2fd] px-8 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-[#31394d] transition-all hover:scale-105 active:scale-95"
+              onClick={() => {
+                handleInteraction("dropped");
+              }}
+            >
+              <BookmarkRemoveIcon />
+              Remove
+            </button>
+          )}
         </div>
       </div>
     </div>

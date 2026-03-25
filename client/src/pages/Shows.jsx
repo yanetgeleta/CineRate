@@ -73,7 +73,7 @@ const Shows = () => {
 
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <h2>Filter & Sort</h2>
       <FilterAndSort
         onSortChange={(sortByValue) => {

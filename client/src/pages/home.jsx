@@ -167,17 +167,21 @@ function Home() {
   //           />
 
   return (
-    <div>
-      <Navbar />
+    <main className="pt-20 md:mx-20">
+      {/* <Navbar /> */}
       {/* Banner for trending movies and shows daily */}
       {loading ? (
-        <ClipLoader
-          loading={loading}
-          aria-label="Loading Movies Spinner"
-          data-testid="loader"
-        />
+        <div className="flex items-center justify-center w-full h-full min-h-[60vh]">
+          <ClipLoader
+            loading={loading}
+            aria-label="Loading Movies Spinner"
+            data-testid="loader"
+            className="h-screen mt-20"
+            color="white"
+          />
+        </div>
       ) : (
-        <main className="pt-20 md:mx-20">
+        <div>
           {/* Hero section */}
           <section className="relative w-full overflow-hidden px-8 flex items-end mb-4.5">
             {" "}
@@ -247,9 +251,9 @@ function Home() {
             );
           })}
           {/* Multiple films from topMovies and topShows */}
-        </main>
+        </div>
       )}
-    </div>
+    </main>
   );
 }
 

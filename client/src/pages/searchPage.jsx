@@ -53,7 +53,7 @@ const SearchPage = () => {
 
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <form onSubmit={handleSearch}>
         <input
           value={inputValue}

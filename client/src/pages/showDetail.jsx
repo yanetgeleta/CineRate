@@ -210,7 +210,7 @@ function ShowDetail() {
 
   return (
     <div>
-      <Navbar user={user} />
+      {/* <Navbar user={user} /> */}
       {loading ? (
         <ClipLoader
           loading={loading}

@@ -71,87 +71,100 @@ const Movies = () => {
   }, [genreID, year, sortBy, page]);
 
   return (
-    <div>
-      <Navbar />
-      <h2>Filter & Sort</h2>
-      {/* Issues on this page so far:
+    <section className="mt-20 flex gap-8 w-full max-w-7xl">
+      {/* <Navbar /> */}
+      <aside className="hidden w-64 flex-shrink-0 lg:block">
+        <div className="sticky top-24 flex flex-col gap-6">
+          <h2 className="text-base font-semibold">Filter &amp; Sort</h2>
+          {/* Issues on this page so far:
             I want sort filter to come after the genre and other query so the data will be the same
 
             */}
-      <FilterAndSort
-        onSortChange={(sortByValue) => {
-          setSortBy(sortByValue);
-        }}
-        currentSortValue={sortBy}
-        filmType="movie"
-      />
-      <h2>Genres</h2>
-      <GenresFilter
-        onGenreChange={(genreValue) => {
-          setGenre(genreValue);
-        }}
-        currentGenreValue={genre}
-        filmType="movie"
-      />
-      <Slider
-        defaultValue={year}
-        valueLabelDisplay="auto"
-        aria-label="Year Filter"
-        step={1}
-        shiftStep={10}
-        min={1878}
-        max={currentYear}
-        onChangeCommitted={(event, newValue) => {
-          setYear(newValue);
-        }}
-      />
-      <Button
-        onClick={() => {
-          setSortBy(null);
-          setYear(currentYear);
-          setGenre(null);
-          // setGenreID(null);
-        }}
-      >
-        Reset
-      </Button>
-      {/* Pagination should go down later */}
-      {loading ? (
-        <ClipLoader
-          loading={loading}
-          aria-label="Loading Movies Spinner"
-          data-testid="loader"
-        />
-      ) : (
-        <div>
-          <h1>Browse Movies</h1>
-          <div className="grid grid-cols-5 gap-4 p-4">
-            {moviesData &&
-              moviesData.results.map((movie) => {
-                return (
-                  <FilmItem
-                    basePosterPath={basePosterPath}
-                    smallBannerWidth={smallBannerWidth}
-                    filmType="movie"
-                    key={movie.id}
-                    film={movie}
-                  />
-                );
-              })}
+          <div className="flex flex-col gap-2 rounded-xl border border-slate-200 bg-[#222a3d]/60 p-4 dark:border-slate-800 dark:bg-slate-900">
+            <FilterAndSort
+              onSortChange={(sortByValue) => {
+                setSortBy(sortByValue);
+              }}
+              currentSortValue={sortBy}
+              filmType="movie"
+            />
+            <h2>Genres</h2>
+            <GenresFilter
+              onGenreChange={(genreValue) => {
+                setGenre(genreValue);
+              }}
+              currentGenreValue={genre}
+              filmType="movie"
+            />
+            <Slider
+              defaultValue={year}
+              valueLabelDisplay="auto"
+              aria-label="Year Filter"
+              step={1}
+              shiftStep={10}
+              min={1878}
+              max={currentYear}
+              onChangeCommitted={(event, newValue) => {
+                setYear(newValue);
+              }}
+            />
+            <button
+              onClick={() => {
+                setSortBy(null);
+                setYear(currentYear);
+                setGenre(null);
+                // setGenreID(null);
+              }}
+            >
+              Reset
+            </button>
           </div>
-          {/* The film cards obviously will be looped through */}
-          {/* We need a pagination */}
         </div>
-      )}
-      <Pagination
-        onChange={(e, value) => {
-          setPage(value);
-        }}
-        page={page}
-        count={10}
-        color="primary"
-      />
-    </div>
+      </aside>
+      <div className="flex flex-1 flex-col gap-6">
+        {/* Pagination should go down later */}
+        {loading ? (
+          <div className="flex items-center justify-center w-full h-full">
+            <ClipLoader
+              loading={loading}
+              aria-label="Loading Movies Spinner"
+              data-testid="loader"
+              color="white"
+            />
+          </div>
+        ) : (
+          <div>
+            <h1 className="text-4xl font-black leading-tight tracking-[-0.033em] my-5">
+              Browse Movies
+            </h1>
+            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-6 gap-y-10">
+              {moviesData &&
+                moviesData.results.map((movie) => {
+                  return (
+                    <FilmItem
+                      basePosterPath={basePosterPath}
+                      smallBannerWidth={smallBannerWidth}
+                      filmType="movie"
+                      key={movie.id}
+                      film={movie}
+                    />
+                  );
+                })}
+            </div>
+            {/* The film cards obviously will be looped through */}
+            {/* We need a pagination */}
+          </div>
+        )}
+        <Pagination
+          onChange={(e, value) => {
+            setPage(value);
+          }}
+          page={page}
+          count={10}
+          color="primary"
+        />
+      </div>
+    </section>
   );
 };
 export default Movies;
