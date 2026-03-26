@@ -24,7 +24,9 @@
     "react-spinners": "^0.17.0",
     "swiper": "^12.1.0",
     "video.js": "^8.23.4",
-    "videojs-youtube": "^3.0.1"
+    "videojs-youtube": "^3.0.1",
+    "react-slick": "^0.31.0",
+    "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

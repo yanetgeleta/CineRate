@@ -36,7 +36,7 @@ function Navbar() {
             {" "}
             <NavLink
               className={({ isActive }) =>
-                `text-lg text-slate-400 hover:text-blue-300  duration-200 ease-out active:scale-95 transition-all ${isActive ? "underline decoration-[#ADC6FF]" : ""}`
+                `text-lg text-slate-400 hover:text-blue-300  duration-200 ease-out active:scale-95 transition-all ${isActive ? "underline decoration-[#ADC6FF] decoration-2 underline-offset-4" : ""}`
               }
               // className="text-lg text-slate-400 hover:text-blue-300  duration-200 ease-out active:scale-95 transition-all"
               to="/movies"
@@ -46,7 +46,7 @@ function Navbar() {
             <NavLink
               to="/shows"
               className={({ isActive }) =>
-                `text-lg text-slate-400 hover:text-blue-300  duration-200 ease-out active:scale-95 transition-all ${isActive ? "underline decoration-[#ADC6FF]" : ""}`
+                `text-lg text-slate-400 hover:text-blue-300  duration-200 ease-out active:scale-95 transition-all ${isActive ? "underline decoration-[#ADC6FF] decoration-2 underline-offset-4" : ""}`
               }
             >
               Shows

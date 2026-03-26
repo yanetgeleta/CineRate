@@ -41,65 +41,80 @@ function FilmItem({ film, filmType, basePosterPath, smallBannerWidth }) {
     return <p>Loading...</p>;
   }
   return (
-    <div className="group cursor-pointer">
+    <div className="group cursor-pointer relative">
       <Link
         to={`/${film.media_type === "movie" || filmType === "movie" ? "moviedetail" : "showdetail"}/${film.id}`}
       >
-        <FilmCard
-          imgClasses="relative aspect-[2/3] rounded-2xl overflow-hidden mb-4 shadow-xl group-hover:shadow-[#adc6ff]/20 transition-all duration-300 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-          src={`${basePosterPath}${smallBannerWidth}${film.poster_path}`}
-        />
-        <p className="font-bold">{film.title || film.name}</p>
-        <p className="text-sm text-gray-600 italic">
-          Rating: {film.vote_average}
-          {/* We will change this to be our own rating */}
+        <div className="relative aspect-[2/3] rounded-2xl overflow-hidden mb-4 shadow-xl group-hover:shadow-[#adc6ff]/20 transition-all duration-300 ">
+          <FilmCard
+            imgClasses="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            src={`${basePosterPath}${smallBannerWidth}${film.poster_path}`}
+          />
+        </div>
+        <p className="font-bold text-lg text-[#dae2fd] leading-tight group-hover:text-[#adc6ff] transition-colors">
+          {film.title || film.name}
         </p>
+        {/* A feature for the second version */}
+        {/* <p className="text-sm text-gray-600 italic">
+          Rating: {film.vote_average}
+        </p> */}
+        {/* We will change this to be our own rating */}
       </Link>
-      <IconButton>
+
+      <div className="hidden group-hover:flex absolute bottom-20 left-[23%] gap-1.5 bg-white/10 backdrop-blur-md rounded-sm group-hover:scale-105 transition-all duration-500 ">
         {status === "watchlist" ? (
-          <BookmarkAddIcon
+          <IconButton
             onClick={() => {
               handleInteraction("dropped");
             }}
-          />
+          >
+            <BookmarkAddIcon className="text-[#b7c8e1] text-3xl" />
+          </IconButton>
         ) : (
-          <BookmarkAddOutlinedIcon
+          <IconButton
             onClick={() => {
               handleInteraction("watchlist");
             }}
-          />
+          >
+            <BookmarkAddOutlinedIcon />
+          </IconButton>
         )}
-      </IconButton>
-      <IconButton>
         {status === "watched" ? (
-          <VisibilityIcon
+          <IconButton
             onClick={() => {
               handleInteraction("dropped");
             }}
-          />
+          >
+            <VisibilityIcon className="text-[#b7c8e1] text-3xl" />
+          </IconButton>
         ) : (
-          <VisibilityOutlinedIcon
+          <IconButton
             onClick={() => {
               handleInteraction("watched");
             }}
-          />
+          >
+            <VisibilityOutlinedIcon />
+          </IconButton>
         )}
-      </IconButton>
-      <IconButton>
         {isFavorited ? (
-          <FavoriteIcon
-            onClick={() => {
-              handleInteraction(false);
-            }}
-          />
+          <IconButton>
+            <FavoriteIcon
+              className="text-red-700 text-3xl"
+              onClick={() => {
+                handleInteraction(false);
+              }}
+            />
+          </IconButton>
         ) : (
-          <FavoriteBorderOutlinedIcon
+          <IconButton
             onClick={() => {
               handleInteraction(true);
             }}
-          />
+          >
+            <FavoriteBorderOutlinedIcon />
+          </IconButton>
         )}
-      </IconButton>
+      </div>
     </div>
   );
 }

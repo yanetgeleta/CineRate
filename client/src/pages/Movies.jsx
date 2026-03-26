@@ -7,6 +7,7 @@ import Slider from "@mui/material/Slider";
 import { ClipLoader } from "react-spinners";
 import Pagination from "@mui/material/Pagination";
 import FilmItem from "../components/FilmItem";
+import PaginationItem from "@mui/material/PaginationItem";
 
 // This is dedicated page just for movies\
 // year=1999&sort_by=popularity.desc&without_genres=action'
@@ -71,11 +72,13 @@ const Movies = () => {
   }, [genreID, year, sortBy, page]);
 
   return (
-    <section className="mt-20 flex gap-8 w-full max-w-7xl">
+    <section className="mt-20 flex gap-8 w-full max-w-7xl md:mx-20">
       {/* <Navbar /> */}
       <aside className="hidden w-64 flex-shrink-0 lg:block">
         <div className="sticky top-24 flex flex-col gap-6">
-          <h2 className="text-base font-semibold">Filter &amp; Sort</h2>
+          <h2 className="text-xl font-semibold ml-2 mb-[-.5rem]">
+            Filter &amp; Sort
+          </h2>
           {/* Issues on this page so far:
             I want sort filter to come after the genre and other query so the data will be the same
 
@@ -96,6 +99,7 @@ const Movies = () => {
               currentGenreValue={genre}
               filmType="movie"
             />
+            <h2>Release Year</h2>
             <Slider
               defaultValue={year}
               valueLabelDisplay="auto"
@@ -124,7 +128,7 @@ const Movies = () => {
       <div className="flex flex-1 flex-col gap-6">
         {/* Pagination should go down later */}
         {loading ? (
-          <div className="flex items-center justify-center w-full h-full">
+          <div className="flex flex-grow items-center justify-center w-full min-h-[60vh] mb-8">
             <ClipLoader
               loading={loading}
               aria-label="Loading Movies Spinner"
@@ -133,7 +137,7 @@ const Movies = () => {
             />
           </div>
         ) : (
-          <div>
+          <div className="relative">
             <h1 className="text-4xl font-black leading-tight tracking-[-0.033em] my-5">
               Browse Movies
             </h1>
@@ -155,14 +159,37 @@ const Movies = () => {
             {/* We need a pagination */}
           </div>
         )}
-        <Pagination
-          onChange={(e, value) => {
-            setPage(value);
-          }}
-          page={page}
-          count={10}
-          color="primary"
-        />
+        <div className="flex justify-center items-center pt-8">
+          <Pagination
+            onChange={(e, value) => {
+              setPage(value);
+            }}
+            page={page}
+            // variant="outlined"
+            count={10}
+            color="primary"
+            renderItem={(item) => (
+              <PaginationItem
+                {...item}
+                sx={{
+                  "&.Mui-selected": {
+                    backgroundColor: "#222a3d",
+                    color: "white",
+                    "&:hover": {
+                      backgroundColor: "#31394d",
+                    },
+                  },
+                  "&:not(.Mui-selected)": {
+                    color: "white",
+                  },
+                  "&:hover": {
+                    backgroundColor: "#262348",
+                  },
+                }}
+              />
+            )}
+          />
+        </div>
       </div>
     </section>
   );

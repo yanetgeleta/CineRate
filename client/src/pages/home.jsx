@@ -167,7 +167,7 @@ function Home() {
   //           />
 
   return (
-    <main className="pt-20 md:mx-20">
+    <main className="mt-20 md:mx-20">
       {/* <Navbar /> */}
       {/* Banner for trending movies and shows daily */}
       {loading ? (

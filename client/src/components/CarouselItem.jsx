@@ -54,6 +54,7 @@ function CarouselItem({ item, filmType, ...otherProps }) {
             <FilmCard
               imgClasses={"w-full h-full object-cover rounded-xl"}
               src={`${otherProps.basePath}${otherProps.bannerWidth}${item.poster_path}`}
+              alt="A small film poster card"
             />
           </div>
           <div className="mt-4">

@@ -59,6 +59,7 @@ const HeroCarouselItem = ({
           <FilmCard
             // imgClasses="rounded-2xl"
             src={`${basePath}${bannerWidth}${item.backdrop_path}`}
+            alt="Hero film card"
           />
           <div className="hidden group-hover:block z-10 absolute bottom-15 left-2">
             <h2 className="text-4xl md:text-8xl font-bold tracking-tighter mb-6 leading-[0.9] text-[#dae2fd]">
