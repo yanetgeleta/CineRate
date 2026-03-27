@@ -38,7 +38,7 @@ function Home() {
     spaceBetween: 0,
     slidesPerView: 1,
     // pagination: { clickable: true },
-    // autoplay: { delay: 5000 },
+    autoplay: { delay: 5000 },
     mousewheel: { enabled: true, forceToAxis: true },
     // disableOnInteraction: false,
     // pauseOnMouseEnter: true,
@@ -152,20 +152,11 @@ function Home() {
   }
 
   const carouselData = [
-    { title: "Trending", items: trendingWeekly?.results, filmType: null },
+    { title: "Trending", items: trendingWeekly, filmType: null },
     { title: "New Releases", items: newMovies?.results, filmType: "movie" },
     { title: "Top Rated Movies", items: topMovies?.results, filmType: "movie" },
     { title: "Top Rated Shows", items: topShows?.results, filmType: "tv" },
   ];
-  // <h2>Trending</h2>
-  //           <Carousel
-  //             bannerWidth={smallBannerWidth}
-  //             basePath={basePosterPath}
-  //             items={trendingWeekly?.results}
-  //             settings={posterSettings}
-  //             user={user}
-  //           />
-
   return (
     <main className="mt-20 md:mx-20">
       {/* <Navbar /> */}
@@ -189,7 +180,7 @@ function Home() {
               onTrailerButtonClick={trailerButtonHandler}
               bannerWidth={heroBannerWidth}
               basePath={basePosterPath}
-              items={trendingToday?.results}
+              items={trendingToday}
               settings={heroBannerSettings}
             />
           </section>

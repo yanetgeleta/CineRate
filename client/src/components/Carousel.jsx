@@ -35,12 +35,12 @@ const Carousel = ({
         <SwiperSlide key={item.id}>
           {bannerWidth === "w1280" ? (
             <HeroCarouselItem
-              basePath={basePath}
               bannerWidth={bannerWidth}
               onTrailerButtonClick={onTrailerButtonClick}
               key={item.id}
               item={item}
               filmType={filmType}
+              basePath={basePath}
             />
           ) : (
             <CarouselItem

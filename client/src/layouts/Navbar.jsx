@@ -23,7 +23,7 @@ function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-[#0B1326] backdrop-blur-xl bg-opacity-60 shadow-2xl shadow-blue-500/5 max-h-20">
+    <nav className="fixed top-0 w-full z-50 bg-[#0B1326] backdrop-blur-xl bg-opacity-60 shadow-2xl shadow-blue-500/5 h-20">
       <div className="flex justify-between items-center px-8 py-4 max-w-[1920px] mx-auto font-['Inter'] tracking-tight antialiased">
         <div className="flex items-center gap-12">
           <NavLink

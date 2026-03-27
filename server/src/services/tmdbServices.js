@@ -1,6 +1,5 @@
 import axios from "axios";
 import env from "dotenv";
-import { response } from "express";
 import path from "path";
 
 env.config({ path: path.resolve(process.cwd(), ".env") });
@@ -15,10 +14,19 @@ const config = {
   },
 };
 export const getTrendingToday = async () => {
-  return await axios.get(`${baseURL}/trending/all/day`, config);
+  const response = await axios.get(`${baseURL}/trending/all/day`, config);
+  const data = response.data.results.filter((item) => {
+    return item.media_type !== "person";
+  });
+  // console.log({ data: data });
+  return { data: data };
 };
 export const getTrendingWeekly = async () => {
-  return await axios.get(`${baseURL}/trending/all/week`, config);
+  const response = await axios.get(`${baseURL}/trending/all/week`, config);
+  const data = response.data.results.filter((item) => {
+    return item.media_type !== "person";
+  });
+  return { data: data };
 };
 export const getNewReleaseMovies = async () => {
   return await axios.get(`${baseURL}/movie/now_playing`, config);

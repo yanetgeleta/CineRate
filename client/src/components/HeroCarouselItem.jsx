@@ -22,6 +22,8 @@ const HeroCarouselItem = ({
   item,
   filmType,
 }) => {
+  const heroPosterPlaceholder =
+    "https://placehold.co/1280x720/black/white?text=Hero+Placeholder";
   const { getFilmStatus, statusUpdateCall, loading } = useLibrary();
   const filmStatus = getFilmStatus(item.id);
   const navigate = useNavigate();
@@ -58,7 +60,11 @@ const HeroCarouselItem = ({
         >
           <FilmCard
             // imgClasses="rounded-2xl"
-            src={`${basePath}${bannerWidth}${item.backdrop_path}`}
+            src={
+              item.backdrop_path
+                ? `${basePath}${bannerWidth}${item.backdrop_path}`
+                : heroPosterPlaceholder
+            }
             alt="Hero film card"
           />
           <div className="hidden group-hover:block z-10 absolute bottom-15 left-2">

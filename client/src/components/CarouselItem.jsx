@@ -15,6 +15,8 @@ import AddIcon from "@mui/icons-material/Add";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
 function CarouselItem({ item, filmType, ...otherProps }) {
+  const smallBannerPlaceHolder =
+    "https://placehold.co/300/black/white?text=Small+Poster+Placeholder";
   const { getFilmStatus, statusUpdateCall, loading } = useLibrary();
   const filmStatus = getFilmStatus(item.id);
   const [isFavorited, setIsFavorited] = useState(filmStatus.is_favorited);
@@ -53,7 +55,10 @@ function CarouselItem({ item, filmType, ...otherProps }) {
           <div className=" shadow-lg transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl active:scale-95 group-hover:shadow-[#adc6ff]/20">
             <FilmCard
               imgClasses={"w-full h-full object-cover rounded-xl"}
-              src={`${otherProps.basePath}${otherProps.bannerWidth}${item.poster_path}`}
+              src={
+                `${otherProps.basePath}${otherProps.bannerWidth}${item.poster_path}` ||
+                smallBannerPlaceHolder
+              }
               alt="A small film poster card"
             />
           </div>

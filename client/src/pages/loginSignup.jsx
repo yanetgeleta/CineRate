@@ -5,6 +5,7 @@ import LoginForm from "../components/auth/LoginForm";
 import SignUpForm from "../components/auth/SignUpForm";
 import { useLocation, useNavigate } from "react-router-dom";
 import GoogleIcon from "@mui/icons-material/Google";
+import IconButton from "@mui/material/IconButton";
 // This is where users login and signup
 function LoginSignUp() {
   const navigate = useNavigate();
@@ -28,26 +29,26 @@ function LoginSignUp() {
   };
 
   return (
-    <div>
-      <img src="https://placehold.co/100x150" alt="background picture" />
+    <section className="mt-20">
+      <img src="../wall-poster.jpg" alt="background picture" />
       <span>
         <MovieIcon />
         <h2>CineRate</h2>
       </span>
       <h2>Your cinematic journey starts here</h2>
       <p>Login in or create account to start rating and reviewing films.</p>
-      <Button onClick={handleLogIn}>Login</Button>
-      <Button onClick={handleSignUp}>Sign up</Button>
+      <button onClick={handleLogIn}>Login</button>
+      <button onClick={handleSignUp}>Sign up</button>
       {mode === "login" ? (
         <LoginForm onSuccess={handleAuthenticationSuccess} />
       ) : (
         <SignUpForm onSuccess={handleAuthenticationSuccess} />
       )}
       <p>Or continue with</p>
-      <Button onClick={handleGoogleLogin}>
+      <IconButton onClick={handleGoogleLogin}>
         <GoogleIcon />
-      </Button>
-    </div>
+      </IconButton>
+    </section>
   );
 }
 export default LoginSignUp;
