@@ -89,7 +89,7 @@ function Navbar() {
             </div>
           )}
 
-          {!user && (
+          {!user && pathname !== "/loginsignup" && (
             <div className="hidden md:flex gap-2">
               <Link
                 className="flex items-center justify-center bg-blue-400 text-white text-lg font-bold leading-normal tracking-[0.015em] hover:bg-blue-400/90 transition-colors min-w-[84px] max-w-[480px] cursor-pointer rounded-lg h-10 px-4"
