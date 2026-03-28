@@ -100,7 +100,9 @@ const Shows = () => {
               onClick={() => {
                 setSortBy(null);
                 setGenre(null);
+                setGenreID(null);
               }}
+              className="hover:underline decoration-[#ADC6FF] underline-offset-2"
             >
               Reset
             </button>

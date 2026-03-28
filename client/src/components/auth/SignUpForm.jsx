@@ -58,7 +58,7 @@ const SignUpForm = (props) => {
             </p>
             <input
               type="text"
-              placeholder="Enter your first name"
+              placeholder="John"
               id="signup-fname"
               value={fName}
               onChange={(e) => {
@@ -71,7 +71,7 @@ const SignUpForm = (props) => {
             <p className="text-sm font-medium leading-normal pb-2">Last Name</p>
             <input
               type="text"
-              placeholder="Enter your last name"
+              placeholder="Doe"
               id="signup-lname"
               value={lName}
               onChange={(e) => {
@@ -86,7 +86,7 @@ const SignUpForm = (props) => {
             <p className="text-sm font-medium leading-normal pb-2">Username</p>
             <input
               type="text"
-              placeholder="Enter your username"
+              placeholder="cinephilejoe"
               id="signup-username"
               value={username}
               onChange={(e) => {
@@ -100,7 +100,7 @@ const SignUpForm = (props) => {
             <p className="text-sm font-medium leading-normal pb-2">Email</p>
             <input
               type="email"
-              placeholder="Enter your email"
+              placeholder="firstname@gmail.com"
               id="signup-email"
               value={email}
               onChange={(e) => {
@@ -114,7 +114,7 @@ const SignUpForm = (props) => {
           <p className="text-sm font-medium leading-normal pb-2">Password</p>
           <input
             type="password"
-            placeholder="Enter password"
+            placeholder="Use strong password"
             id="signup-password"
             value={password}
             onChange={(e) => {
