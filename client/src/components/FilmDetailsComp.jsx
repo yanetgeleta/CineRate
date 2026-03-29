@@ -101,7 +101,7 @@ function FilmDetailsComp({ filmData }) {
                     className="w-30 h-30 object-cover rounded-full mb-2"
                   />
                   <p className="font-semibold text-sm">{actor.name}</p>
-                  <p className="text-white/60 text-xs">{actor.character}</p>
+                  <p className="text-[#dae2fd]/60 text-xs">{actor.character}</p>
                 </div>
               );
             })}

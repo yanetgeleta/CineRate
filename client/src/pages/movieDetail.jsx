@@ -361,7 +361,7 @@ function MovieDetail() {
                 onClick={() => {
                   setCurrentMode("details");
                 }}
-                className={`px-4 py-3 font-semibold  ${currentMode === "details" ? "border-b-2 border-[#adc6ff] text-[#dae2fd]" : "text-[#dae2fd]/60 hover:text-[#dae2fd]"} `}
+                className={`uppercase px-4 py-3 font-semibold  ${currentMode === "details" ? "border-b-2 border-[#adc6ff] text-[#dae2fd]" : "text-[#dae2fd]/60 hover:text-[#dae2fd]"} `}
               >
                 Details
               </button>
@@ -369,7 +369,7 @@ function MovieDetail() {
                 onClick={() => {
                   setCurrentMode("cast-crew");
                 }}
-                className={`px-4 py-3 font-semibold  ${currentMode === "cast-crew" ? "border-b-2 border-[#adc6ff] pb-[-2px] text-[#dae2fd]" : "text-[#dae2fd]/60 hover:text-[#dae2fd]"} `}
+                className={`uppercase px-4 py-3 font-semibold  ${currentMode === "cast-crew" ? "border-b-2 border-[#adc6ff] pb-[-2px] text-[#dae2fd]" : "text-[#dae2fd]/60 hover:text-[#dae2fd]"} `}
               >
                 Cast & Crew
               </button>
@@ -377,7 +377,7 @@ function MovieDetail() {
                 onClick={() => {
                   setCurrentMode("reviews");
                 }}
-                className={`px-4 py-3 font-semibold  ${currentMode === "reviews" ? "border-b-2 border-[#adc6ff] text-[#dae2fd]" : "text-[#dae2fd]/60 hover:text-[#dae2fd]"} `}
+                className={`uppercase px-4 py-3 font-semibold  ${currentMode === "reviews" ? "border-b-2 border-[#adc6ff] text-[#dae2fd]" : "text-[#dae2fd]/60 hover:text-[#dae2fd]"} `}
               >
                 Reviews
               </button>
@@ -395,6 +395,7 @@ function MovieDetail() {
                 myReviews={myReviews}
                 openEditReview={openEditReview}
                 onDelete={openDelete}
+                rating={filmRating.rating}
               />
             )}
           </div>
