@@ -1,4 +1,6 @@
 import React from "react";
+import { createAvatar } from "@dicebear/core";
+import { pixelArt } from "@dicebear/collection";
 
 function FilmDetailsComp({ filmData }) {
   // const filmGenres = filmData.genres;
@@ -13,6 +15,12 @@ function FilmDetailsComp({ filmData }) {
     );
   });
   const topCast = cast.slice(0, 6);
+
+  const avatar = createAvatar(pixelArt, {
+    seed: "Actor Actress",
+  });
+
+  const profilePlaceholder = avatar.toDataUri();
   return (
     <div className="py-6 flex flex-col gap-8">
       {/* Header and overview */}
@@ -97,7 +105,11 @@ function FilmDetailsComp({ filmData }) {
                 >
                   {/* https://image.tmdb.org/t/p/w780/ */}
                   <img
-                    src={`https://image.tmdb.org/t/p/w185/${actor.profile_path}`}
+                    src={
+                      actor.profile_path
+                        ? `https://image.tmdb.org/t/p/w185/${actor.profile_path}`
+                        : profilePlaceholder
+                    }
                     className="w-30 h-30 object-cover rounded-full mb-2"
                   />
                   <p className="font-semibold text-sm">{actor.name}</p>

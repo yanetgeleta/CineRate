@@ -6,6 +6,8 @@ import IconButton from "@mui/material/IconButton";
 import CommentIcon from "@mui/icons-material/Comment";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Rating from "@mui/material/Rating";
+import { createAvatar } from "@dicebear/core";
+import { pixelArt } from "@dicebear/collection";
 
 function FilmReviewComp({
   myReviews,
@@ -20,6 +22,11 @@ function FilmReviewComp({
   const editHandler = (review) => {
     openEditReview(review);
   };
+  const avatar = createAvatar(pixelArt, {
+    seed: "Actor Actress",
+  });
+
+  const profilePlaceholder = avatar.toDataUri();
   if (!myReviews) {
     // When I haven't made a comment, or there is no user
     return (
@@ -36,7 +43,7 @@ function FilmReviewComp({
               <div className="flex items-center gap-3">
                 <img
                   className="w-10 h-10 rounded-full bg-[#222a3d] border border-outline-variant/20 overflow-hidden"
-                  src={review.profile_pic_url}
+                  src={review.profile_pic_url || profilePlaceholder}
                 />{" "}
                 <h3 className="font-bold text-slate-100">
                   {review.display_name}
@@ -80,7 +87,7 @@ function FilmReviewComp({
                   <div className="w-16 h-16 rounded-2xl overflow-hidden shrink-0 shadow-lg shadow-black/20">
                     <img
                       alt="My profile Picture"
-                      src={review.profile_pic_url}
+                      src={review.profile_pic_url || profilePlaceholder}
                     />
                   </div>
                   <div className="grow">
@@ -136,7 +143,7 @@ function FilmReviewComp({
                 <div className="flex items-center gap-3">
                   <img
                     className="w-10 h-10 rounded-full bg-[#222a3d] border border-outline-variant/20 overflow-hidden"
-                    src={review.profile_pic_url}
+                    src={review.profile_pic_url || profilePlaceholder}
                   />{" "}
                   <h3 className="font-bold text-slate-100">
                     {review.display_name}
