@@ -29,7 +29,7 @@ function LoginSignUp() {
   };
 
   return (
-    <section className="mt-20 md:mx-20">
+    <section className="mt-20 md:mx-10 px-8">
       <div className="flex w-full flex-col md:flex-row relative">
         {/* left side image */}
         <div className="hidden md:flex md:w-1/2 lg:w-3/5 max-h-[90vh] shadow-xl sticky top-20 left-0">

@@ -158,7 +158,7 @@ function Home() {
     { title: "Top Rated Shows", items: topShows?.results, filmType: "tv" },
   ];
   return (
-    <main className="mt-20 md:mx-20">
+    <main className="mt-20 md:mx-10">
       {/* <Navbar /> */}
       {/* Banner for trending movies and shows daily */}
       {loading ? (
@@ -174,7 +174,7 @@ function Home() {
       ) : (
         <div>
           {/* Hero section */}
-          <section className="relative w-full overflow-hidden px-8 flex items-end mb-4.5">
+          <section className="relative w-full overflow-hidden px-8 flex items-end mb-4.5 max-h-170">
             {" "}
             <Carousel
               onTrailerButtonClick={trailerButtonHandler}
@@ -190,7 +190,7 @@ function Home() {
             <div className="fixed inset-0 z-50 w-screen h-screen bg-black/90 flex items-center justify-center">
               {/* CLOSE BUTTON CONTAINER: Positioned absolute to the SCREEN, safely outside the video */}
               {/* Using an arbitrary Tailwind value z-[60] ensures it sits above the video player */}
-              <div className="absolute top-6 right-6 z-[60]">
+              <div className="absolute top-6 right-6 z-60">
                 <IconButton
                   onClick={() => {
                     setIsPlayerOpen(false);

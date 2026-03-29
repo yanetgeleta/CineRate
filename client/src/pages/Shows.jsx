@@ -73,12 +73,10 @@ const Shows = () => {
   }, [genreID, sortBy, page]);
 
   return (
-    <section className="mt-20 flex gap-8 w-full max-w-7xl md:mx-20">
-      <aside className="hidden w-64 flex-shrink-0 lg:block">
+    <section className="mt-20 flex gap-8 w-full max-w-7xl md:mx-10 px-8">
+      <aside className="hidden w-64 shrink-0 lg:block">
         <div className="sticky top-24 flex flex-col gap-6">
-          <h2 className="text-xl font-semibold ml-2 mb-[-.5rem]">
-            Filter & Sort
-          </h2>
+          <h2 className="text-xl font-semibold ml-2 -mb-2">Filter & Sort</h2>
           <div className="flex flex-col gap-2 rounded-xl border border-slate-200 bg-[#222a3d]/60 p-4 dark:border-slate-800 dark:bg-slate-900">
             <FilterAndSort
               onSortChange={(sortByValue) => {
@@ -111,7 +109,7 @@ const Shows = () => {
       </aside>
       <div className="flex flex-1 flex-col gap-6">
         {loading ? (
-          <div className="flex flex-grow items-center justify-center w-full min-h-[60vh] mb-8">
+          <div className="flex grow items-center justify-center w-full min-h-[60vh] mb-8">
             <ClipLoader
               loading={loading}
               data-testid="loader"

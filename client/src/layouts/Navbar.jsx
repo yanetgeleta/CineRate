@@ -24,7 +24,7 @@ function Navbar() {
 
   return (
     <nav className="fixed top-0 w-full z-50 bg-[#0B1326] backdrop-blur-xl bg-opacity-60 shadow-2xl shadow-blue-500/5 h-20">
-      <div className="flex justify-between items-center px-8 py-4 max-w-[1920px] mx-auto font-['Inter'] tracking-tight antialiased">
+      <div className="flex justify-between items-center px-8 py-4 max-w-480 mx-auto font-['Inter'] tracking-tight antialiased">
         <div className="flex items-center gap-12">
           <NavLink
             className="text-2xl font-bold tracking-tighter text-blue-400 dark:text-[#ADC6FF]"
@@ -74,7 +74,7 @@ function Navbar() {
             <div className="flex gap-1.5 items-center justify-center">
               {/* <NotificationRing /> */}
               <button
-                className="flex items-center justify-center bg-[#262348] text-white text-lg font-bold leading-normal tracking-[0.015em] hover:bg-[#262348]/8 transition-colors min-w-[84px] max-w-[480px] cursor-pointer rounded-lg h-10 px-4 active:scale-95"
+                className="flex items-center justify-center bg-[#262348] text-white text-lg font-bold leading-normal tracking-[0.015em] hover:bg-[#262348]/8 transition-colors min-w-21 max-w-120 cursor-pointer rounded-lg h-10 px-4 active:scale-95"
                 onClick={() => {
                   logout();
                 }}
@@ -92,14 +92,14 @@ function Navbar() {
           {!user && pathname !== "/loginsignup" && (
             <div className="hidden md:flex gap-2">
               <Link
-                className="flex items-center justify-center bg-blue-400 text-white text-lg font-bold leading-normal tracking-[0.015em] hover:bg-blue-400/90 transition-colors min-w-[84px] max-w-[480px] cursor-pointer rounded-lg h-10 px-4"
+                className="flex items-center justify-center bg-blue-400 text-white text-lg font-bold leading-normal tracking-[0.015em] hover:bg-blue-400/90 transition-colors min-w-21 max-w-120 cursor-pointer rounded-lg h-10 px-4"
                 to="/loginsignup"
                 state={{ initialMode: "signup" }}
               >
                 Sign Up
               </Link>
               <Link
-                className="flex items-center justify-center bg-[#262348] text-white text-lg font-bold leading-normal tracking-[0.015em] hover:bg-[#262348]/8 transition-colors min-w-[84px] max-w-[480px] cursor-pointer rounded-lg h-10 px-4"
+                className="flex items-center justify-center bg-[#262348] text-white text-lg font-bold leading-normal tracking-[0.015em] hover:bg-[#262348]/8 transition-colors min-w-21 max-w-120 cursor-pointer rounded-lg h-10 px-4"
                 to="/loginsignup"
                 state={{ initialMode: "login" }}
               >

@@ -72,11 +72,11 @@ const Movies = () => {
   }, [genreID, year, sortBy, page]);
 
   return (
-    <section className="mt-20 flex gap-8 w-full max-w-7xl md:mx-20">
+    <section className="mt-20 flex gap-8 w-full max-w-7xl md:mx-10 px-8">
       {/* <Navbar /> */}
-      <aside className="hidden w-64 flex-shrink-0 lg:block">
+      <aside className="hidden w-64 shrink-0 lg:block">
         <div className="sticky top-24 flex flex-col gap-6">
-          <h2 className="text-xl font-semibold ml-2 mb-[-.5rem]">
+          <h2 className="text-xl font-semibold ml-2 -mb-2">
             Filter &amp; Sort
           </h2>
           {/* Issues on this page so far:
@@ -129,7 +129,7 @@ const Movies = () => {
       <div className="flex flex-1 flex-col gap-6">
         {/* Pagination should go down later */}
         {loading ? (
-          <div className="flex flex-grow items-center justify-center w-full min-h-[60vh] mb-8">
+          <div className="flex grow items-center justify-center w-full min-h-[60vh] mb-8">
             <ClipLoader
               loading={loading}
               aria-label="Loading Movies Spinner"
