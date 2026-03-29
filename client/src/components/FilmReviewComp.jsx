@@ -23,22 +23,31 @@ function FilmReviewComp({
   if (!myReviews) {
     // When I haven't made a comment, or there is no user
     return (
-      <div>
-        <h3>Reviews</h3>
+      <div className="my-8">
+        <div className="border-b border-[#424754]/10 pb-4">
+          <h3 className="text-2xl font-bold tracking-tight">
+            Community Reviews
+          </h3>
+        </div>
+
         {reviews.map((review) => {
           return (
-            <div>
-              <img src={review.profile_pic_url} />{" "}
-              <h3>{review.display_name}</h3>
-              <p>{review.created_at}</p>
-              <p>{review.review_text}</p>
-              {/* <IconButton>
-                <ThumbUpIcon />
-              </IconButton>
-              <IconButton>
-                <CommentIcon />
-              </IconButton> */}
-              {/* Second version features */}
+            <div className="space-y-4 w-full md:w-[70vw] my-4">
+              <div className="flex items-center gap-3">
+                <img
+                  className="w-10 h-10 rounded-full bg-[#222a3d] border border-outline-variant/20 overflow-hidden"
+                  src={review.profile_pic_url}
+                />{" "}
+                <h3 className="font-bold text-slate-100">
+                  {review.display_name}
+                </h3>
+                <p className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">
+                  {new Date(review.created_at).toLocaleDateString()}
+                </p>
+              </div>
+              <p className="text-[#c2c6d6] leading-relaxed">
+                {review.review_text}
+              </p>
             </div>
           );
         })}
@@ -47,20 +56,24 @@ function FilmReviewComp({
   }
   return (
     <div>
-      {user && myReviews && (
-        // These are all my informations so easy to get them
+      {user && myReviews.length > 0 && (
+        // These are all my informations, so easy to get them
         // I can comment on my review, I can like it, I can reply to other people that replied
         // My review
-        <div>
+        <div className="my-8">
           {myReviews.map((review) => {
             return (
               <div
-                className="bg-[#171f33] rounded-3xl p-8 relative overflow-hidden group my-2"
+                className="bg-[#171f33] rounded-3xl p-8 relative overflow-hidden my-4 w-full md:w-[70vw]"
                 key={review.id}
               >
                 <div className="absolute top-0 right-0 p-6 flex gap-2">
-                  <p>{new Date(review.created_at).toLocaleDateString()}</p>
-                  <p className="">YOUR REVIEW</p>
+                  <p className="text-[10px] font-bold text-blue-400 tracking-[0.2em] uppercase">
+                    {new Date(review.created_at).toLocaleDateString()}
+                  </p>
+                  <p className="text-[10px] font-bold text-blue-400 tracking-[0.2em] uppercase">
+                    YOUR REVIEW
+                  </p>
                 </div>
 
                 <div className="flex items-start gap-6">
@@ -88,18 +101,16 @@ function FilmReviewComp({
                     </p>
                     <div className="flex items-center gap-4">
                       <IconButton
-                        onClick={() => {
-                          editHandler(review);
-                        }}
+                        className="group transition-colors"
+                        onClick={() => editHandler(review)}
                       >
-                        <EditIcon />
+                        <EditIcon className="text-slate-500 group-hover:text-slate-200 text-base! transition-colors" />
                       </IconButton>
                       <IconButton
-                        onClick={() => {
-                          onDelete(review.id);
-                        }}
+                        className="group transition-colors"
+                        onClick={() => onDelete(review.id)}
                       >
-                        <DeleteIcon />
+                        <DeleteIcon className="text-slate-500 group-hover:text-red-400 text-base! transition-colors" />
                       </IconButton>
                     </div>
                   </div>
@@ -109,24 +120,34 @@ function FilmReviewComp({
           })}
         </div>
       )}
-      {user && myReviews && otherReviews && (
+      {user && myReviews && otherReviews.length > 0 && (
         // I will have to get each of the informations here for the people that commented on a movie or tv show (film)
         // Users can like, comment and reply to other users
-        <div>
-          <h3>Community Reviews</h3>
+        <div className="my-8">
+          <div className="border-b border-[#424754]/10 pb-4">
+            <h3 className="text-2xl font-bold tracking-tight">
+              Community Reviews
+            </h3>
+          </div>
+
           {otherReviews.map((review) => {
             return (
-              <div>
-                <img src={review.profile_pic_url} />{" "}
-                <h3>{review.display_name}</h3>
-                <p>{review.created_at}</p>
-                <p>{review.review_text}</p>
-                {/* <IconButton>
-                  <ThumbUpIcon />
-                </IconButton>
-                <IconButton>
-                  <CommentIcon />
-                </IconButton> */}
+              <div className="space-y-4 w-full md:w-[70vw] my-4">
+                <div className="flex items-center gap-3">
+                  <img
+                    className="w-10 h-10 rounded-full bg-[#222a3d] border border-outline-variant/20 overflow-hidden"
+                    src={review.profile_pic_url}
+                  />{" "}
+                  <h3 className="font-bold text-slate-100">
+                    {review.display_name}
+                  </h3>
+                  <p className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">
+                    {new Date(review.created_at).toLocaleDateString()}
+                  </p>
+                </div>
+                <p className="text-[#c2c6d6] leading-relaxed">
+                  {review.review_text}
+                </p>
               </div>
             );
           })}
