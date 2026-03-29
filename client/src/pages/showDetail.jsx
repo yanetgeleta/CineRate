@@ -40,6 +40,7 @@ function ShowDetail() {
   const [isEditReviewOpen, setIsEditReviewOpen] = useState(false);
   const [editedReview, setEditedReview] = useState(null);
   const [isReviewOpen, setIsReviewOpen] = useState(false);
+  const [currentMode, setCurrentMode] = useState("details");
 
   const [showGenres, setShowGenres] = useState(null);
   const { user } = useAuth();
@@ -209,116 +210,200 @@ function ShowDetail() {
   };
 
   return (
-    <div>
+    <main className="mt-20 md:mx-10 px-8">
       {/* <Navbar user={user} /> */}
       {loading ? (
-        <ClipLoader
-          loading={loading}
-          aria-label="Loading Show Detail Spinner"
-          data-testid="loader"
-        />
+        <div className="flex items-center justify-center w-full h-full min-h-[60vh]">
+          <ClipLoader
+            loading={loading}
+            aria-label="Loading Show Detail Spinner"
+            data-testid="loader"
+            color="white"
+          />
+        </div>
       ) : (
         <div>
-          <FilmCard
-            src={`${basePosterPath}${heroBannerWidth}${showData.backdrop_path}`}
-          />{" "}
-          {/* the big background */}
-          <FilmCard
-            src={`${basePosterPath}${smallBannerWidth}${showData.poster_path}`}
-          />{" "}
-          {/* the smaller card */}
-          <h2>{showData.title || showData.name}</h2>
-          <p>{showData.vote_average}</p>
-          <p>
-            {showData.first_air_date} -{" "}
-            {showData.status === "Ended"
-              ? showData.last_air_date
-              : "Continuing"}
-          </p>
-          {showGenres.map((genre) => (
-            <Button key={genre.id}>{genre.name}</Button>
-          ))}
-          {filmStatus.status === "watchlist" ? (
-            <IconButton
-              onClick={() => {
-                handleStatusFavorite("dropped");
-              }}
-            >
-              {" "}
-              <BookmarkAddIcon />
-            </IconButton>
-          ) : (
-            <IconButton
-              onClick={() => {
-                handleStatusFavorite("watchlist");
-              }}
-            >
-              <BookmarkAddOutlinedIcon />
-            </IconButton>
-          )}
-          {filmStatus.status === "watched" ? (
-            <IconButton
-              onClick={() => {
-                handleStatusFavorite("dropped");
-              }}
-            >
-              <VisibilityIcon />
-            </IconButton>
-          ) : (
-            <IconButton
-              onClick={() => {
-                handleStatusFavorite("watched");
-              }}
-            >
-              <VisibilityOutlinedIcon />
-            </IconButton>
-          )}
-          {filmStatus.is_favorited ? (
-            <IconButton
-              onClick={() => {
-                handleStatusFavorite(false);
-              }}
-            >
-              <FavoriteIcon />
-            </IconButton>
-          ) : (
-            <IconButton
-              onClick={() => {
-                handleStatusFavorite(true);
-              }}
-            >
-              <FavoriteBorderOutlinedIcon />
-            </IconButton>
-          )}
-          <Rating
-            onChange={(event, newValue) => {
-              handleRating(newValue);
-            }}
-            name="film-rating"
-            precision={0.5}
-            value={filmRating.rating}
-          />
-          <IconButton
-            onClick={() => {
-              setIsReviewOpen(true);
-            }}
-          >
-            <CreateIcon />
-          </IconButton>
-          <Button>Details</Button>
-          <Button>Cast & Crew</Button>
-          <Button>Seasons</Button>
-          <Button>Reviews</Button>
-          <FilmDetailsComp filmData={showData} />
-          <FilmCastCrewComp filmCredits={showData.credits} />
-          {/* Each button will render its respective information */}
-          <FilmReviewComp
-            reviews={reviews}
-            otherReviews={otherReviews}
-            myReviews={myReviews}
-            openEditReview={openEditReview}
-            onDelete={openDelete}
-          />
+          <div className="relative w-full overflow-hidden">
+            <div className="blur-lg max-h-[75vh]">
+              <FilmCard
+                src={`${basePosterPath}${heroBannerWidth}${showData.backdrop_path}`}
+              />{" "}
+            </div>
+            <div className="absolute bottom-5 left-5 p-4 md:p-8 flex flex-col md:flex-row gap-6 md:gap-8 items-end">
+              <div className="w-48 md:w-56 shrink-0">
+                <FilmCard
+                  src={`${basePosterPath}${smallBannerWidth}${showData.poster_path}`}
+                />{" "}
+              </div>
+              <div className="w-full flex flex-col gap-2">
+                <p className="text-md font-normal">
+                  {showData.first_air_date} -{" "}
+                  {showData.status === "Ended"
+                    ? showData.last_air_date
+                    : "Continuing"}
+                </p>
+                <h2 className="text-3xl md:text-4xl font-bold leading-tight tracking-[-0.033em]">
+                  {showData.title || showData.name}
+                </h2>
+                <div className="flex gap-2 p-3 overflow-x-auto -mx-3 mt-2">
+                  {showGenres.map((genre) => (
+                    <div className="flex h-7 shrink-0 items-center justify-center gap-x-2 rounded-full border border-white/20 bg-white/10 px-3">
+                      <p
+                        className="text-xs font-medium leading-normal"
+                        key={genre.id}
+                      >
+                        {genre.name}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex flex-wrap items-center gap-4">
+                  <p className="text-xl font-bold">{showData.vote_average}</p>
+                  <div className="flex items-center justify-center">
+                    {filmStatus.status === "watchlist" ? (
+                      <IconButton
+                        className="cursor-pointer hover:bg-[#b7c8e1]/20 hover:scale-110 active:scale-95 transition-all duration-200"
+                        onClick={() => {
+                          handleStatusFavorite("dropped");
+                        }}
+                      >
+                        <BookmarkAddIcon className="text-[#b7c8e1] text-3xl drop-shadow-md" />
+                      </IconButton>
+                    ) : (
+                      <IconButton
+                        className="cursor-pointer hover:bg-[#b7c8e1]/10 hover:scale-110 active:scale-95 transition-all duration-200"
+                        onClick={() => {
+                          handleStatusFavorite("watchlist");
+                        }}
+                      >
+                        <BookmarkAddOutlinedIcon className="text-[#b7c8e1] transition-colors" />
+                      </IconButton>
+                    )}
+                    {filmStatus.status === "watched" ? (
+                      <IconButton
+                        className="cursor-pointer hover:bg-[#b7c8e1]/20 hover:scale-110 active:scale-95 transition-all duration-200"
+                        onClick={() => {
+                          handleStatusFavorite("dropped");
+                        }}
+                      >
+                        <VisibilityIcon className="text-[#b7c8e1] text-3xl drop-shadow-md" />
+                      </IconButton>
+                    ) : (
+                      <IconButton
+                        className="cursor-pointer hover:bg-[#b7c8e1]/10 hover:scale-110 active:scale-95 transition-all duration-200"
+                        onClick={() => {
+                          handleStatusFavorite("watched");
+                        }}
+                      >
+                        <VisibilityOutlinedIcon className="text-[#b7c8e1] transition-colors" />
+                      </IconButton>
+                    )}
+                    {filmStatus.is_favorited ? (
+                      <IconButton
+                        className="cursor-pointer hover:bg-red-700/20 hover:scale-110 active:scale-95 transition-all duration-200"
+                        onClick={() => {
+                          handleStatusFavorite(false);
+                        }}
+                      >
+                        <FavoriteIcon className="text-red-700 text-3xl drop-shadow-md" />
+                      </IconButton>
+                    ) : (
+                      <IconButton
+                        className="cursor-pointer hover:bg-red-700/10 hover:scale-110 active:scale-95 transition-all duration-200"
+                        onClick={() => {
+                          handleStatusFavorite(true);
+                        }}
+                      >
+                        <FavoriteBorderOutlinedIcon className="text-red-700 transition-colors" />
+                      </IconButton>
+                    )}
+                    <Rating
+                      className="cursor-pointer text-amber-400 drop-shadow-md [&_.MuiRating-iconEmpty]:text-amber-400/50! transition-all"
+                      onChange={(event, newValue) => {
+                        handleRating(newValue);
+                      }}
+                      name="film-rating"
+                      precision={0.5}
+                      value={filmRating.rating}
+                    />
+                    <IconButton
+                      className="cursor-pointer group hover:bg-white/10 active:scale-95 transition-all duration-200"
+                      onClick={() => {
+                        setIsReviewOpen(true);
+                      }}
+                    >
+                      <CreateIcon className="text-white drop-shadow-md group-hover:text-amber-400 transition-colors" />
+                    </IconButton>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="p-4 md:p-8">
+            {/* The "Track" wrapper */}
+            <div className="flex border-b border-white/10">
+              <button
+                onClick={() => {
+                  setCurrentMode("details");
+                }}
+                // Added -mb-px to all active states so the border overlaps correctly
+                className={`uppercase px-4 py-3 font-semibold transition-colors ${
+                  currentMode === "details"
+                    ? "border-b-2 border-[#adc6ff] text-[#dae2fd] -mb-px"
+                    : "text-[#dae2fd]/60 hover:text-[#dae2fd]"
+                }`}
+              >
+                Details
+              </button>
+              <button
+                onClick={() => {
+                  setCurrentMode("cast-crew");
+                }}
+                className={`uppercase px-4 py-3 font-semibold transition-colors ${
+                  currentMode === "cast-crew"
+                    ? "border-b-2 border-[#adc6ff] text-[#dae2fd] -mb-px"
+                    : "text-[#dae2fd]/60 hover:text-[#dae2fd]"
+                }`}
+              >
+                Cast & Crew
+              </button>
+              <button
+                onClick={() => {
+                  setCurrentMode("reviews");
+                }}
+                className={`uppercase px-4 py-3 font-semibold transition-colors ${
+                  currentMode === "reviews"
+                    ? "border-b-2 border-[#adc6ff] text-[#dae2fd] -mb-px"
+                    : "text-[#dae2fd]/60 hover:text-[#dae2fd]"
+                }`}
+              >
+                Reviews
+              </button>
+              {/* <button className="uppercase px-4 py-3 font-semibold text-[#dae2fd]/60 hover:text-[#dae2fd]">Seasons</button> */}
+            </div>
+
+            {/* Content Sections */}
+            <div className="mt-6">
+              {currentMode === "details" && (
+                <FilmDetailsComp filmData={showData} />
+              )}
+              {currentMode === "cast-crew" && (
+                <FilmCastCrewComp filmCredits={showData.credits} />
+              )}
+              {currentMode === "reviews" && (
+                <FilmReviewComp
+                  reviews={reviews}
+                  otherReviews={otherReviews}
+                  myReviews={myReviews}
+                  openEditReview={openEditReview}
+                  onDelete={openDelete}
+                  // Passed the rating prop down just like the styled Movie block
+                  rating={filmRating?.rating}
+                />
+              )}
+            </div>
+          </div>
+
           {isReviewOpen && (
             <ReviewModal
               title={showData?.title || showData?.name || "Loading..."}
@@ -365,7 +450,7 @@ function ShowDetail() {
           />
         </div>
       )}
-    </div>
+    </main>
   );
 }
 export default ShowDetail;

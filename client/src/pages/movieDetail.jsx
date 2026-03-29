@@ -293,7 +293,7 @@ function MovieDetail() {
                       </IconButton>
                     ) : (
                       <IconButton
-                        className="cursor-pointer group hover:bg-[#b7c8e1]/10 hover:scale-110 active:scale-95 transition-all duration-200"
+                        className="cursor-pointer hover:bg-[#b7c8e1]/10 hover:scale-110 active:scale-95 transition-all duration-200"
                         onClick={() => {
                           handleStatusFavorite("watchlist");
                         }}
@@ -310,7 +310,7 @@ function MovieDetail() {
                       </IconButton>
                     ) : (
                       <IconButton
-                        className="cursor-pointer group hover:bg-[#b7c8e1]/10 hover:scale-110 active:scale-95 transition-all duration-200"
+                        className="cursor-pointer  hover:bg-[#b7c8e1]/10 hover:scale-110 active:scale-95 transition-all duration-200"
                         onClick={() => handleStatusFavorite("watched")}
                       >
                         <VisibilityOutlinedIcon className="text-[#b7c8e1] transition-colors" />
@@ -325,7 +325,7 @@ function MovieDetail() {
                       </IconButton>
                     ) : (
                       <IconButton
-                        className="cursor-pointer group hover:bg-red-700/10 hover:scale-110 active:scale-95 transition-all duration-200"
+                        className="cursor-pointer hover:bg-red-700/10 hover:scale-110 active:scale-95 transition-all duration-200"
                         onClick={() => handleStatusFavorite(true)}
                       >
                         <FavoriteBorderOutlinedIcon className="text-red-700 transition-colors" />
