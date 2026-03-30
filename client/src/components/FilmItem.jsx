@@ -37,6 +37,8 @@ function FilmItem({ film, filmType, basePosterPath, smallBannerWidth }) {
       film.title || film.name,
     );
   };
+  const smallBannerPlaceHolder =
+    "https://placehold.co/300/black/white?text=Small+Poster+Placeholder";
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -48,7 +50,11 @@ function FilmItem({ film, filmType, basePosterPath, smallBannerWidth }) {
         <div className="relative aspect-[2/3] rounded-2xl overflow-hidden mb-4 shadow-xl group-hover:shadow-[#adc6ff]/20 transition-all duration-300 ">
           <FilmCard
             imgClasses="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-            src={`${basePosterPath}${smallBannerWidth}${film.poster_path}`}
+            src={
+              film.poster_path
+                ? `${basePosterPath}${smallBannerWidth}${film.poster_path}`
+                : smallBannerPlaceHolder
+            }
           />
         </div>
         <p className="font-bold text-lg text-[#dae2fd] leading-tight group-hover:text-[#adc6ff] transition-colors">

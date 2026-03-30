@@ -17,7 +17,7 @@ function FilmDetailsComp({ filmData }) {
   const topCast = cast.slice(0, 6);
 
   const avatar = createAvatar(pixelArt, {
-    seed: "Actor Actress",
+    seed: "John Doe",
   });
 
   const profilePlaceholder = avatar.toDataUri();

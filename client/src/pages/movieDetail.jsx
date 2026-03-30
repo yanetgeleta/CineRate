@@ -61,6 +61,10 @@ function MovieDetail() {
   const basePosterPath = "https://image.tmdb.org/t/p/";
   const heroBannerWidth = "w1280";
   const smallBannerWidth = "w300";
+  const heroPosterPlaceholder =
+    "https://placehold.co/1280x720/black/white?text=Hero+Placeholder";
+  const smallBannerPlaceHolder =
+    "https://placehold.co/300/black/white?text=Small+Poster+Placeholder";
 
   // Gets all the comments for the single movie
   useEffect(() => {
@@ -246,7 +250,11 @@ function MovieDetail() {
             <div className="blur-lg max-h-[75vh]">
               {/* Backdrop */}
               <FilmCard
-                src={`${basePosterPath}${heroBannerWidth}${movieData.backdrop_path}`}
+                src={
+                  movieData.backdrop_path
+                    ? `${basePosterPath}${heroBannerWidth}${movieData.backdrop_path}`
+                    : heroPosterPlaceholder
+                }
               />
             </div>
             {/* Everything less backdrop */}
@@ -255,7 +263,11 @@ function MovieDetail() {
               <div className="w-48 md:w-56 shrink-0">
                 <FilmCard
                   imgClasses="w-full h-auto rounded-lg shadow-2xl object-cover"
-                  src={`${basePosterPath}${smallBannerWidth}${movieData.poster_path}`}
+                  src={
+                    movieData.poster_path
+                      ? `${basePosterPath}${smallBannerWidth}${movieData.poster_path}`
+                      : smallBannerPlaceHolder
+                  }
                 />
               </div>
               {/* Everyting else but the posters */}
@@ -332,7 +344,7 @@ function MovieDetail() {
                       </IconButton>
                     )}
                     <Rating
-                      className="cursor-pointer text-amber-400 drop-shadow-md &_.MuiRating-iconEmpty]:text-amber-400/50!"
+                      className="cursor-pointer text-amber-400 drop-shadow-md [&_.MuiRating-iconEmpty]:text-amber-400/50! transition-all"
                       onChange={(event, newValue) => {
                         handleRating(newValue);
                       }}

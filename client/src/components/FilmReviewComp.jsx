@@ -23,11 +23,18 @@ function FilmReviewComp({
     openEditReview(review);
   };
   const avatar = createAvatar(pixelArt, {
-    seed: "Actor Actress",
+    seed: "John Doe",
   });
 
   const profilePlaceholder = avatar.toDataUri();
-  if (!myReviews) {
+  if (reviews.length <= 0) {
+    return (
+      <p className="my-8 text-md italic tracking-tight">
+        No reviews yet. Be the first to review!
+      </p>
+    );
+  }
+  if (myReviews.length <= 0) {
     // When I haven't made a comment, or there is no user
     return (
       <div className="my-8">

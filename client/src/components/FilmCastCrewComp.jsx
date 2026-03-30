@@ -8,7 +8,7 @@ function FilmCastCrewComp({ filmCredits }) {
   const crew = filmCredits.crew;
 
   const avatar = createAvatar(pixelArt, {
-    seed: "Actor Actress",
+    seed: "John Doe",
   });
 
   const profilePlaceholder = avatar.toDataUri();

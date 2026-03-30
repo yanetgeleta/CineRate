@@ -53,6 +53,10 @@ function ShowDetail() {
   const basePosterPath = "https://image.tmdb.org/t/p/";
   const heroBannerWidth = "w1280";
   const smallBannerWidth = "w300";
+  const heroPosterPlaceholder =
+    "https://placehold.co/1280x720/black/white?text=Hero+Placeholder";
+  const smallBannerPlaceHolder =
+    "https://placehold.co/300/black/white?text=Small+Poster+Placeholder";
 
   // fetches show data from the movie database
   useEffect(() => {
@@ -226,13 +230,21 @@ function ShowDetail() {
           <div className="relative w-full overflow-hidden">
             <div className="blur-lg max-h-[75vh]">
               <FilmCard
-                src={`${basePosterPath}${heroBannerWidth}${showData.backdrop_path}`}
+                src={
+                  showData.backdrop_path
+                    ? `${basePosterPath}${heroBannerWidth}${showData.backdrop_path}`
+                    : heroPosterPlaceholder
+                }
               />{" "}
             </div>
             <div className="absolute bottom-5 left-5 p-4 md:p-8 flex flex-col md:flex-row gap-6 md:gap-8 items-end">
               <div className="w-48 md:w-56 shrink-0">
                 <FilmCard
-                  src={`${basePosterPath}${smallBannerWidth}${showData.poster_path}`}
+                  src={
+                    showData.poster_path
+                      ? `${basePosterPath}${smallBannerWidth}${showData.poster_path}`
+                      : smallBannerPlaceHolder
+                  }
                 />{" "}
               </div>
               <div className="w-full flex flex-col gap-2">

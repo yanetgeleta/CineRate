@@ -7,6 +7,9 @@ import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import FilmItem from "../components/FilmItem";
 import { ClipLoader } from "react-spinners";
+import SearchIcon from "@mui/icons-material/Search";
+import CloseIcon from "@mui/icons-material/Close";
+import PaginationItem from "@mui/material/PaginationItem";
 
 const SearchPage = () => {
   // query params: query, page
@@ -52,25 +55,48 @@ const SearchPage = () => {
   };
 
   return (
-    <div>
-      {/* <Navbar /> */}
-      <form onSubmit={handleSearch}>
-        <input
-          value={inputValue}
-          onChange={(e) => {
-            setInputValue(e.target.value);
-          }}
-        />
-      </form>
+    <main className="bg-[#0b1326] mt-20 md:mx-10 px-8">
+      <div className="my-8">
+        <form
+          className="relative space-y-6 flex items-center"
+          onSubmit={handleSearch}
+        >
+          <SearchIcon className="absolute left-3 top-3/5 -translate-y-1/2 text-outline" />
+          {/* <CloseIcon
+            onClick={() => {
+              setInputValue("");
+            }}
+            className="absolute right-6 top-3/5 -translate-y-1/2 text-outline"
+          /> */}
+          <input
+            className="w-full bg-[#060e20] text-[#dae2fd] text-xl font-medium py-6 pl-16 pr-6 rounded-2xl border-none focus:ring-2 focus:ring-[#4d8eff]/30 transition-all duration-300 shadow-xl shadow-black/20 mt-4"
+            value={inputValue}
+            onChange={(e) => {
+              setInputValue(e.target.value);
+            }}
+            type="search"
+            id="search"
+          />
+        </form>
+      </div>
+
       {loading ? (
-        <ClipLoader
-          loading={loading}
-          aria-label="Loading Movies Spinner"
-          data-testid="loader"
-        />
+        <div className="flex items-center justify-center w-full h-full min-h-[60vh]">
+          <ClipLoader
+            loading={loading}
+            aria-label="Loading Movies Spinner"
+            data-testid="loader"
+            color="white"
+          />
+        </div>
       ) : (
         <div>
-          <div className="grid grid-cols-5 gap-4 p-4">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight text-[#dae2fd]">
+              Search Results
+            </h1>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-6 gap-y-10 p-4">
             {searchData &&
               searchData.map((film, index) => {
                 return (
@@ -84,17 +110,39 @@ const SearchPage = () => {
                 );
               })}
           </div>
-          <Pagination
-            count={5}
-            color="primary"
-            onChange={(e, value) => {
-              setPage(value);
-            }}
-            page={page}
-          />
+          <div className="flex justify-center items-center pt-8">
+            <Pagination
+              count={5}
+              color="primary"
+              onChange={(e, value) => {
+                setPage(value);
+              }}
+              page={page}
+              renderItem={(item) => (
+                <PaginationItem
+                  {...item}
+                  sx={{
+                    "&.Mui-selected": {
+                      backgroundColor: "#222a3d",
+                      color: "white",
+                      "&:hover": {
+                        backgroundColor: "#31394d",
+                      },
+                    },
+                    "&:not(.Mui-selected)": {
+                      color: "white",
+                    },
+                    "&:hover": {
+                      backgroundColor: "#262348",
+                    },
+                  }}
+                />
+              )}
+            />
+          </div>
         </div>
       )}
-    </div>
+    </main>
   );
 };
 export default SearchPage;
