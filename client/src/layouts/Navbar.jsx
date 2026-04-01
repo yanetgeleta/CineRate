@@ -70,13 +70,15 @@ function Navbar() {
               />
             </form>
           )}
-          {user && (
+          {user && !pathname.startsWith("/profile") && (
             <div className="flex gap-1.5 items-center justify-center">
               {/* <NotificationRing /> */}
               <button
-                className="flex items-center justify-center bg-[#262348] text-white text-lg font-bold leading-normal tracking-[0.015em] hover:bg-[#262348]/8 transition-colors min-w-21 max-w-120 cursor-pointer rounded-lg h-10 px-4 active:scale-95"
-                onClick={() => {
-                  logout();
+                className="hidden md:flex items-center justify-center bg-[#262348] text-white text-lg font-bold leading-normal tracking-[0.015em] hover:bg-[#262348]/8 transition-colors min-w-21 max-w-120 cursor-pointer rounded-lg h-10 px-4 active:scale-95"
+                onClick={async () => {
+                  await logout();
+                  // location.reload();
+                  // No need for the reload, authcontext from user handling already
                 }}
               >
                 Log out
@@ -90,7 +92,7 @@ function Navbar() {
           )}
 
           {!user && pathname !== "/loginsignup" && (
-            <div className="hidden md:flex gap-2">
+            <div className="hidden lg:flex gap-2">
               <Link
                 className="flex items-center justify-center bg-blue-400 text-white text-lg font-bold leading-normal tracking-[0.015em] hover:bg-blue-400/90 transition-colors min-w-21 max-w-120 cursor-pointer rounded-lg h-10 px-4"
                 to="/loginsignup"

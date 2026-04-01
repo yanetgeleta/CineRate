@@ -47,7 +47,7 @@ function FilmItem({ film, filmType, basePosterPath, smallBannerWidth }) {
       <Link
         to={`/${film.media_type === "movie" || filmType === "movie" ? "moviedetail" : "showdetail"}/${film.id}`}
       >
-        <div className="relative aspect-[2/3] rounded-2xl overflow-hidden mb-4 shadow-xl group-hover:shadow-[#adc6ff]/20 transition-all duration-300 ">
+        <div className="relative aspect-2/3 rounded-2xl overflow-hidden mb-4 shadow-xl group-hover:shadow-[#adc6ff]/20 transition-all duration-300 ">
           <FilmCard
             imgClasses="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
             src={
