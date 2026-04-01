@@ -4,7 +4,7 @@ import FilmCard from "../components/FilmCard";
 import Button from "../components/Button";
 import StarIcon from "@mui/icons-material/Star";
 import CreateIcon from "@mui/icons-material/Create";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import FilmDetailsComp from "../components/FilmDetailsComp";
 import FilmCastCrewComp from "../components/FilmCastCrewComp";
@@ -57,6 +57,7 @@ function MovieDetail() {
   const [refreshTrigger, setRefreshTrigger] = useState(false);
   // const [newReview, setNewReview] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
   const basePosterPath = "https://image.tmdb.org/t/p/";
   const heroBannerWidth = "w1280";
@@ -121,7 +122,7 @@ function MovieDetail() {
   // handles film status and favorite interactions
   const handleStatusFavorite = (action) => {
     if (!user) {
-      navigate("/loginsignup");
+      navigate("/loginsignup", { state: location.pathname });
       return;
     }
     statusUpdateCall(
@@ -135,7 +136,7 @@ function MovieDetail() {
   // sends rating and updates to the database
   const handleRating = async (newRating) => {
     if (!user) {
-      navigate("/loginsignup");
+      navigate("/loginsignup", { state: location.pathname });
       return;
     }
     if (!newRating || newRating === 0) {
@@ -152,7 +153,7 @@ function MovieDetail() {
   // handles: updating review, adding a new review
   const handleReview = async (review, reviewId) => {
     if (!user) {
-      navigate("/loginsignup");
+      navigate("/loginsignup", { state: location.pathname });
       return;
     }
     if (!review || review.trim() === "") return;

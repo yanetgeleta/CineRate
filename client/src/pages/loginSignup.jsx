@@ -24,8 +24,8 @@ function LoginSignUp() {
     window.location.href = "api/auth/google";
   };
 
-  const handleAuthenticationSuccess = () => {
-    navigate("/");
+  const handleAuthenticationSuccess = (path) => {
+    navigate(path || "/");
   };
 
   return (

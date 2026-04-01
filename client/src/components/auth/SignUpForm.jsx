@@ -3,7 +3,7 @@ import Button from "../Button";
 import Input from "../Input";
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const SignUpForm = (props) => {
   const [fName, setFName] = useState("");
@@ -11,6 +11,8 @@ const SignUpForm = (props) => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const location = useLocation();
+  const redirectTo = location.state || "/";
 
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -36,9 +38,9 @@ const SignUpForm = (props) => {
       console.log("Register succes", data);
 
       login(data.user);
-      navigate("/dashboard");
+      navigate(redirectTo);
       if (props.onSuccess) {
-        props.onSuccess();
+        props.onSuccess(redirectTo);
       }
     } catch (err) {
       console.log("Registration form error", err);

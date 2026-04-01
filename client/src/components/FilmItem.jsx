@@ -6,7 +6,7 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import { useLibrary } from "../context/LibraryContex";
 import { useAuth } from "../context/AuthContext";
@@ -18,10 +18,12 @@ function FilmItem({ film, filmType, basePosterPath, smallBannerWidth }) {
   const [isFavorited, setIsFavorited] = useState(filmStatus.is_favorited);
   const { user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleInteraction = (action) => {
     if (!user) {
-      navigate("/loginsignup");
+      console.log(location);
+      navigate("/loginsignup", { state: location.pathname });
       return;
     }
     if (typeof action === "boolean") {

@@ -8,6 +8,7 @@ import { ClipLoader } from "react-spinners";
 import Pagination from "@mui/material/Pagination";
 import FilmItem from "../components/FilmItem";
 import PaginationItem from "@mui/material/PaginationItem";
+import { useLocation } from "react-router-dom";
 
 // This is dedicated page just for movies\
 // year=1999&sort_by=popularity.desc&without_genres=action'

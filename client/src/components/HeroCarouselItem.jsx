@@ -6,7 +6,7 @@ import FilmCard from "./FilmCard";
 // import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 // import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 // import IconButton from "@mui/material/IconButton";
 import { useLibrary } from "../context/LibraryContex";
 import { useAuth } from "../context/AuthContext";
@@ -27,10 +27,11 @@ const HeroCarouselItem = ({
   const { getFilmStatus, statusUpdateCall, loading } = useLibrary();
   const filmStatus = getFilmStatus(item.id);
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
   const handleInteraction = (action) => {
     if (!user) {
-      navigate("/loginsignup");
+      navigate("/loginsignup", { state: location.pathname });
       return;
     }
     // setStatus(action);

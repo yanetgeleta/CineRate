@@ -7,7 +7,7 @@ import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Button from "./Button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import { useLibrary } from "../context/LibraryContex";
 import { useAuth } from "../context/AuthContext";
@@ -22,10 +22,11 @@ function CarouselItem({ item, filmType, ...otherProps }) {
   const [isFavorited, setIsFavorited] = useState(filmStatus.is_favorited);
   const [status, setStatus] = useState(filmStatus.status);
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
   const handleInteraction = (action) => {
     if (!user) {
-      navigate("/loginsignup");
+      navigate("/loginsignup", { state: location.pathname });
       return;
     }
     if (typeof action === "boolean") {

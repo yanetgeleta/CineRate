@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import Button from "../Button";
 import Input from "../Input";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 const LoginForm = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useAuth();
+  const location = useLocation();
+  const redirectTo = location.state || "/";
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -28,10 +30,10 @@ const LoginForm = (props) => {
       }
 
       const data = await response.json();
-      console.log("Login Success", data);
+      // console.log("Login Success", data);
 
       login(data.user);
-      props.onSuccess();
+      props.onSuccess(redirectTo);
     } catch (err) {
       console.error("Error during login", err);
     }
