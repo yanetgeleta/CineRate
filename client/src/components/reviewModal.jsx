@@ -45,11 +45,12 @@ function ReviewModal({
               Your Review
             </h3>
             <textarea
-              className="form-input min-h-36 w-full flex-1 resize-y overflow-hidden rounded-lg border p-4 text-base font-normal leading-normal focus:border-[#2513ec] focus:outline-0 focus:ring-2 focus:ring-[#2513ec]/50 border-[#373267] bg-[#1b1933] text-white placeholder:text-[#9692c9]"
+              className="form-input min-h-36 w-full flex-1 resize-y overflow-y-scroll rounded-lg border p-4 text-base font-normal leading-normal focus:border-[#2513ec] focus:outline-0 focus:ring-2 focus:ring-[#2513ec]/50 border-[#373267] bg-[#1b1933] text-white placeholder:text-[#9692c9]"
               id="new-review"
               aria-label="film-review"
               onChange={reviewOnChange}
               value={review}
+              placeholder="Share your thoughts on the film..."
             />
           </label>
           <Rating
@@ -73,7 +74,7 @@ function ReviewModal({
               Cancel
             </button>
             <button
-              className="flex h-11 items-center justify-center rounded-lg bg-[#adc6ff] px-6 py-2.5 text-base font-semibold text-white shadow-sm transition-colors hover:bg-[#4d8eff]"
+              className="flex h-11 items-center justify-center rounded-lg bg-[#adc6ff] px-6 py-2.5 text-base font-semibold shadow-sm transition-colors hover:bg-[#4d8eff] text-[#002e6a]"
               onClick={() => {
                 setReview("");
                 onReviewSubmit(review);

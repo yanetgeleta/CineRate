@@ -57,6 +57,7 @@ function FilmReviewComp({
                 </h3>
                 <p className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">
                   {new Date(review.created_at).toLocaleDateString()}
+                  {/* new Date(var).toLocaleDateString() */}
                 </p>
               </div>
               <p className="text-[#c2c6d6] leading-relaxed">
@@ -110,7 +111,7 @@ function FilmReviewComp({
                         disabled
                       />
                     </div>
-                    <p className="text-[#c2c6d6] leading-relaxed mb-6 w-[70%]">
+                    <p className="text-[#c2c6d6] leading-relaxed mb-6 w-[70%] whitespace-pre-wrap">
                       {review.review_text}
                     </p>
                     <div className="flex items-center gap-4">

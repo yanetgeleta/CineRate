@@ -13,7 +13,7 @@ function ProfileReviews({ review, posterBase }) {
       />
       <div>
         <h2 className="text-lg font-bold">{review.title}</h2>
-        <p className="text-sm text-slate-50 leading-relaxed">
+        <p className="text-sm text-slate-50 leading-relaxed whitespace-pre-wrap">
           {review.review_text}
         </p>
         {/* new Date(date).toLocaleDateString() */}
