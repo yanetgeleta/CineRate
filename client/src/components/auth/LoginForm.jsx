@@ -9,7 +9,7 @@ const LoginForm = (props) => {
   const [password, setPassword] = useState("");
   const { login } = useAuth();
   const location = useLocation();
-  const redirectTo = location.state || "/";
+  const redirectTo = location.state.initialMode ? "/" : location.state;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
