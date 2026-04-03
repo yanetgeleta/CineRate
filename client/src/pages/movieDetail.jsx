@@ -445,11 +445,13 @@ function MovieDetail() {
           )}
           <ConfirmModal
             isOpen={deleteModalOpen}
-            title={"Delete Review"}
+            title={"Delete Review?"}
             desc={"This will permanently delete this review from the database"}
             message={"Are you sure you want to delete this review?"}
-            continueMsg={"Yes"}
+            continueMsg={"Delete"}
             cancelMsg={"Cancel"}
+            continueMsgClass="flex-1 px-4 py-2.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold text-sm transition-colors duration-200"
+            cancelMsgClass="flex-1 px-4 py-2.5 rounded-lg bg-[#2513ec]/10 hover:bg-[#2513ec]/20 text-slate-100 font-bold text-sm transition-colors duration-200"
             handleCancel={() => {
               setDeleteModalOpen(false);
             }}
