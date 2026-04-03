@@ -22,6 +22,7 @@ import Rating from "@mui/material/Rating";
 import FilmReviewComp from "../components/FilmReviewComp";
 import EditReviewModal from "../components/EditReviewModal";
 import ConfirmModal from "../components/ConfirmModal";
+import { toast } from "sonner";
 
 // This is the page that shows details of a specific movie when clicked on
 function MovieDetail() {
@@ -458,6 +459,7 @@ function MovieDetail() {
             handleContinue={() => {
               handleDeleteReview(deleteReviewId);
               setDeleteModalOpen(false);
+              toast("Review deleted successfully");
             }}
           />
         </div>

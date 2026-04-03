@@ -7,7 +7,6 @@ import { createAvatar } from "@dicebear/core";
 import { adventurer } from "@dicebear/collection";
 
 env.config({ path: path.resolve(process.cwd(), ".env") });
-// const profilePlaceholder = process.env.PROFILE_PLACEHOLDER;
 
 export const registerUser = async (req, res) => {
   const { fName, lName, password, username, email } = req.body;

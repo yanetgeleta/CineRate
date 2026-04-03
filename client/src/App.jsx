@@ -14,6 +14,7 @@ import Genres from "./pages/Genres";
 import { LibraryProvider } from "./context/LibraryContex";
 import SearchPage from "./pages/searchPage";
 import Navbar from "./layouts/Navbar";
+import { Toaster } from "sonner";
 
 function App() {
   return (
@@ -21,8 +22,9 @@ function App() {
       <LibraryProvider>
         <Router>
           <div className="flex flex-col min-h-screen">
+            <Toaster position="top-center" expand duration={5000} />
             <Navbar />
-            <main className="flex-grow">
+            <main className="grow">
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/moviedetail/:movieId" element={<MovieDetail />} />

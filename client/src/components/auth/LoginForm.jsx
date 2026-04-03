@@ -3,6 +3,7 @@ import Button from "../Button";
 import Input from "../Input";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { toast } from "sonner";
 
 const LoginForm = (props) => {
   const [username, setUsername] = useState("");
@@ -26,13 +27,15 @@ const LoginForm = (props) => {
       });
 
       if (!response.ok) {
-        throw new Error("Login failed");
+        toast.error("Invalid credentials!");
+        // throw new Error("Login failed");
       }
 
       const data = await response.json();
       // console.log("Login Success", data);
 
       login(data.user);
+      toast.success(`Welcome Back, ${data.user.username}!`);
       props.onSuccess(redirectTo);
     } catch (err) {
       console.error("Error during login", err);
@@ -47,6 +50,7 @@ const LoginForm = (props) => {
             Email or Username
           </p>
           <input
+            required
             type="text"
             placeholder="Enter your email or username"
             id="login-username"
@@ -58,6 +62,7 @@ const LoginForm = (props) => {
         <label htmlFor="login-password" className="flex flex-col flex-1">
           <p className="text-sm font-medium leading-normal pb-2">Password</p>
           <input
+            required
             type="password"
             placeholder="Enter a password"
             id="login-password"

@@ -4,6 +4,7 @@ import Input from "../Input";
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const SignUpForm = (props) => {
   const [fName, setFName] = useState("");
@@ -12,7 +13,7 @@ const SignUpForm = (props) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const location = useLocation();
-  const redirectTo = location.state || "/";
+  const redirectTo = location.state.initialMode ? "/" : location.state;
 
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -31,24 +32,23 @@ const SignUpForm = (props) => {
         credentials: "include",
       });
       if (!response.ok) {
-        throw new Error("Sign up failed");
+        toast.error("Registration Failed");
+        // throw new Error("Sign up failed");
       }
 
       const data = await response.json();
       console.log("Register succes", data);
 
+      toast.success("Registration Successful");
       login(data.user);
-      navigate(redirectTo);
       if (props.onSuccess) {
         props.onSuccess(redirectTo);
       }
     } catch (err) {
-      console.log("Registration form error", err);
+      toast.error("Registration Failed");
+      // console.log("Registration form error", err);
     }
   };
-  // const formData = [
-  //   { for: "signup-fname", text: "First Name", inputType: "text" },
-  // ];
 
   return (
     <div>
@@ -59,6 +59,7 @@ const SignUpForm = (props) => {
               First Name
             </p>
             <input
+              required
               type="text"
               placeholder="John"
               id="signup-fname"
@@ -72,6 +73,7 @@ const SignUpForm = (props) => {
           <label className="flex flex-col flex-1" htmlFor="signup-lname">
             <p className="text-sm font-medium leading-normal pb-2">Last Name</p>
             <input
+              required
               type="text"
               placeholder="Doe"
               id="signup-lname"
@@ -87,6 +89,7 @@ const SignUpForm = (props) => {
           <label className="flex flex-col flex-1" htmlFor="signup-username">
             <p className="text-sm font-medium leading-normal pb-2">Username</p>
             <input
+              required
               type="text"
               placeholder="cinephilejoe"
               id="signup-username"
@@ -101,6 +104,7 @@ const SignUpForm = (props) => {
           <label className="flex flex-col flex-1" htmlFor="signup-email">
             <p className="text-sm font-medium leading-normal pb-2">Email</p>
             <input
+              required
               type="email"
               placeholder="firstname@gmail.com"
               id="signup-email"
@@ -115,6 +119,7 @@ const SignUpForm = (props) => {
         <label className="flex flex-col flex-1" htmlFor="signup-password">
           <p className="text-sm font-medium leading-normal pb-2">Password</p>
           <input
+            required
             type="password"
             placeholder="Use strong password"
             id="signup-password"

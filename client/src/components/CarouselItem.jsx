@@ -13,6 +13,7 @@ import { useLibrary } from "../context/LibraryContex";
 import { useAuth } from "../context/AuthContext";
 import AddIcon from "@mui/icons-material/Add";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import { toast } from "sonner";
 
 function CarouselItem({ item, filmType, ...otherProps }) {
   const smallBannerPlaceHolder =

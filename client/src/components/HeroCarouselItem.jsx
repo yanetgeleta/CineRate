@@ -14,6 +14,7 @@ import AddIcon from "@mui/icons-material/Add";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import BookmarkRemoveIcon from "@mui/icons-material/BookmarkRemove";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
+import { toast } from "sonner";
 
 const HeroCarouselItem = ({
   basePath,
@@ -34,12 +35,6 @@ const HeroCarouselItem = ({
       navigate("/loginsignup", { state: location.pathname });
       return;
     }
-    // setStatus(action);
-    // if (typeof action === "boolean") {
-    //   setIsFavorited(action);
-    // } else {
-    //   setStatus(action);
-    // }
     statusUpdateCall(
       item.id,
       item.media_type || filmType,
@@ -52,7 +47,6 @@ const HeroCarouselItem = ({
     return <p>Loading...</p>;
   }
 
-  // Add a clip loader later on
   return (
     <div className="flex justify-center relative ">
       <Link
@@ -76,9 +70,6 @@ const HeroCarouselItem = ({
             <p className="hidden md:block text-lg text-[#c2c6d6] mb-8 max-w-xl leading-relaxed">
               {item.overview}
             </p>
-            {/* <div className="border-primary px-8 py-3 rounded-xl font-bold flex items-center justify-center shadow-xl shadow-primary/10 hidden md:block md:w-1/11">
-                  {item.media_type === "tv" ? "Show" : "Movie"}
-                </div> */}
           </div>
         </div>
       </Link>
@@ -115,6 +106,11 @@ const HeroCarouselItem = ({
             Remove
           </button>
         )}
+      </div>
+      <div className="flex h-7 w-20 shrink-0 items-center justify-center gap-x-2 rounded-full border border-white/20 bg-white/10 px-3 mb-8 absolute top-16 right-8">
+        <p className="text-sm font-medium leading-normal text-slate-600">
+          {item.media_type === "tv" ? "Show" : "Movie"}
+        </p>
       </div>
     </div>
   );
