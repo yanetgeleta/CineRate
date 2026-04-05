@@ -11,13 +11,14 @@ const LoginForm = (props) => {
   const { login } = useAuth();
   const location = useLocation();
   const redirectTo = location.state.initialMode ? "/" : location.state;
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
       const body = { username, password };
-      const response = await fetch("/api/auth/login", {
+      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

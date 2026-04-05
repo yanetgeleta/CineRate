@@ -6,20 +6,33 @@ import passport from "passport";
 import tmdbRoute from "./routes/tmdbRoutes.js";
 import libraryRoutes from "./routes/libraryRoutes.js";
 import reviewsRoutes from "./routes/reviewsRatingsRoutes.js";
+import env from "dotenv";
+import path from "path";
+
+env.config({ path: path.resolve(process.cwd(), ".env") });
 
 import configurePassport from "./config/passport.js";
 import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
+const allowedOrigins = [
+  "http://localhost:5173",
+  process.env.CLIENT_URL, // This will be your Vercel URL
+].filter(Boolean); // Removes undefined values if CLIENT_URL isn't set yet
 
 configurePassport();
 
+app.set("trust proxy", 1);
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 1000 * 60 * 60 * 24 * 7, secure: false },
+    saveUninitialized: false, // Changed to false for better performance/privacy
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+      secure: process.env.NODE_ENV === "production", // Must be true on production (HTTPS)
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Required for cross-domain
+    },
   }),
 );
 
@@ -31,7 +44,14 @@ app.use(passport.session());
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        return callback(new Error("CORS policy blocked this origin"), false);
+      }
+      return callback(null, true);
+    },
     credentials: true,
   }),
 );

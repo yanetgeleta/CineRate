@@ -24,12 +24,14 @@ const Shows = () => {
 
   const basePosterPath = "https://image.tmdb.org/t/p/";
   const smallBannerWidth = "w300";
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
   useEffect(() => {
     async function genreIdGetter() {
       if (genre) {
         const genreIdResponse = await fetch(
-          `/api/tmdb/genre/id?filmType=tv&genre=${genre}`,
+          `${API_BASE_URL}/api/tmdb/genre/id?filmType=tv&genre=${genre}`,
+          { credentials: "include" },
         );
         const genreIdData = await genreIdResponse.json();
 
@@ -53,7 +55,10 @@ const Shows = () => {
         if (sortBy) values.sortByValue = sortBy;
 
         const params = new URLSearchParams(values);
-        const response = await fetch(`/api/tmdb/discover/film?${params}`);
+        const response = await fetch(
+          `${API_BASE_URL}/api/tmdb/discover/film?${params}`,
+          { credentials: "include" },
+        );
         if (!response.ok) {
           setLoading[false];
           throw new Error("Failed to fetch shows for movies page!");

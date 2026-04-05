@@ -23,13 +23,17 @@ const SearchPage = () => {
   const [searchData, setSearchData] = useState();
   const [inputValue, setInputValue] = useState(searchQuery);
   const [loading, setLoading] = useState(true);
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
   useEffect(() => {
     const fetchSearchResult = async () => {
       try {
         // gets the data from the backend
         setLoading(true);
         const params = new URLSearchParams({ query: searchQuery, page: page });
-        const searchRes = await fetch(`/api/tmdb/search?${params}`);
+        const searchRes = await fetch(
+          `${API_BASE_URL}/api/tmdb/search?${params}`,
+          { credentials: "include" },
+        );
         const searchResData = await searchRes.json();
 
         // remove all the data that is not movie or show (person)

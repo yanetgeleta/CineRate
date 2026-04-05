@@ -14,6 +14,7 @@ const SignUpForm = (props) => {
   const [email, setEmail] = useState("");
   const location = useLocation();
   const redirectTo = location.state.initialMode ? "/" : location.state;
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -23,7 +24,7 @@ const SignUpForm = (props) => {
     console.log("Form submitted!");
 
     try {
-      const response = await fetch("/api/auth/register", {
+      const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

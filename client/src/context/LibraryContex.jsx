@@ -9,6 +9,7 @@ export const LibraryProvider = ({ children }) => {
   const [userReviews, setUserReviews] = useState(null);
   const [userStatus, setUserStatus] = useState(null);
   const [loading, setLoading] = useState(true);
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
   // next: set ratings, reviews, status separately and then send them to the front end
   //      easier to edit wnen status is updated and comments are written too
 
@@ -23,7 +24,7 @@ export const LibraryProvider = ({ children }) => {
         return;
       }
       try {
-        const response = await fetch("/api/library/all", {
+        const response = await fetch(`${API_BASE_URL}/api/library/all`, {
           credentials: "include",
         });
         const libraryObj = await response.json();
@@ -94,12 +95,15 @@ export const LibraryProvider = ({ children }) => {
     };
     try {
       // the response is unneccessarily long, with user id and stuff
-      const response = await fetch("/api/library/update/film/status", {
-        method: "POST",
-        body: JSON.stringify(body),
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/api/library/update/film/status`,
+        {
+          method: "POST",
+          body: JSON.stringify(body),
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+        },
+      );
       if (!response.ok) throw new Error("Failed to update the status database");
       const responseObj = await response.json();
       setUserStatus((prev) => {
@@ -125,12 +129,15 @@ export const LibraryProvider = ({ children }) => {
         posterPath: posterPath,
         title: title,
       };
-      const updateRatingRes = await fetch("/api/reviews/update/rating", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
+      const updateRatingRes = await fetch(
+        `${API_BASE_URL}/api/reviews/update/rating`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        },
+      );
       if (!updateRatingRes.ok) {
         throw new Error("Couldn't update rating for a film at library context");
       }

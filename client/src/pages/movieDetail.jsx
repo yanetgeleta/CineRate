@@ -67,13 +67,15 @@ function MovieDetail() {
     "https://placehold.co/1280x720/black/white?text=Hero+Placeholder";
   const smallBannerPlaceHolder =
     "https://placehold.co/300/black/white?text=Small+Poster+Placeholder";
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
   // Gets all the comments for the single movie
   useEffect(() => {
     async function fetchFilmReviews() {
       try {
         const response = await fetch(
-          `/api/reviews/film/reviews?filmId=${movieId}`,
+          `${API_BASE_URL}/api/reviews/film/reviews?filmId=${movieId}`,
+          { credentials: "include" },
         );
         if (!response.ok) {
           setReviews([]);
@@ -99,7 +101,10 @@ function MovieDetail() {
       try {
         const queryObj = { filmId: movieId, filmType: "movie" };
         const params = new URLSearchParams(queryObj);
-        const response = await fetch(`/api/tmdb/film/detail?${params}`);
+        const response = await fetch(
+          `${API_BASE_URL}/api/tmdb/film/detail?${params}`,
+          { credentials: "include" },
+        );
         if (!response.ok) {
           console.log(new Error("Failed to fetch movie detail"));
           setPageLoading(false);
@@ -163,7 +168,7 @@ function MovieDetail() {
       if (reviewId) {
         const body = { reviewText: review };
         const updateReviewRes = await fetch(
-          `/api/reviews/update/review/${reviewId}`,
+          `${API_BASE_URL}/api/reviews/update/review/${reviewId}`,
           {
             method: "PATCH",
             credentials: "include",
@@ -186,12 +191,15 @@ function MovieDetail() {
           posterPath: movieData.poster_path,
           title: movieData.title || movieData.name,
         };
-        const addReviewsRes = await fetch(`/api/reviews/add/review`, {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        });
+        const addReviewsRes = await fetch(
+          `${API_BASE_URL}/api/reviews/add/review`,
+          {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          },
+        );
         if (!addReviewsRes.ok) {
           throw new Error("Error adding a new review for a movie");
         }
@@ -208,7 +216,7 @@ function MovieDetail() {
   };
   const handleDeleteReview = async (reviewId) => {
     const deleteReviewRes = await fetch(
-      `/api/reviews/delete/review/${reviewId}`,
+      `${API_BASE_URL}/api/reviews/delete/review/${reviewId}`,
       {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
@@ -459,7 +467,6 @@ function MovieDetail() {
             handleContinue={() => {
               handleDeleteReview(deleteReviewId);
               setDeleteModalOpen(false);
-              toast("Review deleted successfully");
             }}
           />
         </div>

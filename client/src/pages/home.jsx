@@ -28,6 +28,7 @@ function Home() {
   const smallBannerWidth = "w300";
   // const youtubeSearchBase = "https://www.youtube.com/watch?v=";
   const tmdbMovieBase = "https://api.themoviedb.org/3/movie/";
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
   const heroBannerSettings = {
     direction: "horizontal",
@@ -75,11 +76,21 @@ function Home() {
           topMoviesRes,
           topShowsRes,
         ] = await Promise.all([
-          fetch("/api/tmdb/trending/today"),
-          fetch("/api/tmdb/trending/weekly"),
-          fetch("/api/tmdb/new/movies"),
-          fetch("/api/tmdb/top/movies"),
-          fetch("/api/tmdb/top/shows"),
+          fetch(`${API_BASE_URL}/api/tmdb/trending/today`, {
+            credentials: "include",
+          }),
+          fetch(`${API_BASE_URL}/api/tmdb/trending/weekly`, {
+            credentials: "include",
+          }),
+          fetch(`${API_BASE_URL}/api/tmdb/new/movies`, {
+            credentials: "include",
+          }),
+          fetch(`${API_BASE_URL}/api/tmdb/top/movies`, {
+            credentials: "include",
+          }),
+          fetch(`${API_BASE_URL}/api/tmdb/top/shows`, {
+            credentials: "include",
+          }),
         ]);
         if (
           !trendingTodayRes.ok ||

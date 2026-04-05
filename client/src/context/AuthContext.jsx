@@ -8,11 +8,14 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
   useEffect(() => {
     const checkUserLoggedIn = async () => {
       try {
-        const response = await fetch("/api/auth/user");
+        const response = await fetch(`${API_BASE_URL}/api/auth/user`, {
+          credentials: "include",
+        });
         if (response.ok) {
           const data = await response.json();
           setUser(data.user);
@@ -37,7 +40,7 @@ export const AuthProvider = ({ children }) => {
   // so changed to post to logout
   const logout = async () => {
     try {
-      await fetch("/api/auth/logout", {
+      await fetch(`${API_BASE_URL}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
       });

@@ -58,6 +58,7 @@ function ShowDetail() {
     "https://placehold.co/1280x720/black/white?text=Hero+Placeholder";
   const smallBannerPlaceHolder =
     "https://placehold.co/300/black/white?text=Small+Poster+Placeholder";
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
   // fetches show data from the movie database
   useEffect(() => {
@@ -66,7 +67,10 @@ function ShowDetail() {
       try {
         const queryObj = { filmId: showId, filmType: "tv" };
         const params = new URLSearchParams(queryObj);
-        const response = await fetch(`/api/tmdb/film/detail?${params}`);
+        const response = await fetch(
+          `${API_BASE_URL}/api/tmdb/film/detail?${params}`,
+          { credentials: "include" },
+        );
         if (!response.ok) {
           setLoading(false);
           throw new Error("Failed to fetch show detail from the backend");
@@ -89,7 +93,8 @@ function ShowDetail() {
     async function fetchFilmReviews() {
       try {
         const response = await fetch(
-          `/api/reviews/film/reviews?filmId=${showId}`,
+          `${API_BASE_URL}/api/reviews/film/reviews?filmId=${showId}`,
+          { credentials: "include" },
         );
         if (!response.ok) {
           setReviews([]);
@@ -136,7 +141,7 @@ function ShowDetail() {
       if (reviewId) {
         const body = { reviewText: review };
         const updateReviewRes = await fetch(
-          `/api/reviews/update/review/${reviewId}`,
+          `${API_BASE_URL}/api/reviews/update/review/${reviewId}`,
           {
             method: "PATCH",
             credentials: "include",
@@ -158,12 +163,15 @@ function ShowDetail() {
           posterPath: showData.poster_path,
           title: showData.title || showData.name,
         };
-        const addReviewsRes = await fetch(`/api/reviews/add/review`, {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        });
+        const addReviewsRes = await fetch(
+          `${API_BASE_URL}/api/reviews/add/review`,
+          {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          },
+        );
         if (!addReviewsRes.ok) {
           throw new Error("Error adding a new review for a show");
         }
@@ -197,7 +205,7 @@ function ShowDetail() {
   };
   const handleDeleteReview = async (reviewId) => {
     const deleteReviewRes = await fetch(
-      `/api/reviews/delete/review/${reviewId}`,
+      `${API_BASE_URL}/api/reviews/delete/review/${reviewId}`,
       {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
