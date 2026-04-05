@@ -51,8 +51,9 @@ function Profile() {
       </div>
     );
   }
-  const userStatusArr = Object.values(userStatus);
-  const ratingsArr = Object.values(userRatings);
+
+  const userStatusArr = userStatus ? Object.values(userStatus) : [];
+  const ratingsArr = userRatings ? Object.values(userRatings) : [];
 
   const watchedArr = userStatusArr.filter((film) => film.status === "watched");
   const watchlistArr = userStatusArr.filter(
