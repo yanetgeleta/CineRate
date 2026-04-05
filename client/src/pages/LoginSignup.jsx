@@ -13,6 +13,8 @@ function LoginSignUp() {
   // Use this location to find where the request for authentication came from and redirect them there
   const { state } = useLocation();
   const [mode, setMode] = useState(state?.initialMode || "login");
+  const API_BASE_URL =
+    import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 
   const handleLogIn = () => {
     setMode("login");
@@ -21,7 +23,7 @@ function LoginSignUp() {
     setMode("signup");
   };
   const handleGoogleLogin = () => {
-    window.location.href = "api/auth/google";
+    window.location.href = `${API_BASE_URL}/api/auth/google`;
   };
 
   const handleAuthenticationSuccess = (path) => {
