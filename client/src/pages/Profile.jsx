@@ -55,13 +55,18 @@ function Profile() {
   const userStatusArr = userStatus ? Object.values(userStatus) : [];
   const ratingsArr = userRatings ? Object.values(userRatings) : [];
 
-  const watchedArr = userStatusArr.filter((film) => film.status === "watched");
-  const watchlistArr = userStatusArr.filter(
-    (film) => film.status === "watchlist",
-  );
-  const favoritesArr = userStatusArr.filter(
-    (film) => film.is_favorited === true,
-  );
+  const watchedArr =
+    userStatusArr.length > 0
+      ? userStatusArr.filter((film) => film.status === "watched")
+      : [];
+  const watchlistArr =
+    userStatusArr.length > 0
+      ? userStatusArr.filter((film) => film.status === "watchlist")
+      : [];
+  const favoritesArr =
+    userStatusArr.length > 0
+      ? userStatusArr.filter((film) => film.is_favorited === true)
+      : [];
 
   const basePosterPath = "https://image.tmdb.org/t/p/";
   const reviewPosterWidth = "w154";
@@ -179,22 +184,32 @@ function Profile() {
             <ComboBox label="Genre" name="genre" options={genres} /> */}
             {/* {userStatusArr.map(())} */}
             {reviewsOn ? (
-              userReviews.map((review, index) => {
-                return (
-                  <div className="flex flex-col gap-6">
+              /* Logic for Reviews */
+              userReviews && userReviews.length > 0 ? (
+                <div className="flex flex-col gap-6">
+                  {userReviews.map((review) => (
                     <ProfileReviews
+                      key={review.tmdb_id} // Key must be on the outermost element
                       posterBase={`${basePosterPath}${reviewPosterWidth}`}
                       review={review}
-                      key={review.tmdb_id}
                     />
-                  </div>
-                );
-              })
-            ) : (
+                  ))}
+                </div>
+              ) : (
+                <p className="text-[#9692c9] italic mt-8 text-center">
+                  No reviews written yet...
+                </p>
+              )
+            ) : /* Logic for Films (Watchlist/Watched/Favorites) */
+            listOnDisplay && listOnDisplay.length > 0 ? (
               <ProfileFilms
                 list={listOnDisplay}
                 posterBase={`${basePosterPath}${smallBannerWidth}`}
               />
+            ) : (
+              <p className="text-[#9692c9] italic mt-8 text-center">
+                Nothing here yet...
+              </p>
             )}
           </section>
         </div>
