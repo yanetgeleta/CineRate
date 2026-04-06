@@ -39,7 +39,7 @@ function Home() {
     spaceBetween: 0,
     slidesPerView: 1,
     // pagination: { clickable: true },
-    autoplay: { delay: 5000 },
+    autoplay: { delay: 5000, disableOnInteraction: false },
     mousewheel: { enabled: true, forceToAxis: true },
     // disableOnInteraction: false,
     // pauseOnMouseEnter: true,
@@ -130,7 +130,7 @@ function Home() {
   async function trailerButtonHandler(values) {
     // const buttonValue = e.currentTarget.value;
     const params = new URLSearchParams(values);
-    const trailerPath = `/api/tmdb/trailer?${params}`;
+    const trailerPath = `${API_BASE_URL}/api/tmdb/trailer?${params}`;
     // console.log(buttonValue);
     // I think the movie Id is not being sent as params
     try {
