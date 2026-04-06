@@ -9,6 +9,7 @@ import reviewsRoutes from "./routes/reviewsRatingsRoutes.js";
 import env from "dotenv";
 import path from "path";
 import pgSession from "connect-pg-simple";
+import db from "./config/database.js";
 
 env.config({ path: path.resolve(process.cwd(), ".env") });
 
@@ -17,7 +18,7 @@ import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
 app.set("trust proxy", 1);
-const pgStore = pgSession(session);
+const PgStore = pgSession(session);
 const allowedOrigins = [
   "http://localhost:5173",
   process.env.CLIENT_URL, // This will be your Vercel URL
@@ -27,7 +28,7 @@ configurePassport();
 
 app.use(
   session({
-    store: new pgStore({
+    store: new PgStore({
       pool: db, // Your Neon pool from database.js
       tableName: "session",
     }),
