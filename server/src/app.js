@@ -8,6 +8,7 @@ import libraryRoutes from "./routes/libraryRoutes.js";
 import reviewsRoutes from "./routes/reviewsRatingsRoutes.js";
 import env from "dotenv";
 import path from "path";
+import pgSession from "connect-pg-simple";
 
 env.config({ path: path.resolve(process.cwd(), ".env") });
 
@@ -15,6 +16,8 @@ import configurePassport from "./config/passport.js";
 import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
+app.set("trust proxy", 1);
+const pgStore = pgSession(session);
 const allowedOrigins = [
   "http://localhost:5173",
   process.env.CLIENT_URL, // This will be your Vercel URL
@@ -22,16 +25,19 @@ const allowedOrigins = [
 
 configurePassport();
 
-app.set("trust proxy", 1);
 app.use(
   session({
+    store: new pgStore({
+      pool: db, // Your Neon pool from database.js
+      tableName: "session",
+    }),
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false, // Changed to false for better performance/privacy
+    saveUninitialized: false,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7,
-      secure: process.env.NODE_ENV === "production", // Must be true on production (HTTPS)
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Required for cross-domain
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     },
   }),
 );
