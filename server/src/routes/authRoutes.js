@@ -6,7 +6,6 @@ import path from "path";
 import { ensureAuthenticated } from "../middleware/authMiddleware.js";
 
 env.config({ path: path.resolve(process.cwd(), ".env") });
-const clientURL = process.env.CLIENT_URL || "http://localhost:5173";
 const router = express.Router();
 
 router.post("/register", registerUser);
@@ -32,17 +31,17 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: `${clientURL}/login?error=googlefail`,
+    failureRedirect: `${process.env.CLIENT_URL}/login?error=googlefail`,
   }),
   (req, res) => {
-    res.redirect(`${clientURL}/dashboard`);
+    res.redirect(`${process.env.CLIENT_URL}/dashboard`);
   },
 );
 
 router.post("/logout", (req, res, next) => {
   req.logout((err) => {
     if (err) next(err);
-    res.redirect(`${clientURL}/dashboard`);
+    res.redirect(`${process.env.CLIENT_URL}/dashboard`);
   });
 });
 
