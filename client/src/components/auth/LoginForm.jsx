@@ -10,7 +10,7 @@ const LoginForm = (props) => {
   const [password, setPassword] = useState("");
   const { login } = useAuth();
   const location = useLocation();
-  const redirectTo = location.state.initialMode ? "/" : location.state;
+  const redirectTo = location.state?.initialMode ? "/" : location.state;
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
   const handleSubmit = async (event) => {
