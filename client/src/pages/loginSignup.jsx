@@ -13,8 +13,7 @@ function LoginSignUp() {
   // Use this location to find where the request for authentication came from and redirect them there
   const { state } = useLocation();
   const [mode, setMode] = useState(state?.initialMode || "login");
-  const API_BASE_URL =
-    import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
   const handleLogIn = () => {
     setMode("login");

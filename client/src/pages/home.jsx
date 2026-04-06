@@ -39,7 +39,7 @@ function Home() {
     spaceBetween: 0,
     slidesPerView: 1,
     // pagination: { clickable: true },
-    autoplay: { delay: 5000, disableOnInteraction: false },
+    autoplay: { delay: 5000, disableOnInteraction: true },
     mousewheel: { enabled: true, forceToAxis: true },
     // disableOnInteraction: false,
     // pauseOnMouseEnter: true,

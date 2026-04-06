@@ -34,7 +34,8 @@ const configurePassport = () => {
       {
         clientID: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
-        callbackURL: "http://localhost:3000/api/auth/google/callback",
+        callbackURL: "/api/auth/google/callback",
+        passReqToCallback: true,
       },
       async (accessToken, refreshToken, profile, cb) => {
         try {
