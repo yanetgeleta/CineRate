@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import MovieIcon from "@mui/icons-material/Movie";
-import Button from "../components/Button";
 import LoginForm from "../components/auth/LoginForm";
 import SignUpForm from "../components/auth/SignUpForm";
 import { useLocation, useNavigate } from "react-router-dom";
 import GoogleIcon from "@mui/icons-material/Google";
-import IconButton from "@mui/material/IconButton";
 // This is where users login and signup
 function LoginSignUp() {
   const navigate = useNavigate();
