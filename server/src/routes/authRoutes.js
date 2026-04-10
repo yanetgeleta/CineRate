@@ -32,13 +32,10 @@ router.get(
 
 router.get(
   "/google/callback",
-  passport.authenticate(
-    "google",
-    { session: false },
-    {
-      failureRedirect: `${process.env.CLIENT_URL}/login?error=googlefail`,
-    },
-  ),
+  passport.authenticate("google", {
+    session: false,
+    failureRedirect: `${process.env.CLIENT_URL}/login?error=googlefail`,
+  }),
   (req, res) => {
     const token = tokenCreator(req);
     res.redirect(`${process.env.CLIENT_URL}/login-success?token=${token}`);
