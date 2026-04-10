@@ -27,14 +27,14 @@ function FilmReviewComp({
   });
 
   const profilePlaceholder = avatar.toDataUri();
-  if (reviews.length <= 0 || !user) {
+  if (reviews.length <= 0) {
     return (
       <p className="my-8 text-md italic tracking-tight">
         No reviews yet. Be the first to review!
       </p>
     );
   }
-  if (myReviews.length <= 0) {
+  if (myReviews.length <= 0 || !user) {
     // When I haven't made a comment, or there is no user
     return (
       <div className="my-8">
