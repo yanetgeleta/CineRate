@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import session from "express-session";
 import bodyParser from "body-parser";
 import passport from "passport";
 import tmdbRoute from "./routes/tmdbRoutes.js";
@@ -8,8 +7,6 @@ import libraryRoutes from "./routes/libraryRoutes.js";
 import reviewsRoutes from "./routes/reviewsRatingsRoutes.js";
 import env from "dotenv";
 import path from "path";
-import pgSession from "connect-pg-simple";
-import db from "./config/database.js";
 
 env.config({ path: path.resolve(process.cwd(), ".env") });
 
@@ -18,7 +15,7 @@ import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
 app.set("trust proxy", 1);
-const PgStore = pgSession(session);
+// const PgStore = pgSession(session);
 const allowedOrigins = [
   "http://localhost:5173",
   process.env.CLIENT_URL, // This will be your Vercel URL
@@ -26,28 +23,8 @@ const allowedOrigins = [
 
 configurePassport();
 
-app.use(
-  session({
-    store: new PgStore({
-      pool: db, // Your Neon pool from database.js
-      tableName: "session",
-    }),
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    },
-  }),
-);
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use(
   cors({

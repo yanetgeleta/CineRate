@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useContext } from "react";
 import { useState } from "react";
 import { createContext } from "react";
+import { ClipLoader } from "react-spinners";
 
 const AuthContext = createContext(null);
 
@@ -12,19 +13,23 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const checkUserLoggedIn = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setLoading(false);
+        return;
+      }
       try {
         const response = await fetch(`${API_BASE_URL}/api/auth/user`, {
-          credentials: "include",
+          headers: { Authorization: `Bearer ${token}` },
         });
         if (response.ok) {
           const data = await response.json();
           setUser(data.user);
         } else {
-          setUser(null);
+          localStorage.removeItem("token");
         }
       } catch (err) {
         console.log("No active session");
-        setUser(null);
       } finally {
         setLoading(false);
       }
@@ -32,25 +37,29 @@ export const AuthProvider = ({ children }) => {
     checkUserLoggedIn();
   }, []);
 
-  const login = async (userData) => {
+  const login = async (userData, token) => {
     //more inforarmation will be collected later on
+    localStorage.setItem("token", token);
     setUser(userData);
   };
   // some browsers send get requests before loading leading users being logged out on the first render
   // so changed to post to logout
   const logout = async () => {
-    try {
-      await fetch(`${API_BASE_URL}/api/auth/logout`, {
-        method: "POST",
-        credentials: "include",
-      });
-    } catch (err) {
-      console.log("Logout Error: ", err);
-    }
+    localStorage.removeItem("token");
     setUser(null);
   };
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center w-full h-full min-h-[60vh]">
+        <ClipLoader
+          loading={loading}
+          aria-label="Loading Movies Spinner"
+          data-testid="loader"
+          className="h-screen mt-20"
+          color="white"
+        />
+      </div>
+    );
   }
 
   return (

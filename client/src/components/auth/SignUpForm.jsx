@@ -21,7 +21,7 @@ const SignUpForm = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Form submitted!");
+    // console.log("Form submitted!");
 
     try {
       const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
@@ -33,21 +33,17 @@ const SignUpForm = (props) => {
         credentials: "include",
       });
       if (!response.ok) {
-        toast.error("Registration Failed");
-        // throw new Error("Sign up failed");
+        toast.error(response.message || "Registration Failed");
+        return;
       }
 
       const data = await response.json();
-      console.log("Register succes", data);
-
-      toast.success("Registration Successful");
-      login(data.user);
+      login(data.user, data.token);
       if (props.onSuccess) {
         props.onSuccess(redirectTo);
       }
     } catch (err) {
       toast.error("Registration Failed");
-      // console.log("Registration form error", err);
     }
   };
 

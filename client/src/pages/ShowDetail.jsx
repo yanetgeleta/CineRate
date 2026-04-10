@@ -145,7 +145,10 @@ function ShowDetail() {
           {
             method: "PATCH",
             credentials: "include",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
             body: JSON.stringify(body),
           },
         );
@@ -168,7 +171,10 @@ function ShowDetail() {
           {
             method: "POST",
             credentials: "include",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
             body: JSON.stringify(body),
           },
         );
@@ -208,7 +214,10 @@ function ShowDetail() {
       `${API_BASE_URL}/api/reviews/delete/review/${reviewId}`,
       {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
         credentials: "include",
       },
     );

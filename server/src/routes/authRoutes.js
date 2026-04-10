@@ -4,22 +4,24 @@ import { registerUser } from "../controllers/authController.js";
 import env from "dotenv";
 import path from "path";
 import { ensureAuthenticated } from "../middleware/authMiddleware.js";
+import { tokenCreator } from "../services/jwtService.js";
 
 env.config({ path: path.resolve(process.cwd(), ".env") });
 const router = express.Router();
 
 router.post("/register", registerUser);
 router.get("/user", ensureAuthenticated, (req, res) => {
-  if (req.isAuthenticated()) {
-    res.json({ user: req.user });
-  } else {
-    res.status(401).json({ message: "User not logged in!" });
-  }
-});
-
-router.post("/login", passport.authenticate("local"), (req, res) => {
   res.json({ user: req.user });
 });
+
+router.post(
+  "/login",
+  passport.authenticate("local", { session: false }),
+  (req, res) => {
+    const token = tokenCreator(req);
+    res.json({ user: req.user, token: token });
+  },
+);
 
 router.get(
   "/google",
@@ -30,19 +32,21 @@ router.get(
 
 router.get(
   "/google/callback",
-  passport.authenticate("google", {
-    failureRedirect: `${process.env.CLIENT_URL}/login?error=googlefail`,
-  }),
+  passport.authenticate(
+    "google",
+    { session: false },
+    {
+      failureRedirect: `${process.env.CLIENT_URL}/login?error=googlefail`,
+    },
+  ),
   (req, res) => {
-    res.redirect(`${process.env.CLIENT_URL}/dashboard`);
+    const token = tokenCreator(req);
+    res.redirect(`${process.env.CLIENT_URL}/login?token=${token}`);
   },
 );
 
 router.post("/logout", (req, res, next) => {
-  req.logout((err) => {
-    if (err) next(err);
-    res.redirect(`${process.env.CLIENT_URL}/dashboard`);
-  });
+  res.json({ message: "Logged out successfully" });
 });
 
 export default router;

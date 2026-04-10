@@ -75,7 +75,6 @@ function MovieDetail() {
       try {
         const response = await fetch(
           `${API_BASE_URL}/api/reviews/film/reviews?filmId=${movieId}`,
-          { credentials: "include" },
         );
         if (!response.ok) {
           setReviews([]);
@@ -103,7 +102,6 @@ function MovieDetail() {
         const params = new URLSearchParams(queryObj);
         const response = await fetch(
           `${API_BASE_URL}/api/tmdb/film/detail?${params}`,
-          { credentials: "include" },
         );
         if (!response.ok) {
           console.log(new Error("Failed to fetch movie detail"));
@@ -172,7 +170,10 @@ function MovieDetail() {
           {
             method: "PATCH",
             credentials: "include",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
             body: JSON.stringify(body),
           },
         );
@@ -196,7 +197,10 @@ function MovieDetail() {
           {
             method: "POST",
             credentials: "include",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
             body: JSON.stringify(body),
           },
         );
@@ -219,7 +223,10 @@ function MovieDetail() {
       `${API_BASE_URL}/api/reviews/delete/review/${reviewId}`,
       {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
         credentials: "include",
       },
     );

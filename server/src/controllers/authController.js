@@ -5,6 +5,7 @@ import path from "path";
 import User from "../models/userModel.js";
 import { createAvatar } from "@dicebear/core";
 import { adventurer } from "@dicebear/collection";
+import { tokenCreator } from "../services/jwtService.js";
 
 env.config({ path: path.resolve(process.cwd(), ".env") });
 
@@ -21,6 +22,12 @@ export const registerUser = async (req, res) => {
     if (existingUser) {
       return res.status(409).json({ message: "Email already exists" });
     }
+    const profilePic = createAvatar(adventurer, {
+      seed: `${fName} ${lName}`,
+      size: 100,
+      radius: 50,
+    });
+    const profilePicUrl = profilePic.toDataUri();
     const displayName = `${fName} ${lName}`;
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -32,15 +39,11 @@ export const registerUser = async (req, res) => {
       profilePicUrl,
       username,
     );
-    req.login(newUser, (err) => {
-      if (err)
-        return res
-          .status(500)
-          .json({ message: "Login failed after registration." });
-      return res.status(201).json({
-        message: "Registration successful",
-        user: newUser,
-      });
+    const token = tokenCreator({ user: newUser });
+    return res.status(201).json({
+      message: "Registration Successful",
+      user: newUser,
+      token: token,
     });
   } catch (err) {
     console.log(err);

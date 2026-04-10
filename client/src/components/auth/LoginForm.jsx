@@ -12,6 +12,7 @@ const LoginForm = (props) => {
   const location = useLocation();
   const redirectTo = location.state?.initialMode ? "/" : location.state;
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+  const token = localStorage.getItem("token");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -28,18 +29,19 @@ const LoginForm = (props) => {
       });
 
       if (!response.ok) {
-        toast.error("Invalid credentials!");
-        // throw new Error("Login failed");
+        toast.error(data.message || "Invalid credentials");
+        return;
       }
 
       const data = await response.json();
       // console.log("Login Success", data);
 
-      login(data.user);
+      login(data.user, data.token);
       toast.success(`Welcome Back, ${data.user.username}!`);
       props.onSuccess(redirectTo);
     } catch (err) {
       console.error("Error during login", err);
+      toast.error("An unexpected error occured");
     }
   };
 

@@ -2,6 +2,7 @@ import { Strategy as LocalStrategy } from "passport-local";
 import passport from "passport";
 import bcrypt from "bcrypt";
 import { Strategy as GoogleStrategy } from "passport-google-oauth2";
+import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import env from "dotenv";
 import path from "path";
 import User from "../models/userModel.js";
@@ -58,18 +59,21 @@ const configurePassport = () => {
       },
     ),
   );
-
-  passport.serializeUser((user, cb) => {
-    cb(null, user.id);
-  });
-  passport.deserializeUser(async (id, cb) => {
-    try {
-      const user = await User.byId(id);
-      user ? cb(null, user) : cb(new Error("User not found"), null);
-    } catch (err) {
-      cb(err, null);
-    }
-  });
+  const opts = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: process.env.JWT_SECRET,
+  };
+  passport.use(
+    new JwtStrategy(opts, async (jwt_payload, done) => {
+      try {
+        const user = await User.byId(jwt_payload.id);
+        if (user) return done(null, user);
+        return done(null, false);
+      } catch (err) {
+        return done(err, false);
+      }
+    }),
+  );
 };
 
 export default configurePassport;

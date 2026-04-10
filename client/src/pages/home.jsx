@@ -65,6 +65,8 @@ function Home() {
     sources: [{ src: trailerURL, type: "video/youtube" }],
   };
 
+  const token = localStorage.getItem("token");
+
   // fetches data from the backend for the home page
   useEffect(() => {
     const fetchHomeData = async () => {
@@ -76,21 +78,11 @@ function Home() {
           topMoviesRes,
           topShowsRes,
         ] = await Promise.all([
-          fetch(`${API_BASE_URL}/api/tmdb/trending/today`, {
-            credentials: "include",
-          }),
-          fetch(`${API_BASE_URL}/api/tmdb/trending/weekly`, {
-            credentials: "include",
-          }),
-          fetch(`${API_BASE_URL}/api/tmdb/new/movies`, {
-            credentials: "include",
-          }),
-          fetch(`${API_BASE_URL}/api/tmdb/top/movies`, {
-            credentials: "include",
-          }),
-          fetch(`${API_BASE_URL}/api/tmdb/top/shows`, {
-            credentials: "include",
-          }),
+          fetch(`${API_BASE_URL}/api/tmdb/trending/today`),
+          fetch(`${API_BASE_URL}/api/tmdb/trending/weekly`),
+          fetch(`${API_BASE_URL}/api/tmdb/new/movies`),
+          fetch(`${API_BASE_URL}/api/tmdb/top/movies`),
+          fetch(`${API_BASE_URL}/api/tmdb/top/shows`),
         ]);
         if (
           !trendingTodayRes.ok ||
