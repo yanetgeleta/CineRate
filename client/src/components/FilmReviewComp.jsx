@@ -27,7 +27,7 @@ function FilmReviewComp({
   });
 
   const profilePlaceholder = avatar.toDataUri();
-  if (reviews.length <= 0) {
+  if (reviews.length <= 0 || !user) {
     return (
       <p className="my-8 text-md italic tracking-tight">
         No reviews yet. Be the first to review!
