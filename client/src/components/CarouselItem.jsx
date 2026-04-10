@@ -50,27 +50,27 @@ function CarouselItem({ item, filmType, ...otherProps }) {
   // Add a clip loader later on
   return (
     <div className="relative group transition-all duration-300">
-      <div>
-        <Link
-          to={`/${item.media_type === "movie" || filmType === "movie" ? "moviedetail" : "showdetail"}/${item.id}`}
-        >
-          <div className=" shadow-lg transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl active:scale-95 group-hover:shadow-[#adc6ff]/20">
-            <FilmCard
-              imgClasses={"w-full h-full object-cover rounded-xl"}
-              src={
-                `${otherProps.basePath}${otherProps.bannerWidth}${item.poster_path}` ||
-                smallBannerPlaceHolder
-              }
-              alt="A small film poster card"
-            />
-          </div>
-          <div className="mt-4">
-            <h2 className="text-[#dae2fd] font-semibold text-base group-hover:text-[#adc6ff] transition-colors">
-              {item.title || item.name}
-            </h2>
-          </div>
-        </Link>
-      </div>
+      <Link
+        to={`/${item.media_type === "movie" || filmType === "movie" ? "moviedetail" : "showdetail"}/${item.id}`}
+      >
+        <div className="relative aspect-2/3 rounded-2xl overflow-hidden mb-4 shadow-xl group-hover:shadow-[#adc6ff]/20 transition-all duration-300">
+          <FilmCard
+            imgClasses={
+              "w-full h-full object-cover rounded-xl group-hover:scale-110 transition-transform duration-500"
+            }
+            src={
+              `${otherProps.basePath}${otherProps.bannerWidth}${item.poster_path}` ||
+              smallBannerPlaceHolder
+            }
+            alt="A small film poster card"
+          />
+        </div>
+        <div className="mt-4">
+          <h2 className="text-[#dae2fd] font-semibold text-base group-hover:text-[#adc6ff] transition-colors">
+            {item.title || item.name}
+          </h2>
+        </div>
+      </Link>
       <div className="hidden group-hover:flex absolute bottom-15 left-[23%] gap-1.5 bg-white/10 backdrop-blur-md rounded-sm group-hover:scale-105 transition-all duration-500 ">
         {!user ? (
           <IconButton
