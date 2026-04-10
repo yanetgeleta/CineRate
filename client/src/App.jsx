@@ -15,6 +15,7 @@ import { LibraryProvider } from "./context/LibraryContex";
 import SearchPage from "./pages/searchPage";
 import Navbar from "./layouts/Navbar";
 import { Toaster } from "sonner";
+import LoginSuccess from "./pages/LoginSuccess";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Navbar />
             <main className="grow">
               <Routes>
+                <Route path="/login-success" element={<LoginSuccess />} />
                 <Route path="/" element={<Home />} />
                 <Route path="/moviedetail/:movieId" element={<MovieDetail />} />
                 <Route path="/showdetail/:showId" element={<ShowDetail />} />

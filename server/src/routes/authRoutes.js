@@ -41,7 +41,7 @@ router.get(
   ),
   (req, res) => {
     const token = tokenCreator(req);
-    res.redirect(`${process.env.CLIENT_URL}/login?token=${token}`);
+    res.redirect(`${process.env.CLIENT_URL}/login-success?token=${token}`);
   },
 );
 
