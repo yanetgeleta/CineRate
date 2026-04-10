@@ -13,6 +13,8 @@ export const LibraryProvider = ({ children }) => {
   // next: set ratings, reviews, status separately and then send them to the front end
   //      easier to edit wnen status is updated and comments are written too
 
+  const token = localStorage.getItem("token");
+
   // This gets all the reviews, ratings, and status updates for a single user from the backend
   useEffect(() => {
     async function fetchUserLibrary() {
@@ -26,6 +28,10 @@ export const LibraryProvider = ({ children }) => {
       try {
         const response = await fetch(`${API_BASE_URL}/api/library/all`, {
           credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         });
         const libraryObj = await response.json();
 
@@ -101,7 +107,10 @@ export const LibraryProvider = ({ children }) => {
           method: "POST",
           body: JSON.stringify(body),
           credentials: "include",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         },
       );
       if (!response.ok) throw new Error("Failed to update the status database");
@@ -134,7 +143,10 @@ export const LibraryProvider = ({ children }) => {
         {
           method: "POST",
           credentials: "include",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify(body),
         },
       );

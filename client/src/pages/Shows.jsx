@@ -31,7 +31,6 @@ const Shows = () => {
       if (genre) {
         const genreIdResponse = await fetch(
           `${API_BASE_URL}/api/tmdb/genre/id?filmType=tv&genre=${genre}`,
-          { credentials: "include" },
         );
         const genreIdData = await genreIdResponse.json();
 
@@ -57,7 +56,6 @@ const Shows = () => {
         const params = new URLSearchParams(values);
         const response = await fetch(
           `${API_BASE_URL}/api/tmdb/discover/film?${params}`,
-          { credentials: "include" },
         );
         if (!response.ok) {
           setLoading[false];

@@ -27,12 +27,12 @@ const Movies = () => {
   const smallBannerWidth = "w300";
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
+  // get the id for a genre from the genre name
   useEffect(() => {
     async function genreIdGetter() {
       if (genre) {
         const genreIdResponse = await fetch(
           `${API_BASE_URL}/api/tmdb/genre/id?filmType=movie&genre=${genre}`,
-          { credentials: "include" },
         );
         const genreIdData = await genreIdResponse.json();
 
@@ -41,9 +41,11 @@ const Movies = () => {
     }
     genreIdGetter();
   }, [genre]);
+  // sets the page back to one whenever one of the dependencies change
   useEffect(() => {
     setPage(1);
   }, [genre, year, sortBy]);
+  // searches for movies
   useEffect(() => {
     if (genre && !genreID) setLoading[true];
     async function moviesDataGetter() {
