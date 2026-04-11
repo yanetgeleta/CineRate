@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import FilmCard from "../components/FilmCard";
-import Button from "../components/Button";
 import Navbar from "../layouts/Navbar";
 import StarIcon from "@mui/icons-material/Star";
 import CreateIcon from "@mui/icons-material/Create";
@@ -22,18 +21,20 @@ import FilmReviewComp from "../components/FilmReviewComp";
 import ReviewModal from "../components/ReviewModal";
 import EditReviewModal from "../components/EditReviewModal";
 import ConfirmModal from "../components/ConfirmModal";
+import { toast } from "sonner";
+
 // This is a page that shows details of shows
 function ShowDetail() {
   const { showId } = useParams();
   const { getFilmStatus, getFilmRating, statusUpdateCall, ratingUpdateCall } =
     useLibrary();
+
   const filmStatus = getFilmStatus(showId);
   const filmRating = getFilmRating(showId);
 
   const [reviews, setReviews] = useState([]);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleteReviewId, setDeleteReviewId] = useState(null);
-  // const [rating, setRating] = useState(filmRating.rating);
   const [showData, setShowData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [refreshTrigger, setRefreshTrigger] = useState(false);
@@ -41,13 +42,9 @@ function ShowDetail() {
   const [editedReview, setEditedReview] = useState(null);
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [currentMode, setCurrentMode] = useState("details");
-
   const [showGenres, setShowGenres] = useState(null);
+
   const { user } = useAuth();
-
-  // const [status, setStatus] = useState(filmStatus.status);
-  // const [isFavorited, setIsFavorited] = useState(filmStatus.is_favorited);
-
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -59,6 +56,7 @@ function ShowDetail() {
   const smallBannerPlaceHolder =
     "https://placehold.co/300/black/white?text=Small+Poster+Placeholder";
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+  const token = localStorage.getItem("token");
 
   // fetches show data from the movie database
   useEffect(() => {
@@ -69,42 +67,39 @@ function ShowDetail() {
         const params = new URLSearchParams(queryObj);
         const response = await fetch(
           `${API_BASE_URL}/api/tmdb/film/detail?${params}`,
-          { credentials: "include" },
         );
         if (!response.ok) {
           setLoading(false);
-          throw new Error("Failed to fetch show detail from the backend");
+          return;
         }
         const json = await response.json();
         const data = json.filmData;
         setShowData(data);
         setShowGenres(data.genres);
       } catch (err) {
-        setLoading(false);
-        throw new Error("Error fetching show detail form the backend");
+        console.error("Error fetching show detail", err);
       } finally {
         setLoading(false);
       }
     };
     fetchShowData();
   }, [showId]);
+
   // fetches show reviews from the database
   useEffect(() => {
     async function fetchFilmReviews() {
       try {
         const response = await fetch(
           `${API_BASE_URL}/api/reviews/film/reviews?filmId=${showId}`,
-          { credentials: "include" },
         );
         if (!response.ok) {
           setReviews([]);
-          throw new Error("Error fetching film reviews at Show Details");
+          return;
         }
         const resultData = await response.json();
         setReviews(resultData);
       } catch (err) {
         setReviews([]);
-        throw new Error("Error trying to get film reviews at show details");
       }
     }
     fetchFilmReviews();
@@ -130,7 +125,7 @@ function ShowDetail() {
       showData.title || showData.name,
     );
   };
-  // new review and edit existing one for a show
+
   const handleReview = async (review, reviewId) => {
     if (!user) {
       navigate("/loginsignup", { state: location.pathname });
@@ -144,7 +139,6 @@ function ShowDetail() {
           `${API_BASE_URL}/api/reviews/update/review/${reviewId}`,
           {
             method: "PATCH",
-            credentials: "include",
             headers: {
               Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
@@ -152,11 +146,7 @@ function ShowDetail() {
             body: JSON.stringify(body),
           },
         );
-        if (!updateReviewRes.ok) {
-          throw new Error("Error editing review for a show");
-        }
-        const responseObj = await updateReviewRes.json();
-        // setReviews((prev) => [...prev, responseObj]);
+        if (!updateReviewRes.ok) throw new Error("Error editing review");
         setRefreshTrigger((prev) => !prev);
       } else {
         const body = {
@@ -170,7 +160,6 @@ function ShowDetail() {
           `${API_BASE_URL}/api/reviews/add/review`,
           {
             method: "POST",
-            credentials: "include",
             headers: {
               Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
@@ -178,25 +167,21 @@ function ShowDetail() {
             body: JSON.stringify(body),
           },
         );
-        if (!addReviewsRes.ok) {
-          throw new Error("Error adding a new review for a show");
-        }
+        if (!addReviewsRes.ok) throw new Error("Error adding review");
         const responseObj = await addReviewsRes.json();
         setReviews((prev) => [...prev, responseObj]);
       }
     } catch (err) {
-      throw new Error("Failed to add or update review for show");
+      toast.error("Failed to process review");
     }
   };
-  // sends post request to the backend with rating value
+
   const handleRating = async (newRating) => {
     if (!user) {
       navigate("/loginsignup", { state: location.pathname });
       return;
     }
-    if (!newRating || newRating === 0) {
-      return;
-    }
+    if (!newRating || newRating === 0) return;
     ratingUpdateCall(
       newRating,
       "tv",
@@ -205,27 +190,32 @@ function ShowDetail() {
       showData.title || showData.name,
     );
   };
+
   const openDelete = (reviewId) => {
     setDeleteReviewId(reviewId);
     setDeleteModalOpen(true);
   };
+
   const handleDeleteReview = async (reviewId) => {
-    const deleteReviewRes = await fetch(
-      `${API_BASE_URL}/api/reviews/delete/review/${reviewId}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+    try {
+      const deleteReviewRes = await fetch(
+        `${API_BASE_URL}/api/reviews/delete/review/${reviewId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         },
-        credentials: "include",
-      },
-    );
-    if (!deleteReviewRes.ok) {
-      throw new Error("Error deleting a review");
+      );
+      if (!deleteReviewRes.ok) throw new Error("Error deleting review");
+      setRefreshTrigger((prev) => !prev);
+      toast.success("Review deleted");
+    } catch (err) {
+      toast.error("Failed to delete review");
     }
-    setRefreshTrigger((prev) => !prev);
   };
+
   const openEditReview = (reviewObj) => {
     setIsEditReviewOpen(true);
     setEditedReview(reviewObj);
@@ -233,150 +223,177 @@ function ShowDetail() {
 
   return (
     <main className="mt-20 md:mx-10 px-8">
-      {/* <Navbar user={user} /> */}
       {loading ? (
         <div className="flex items-center justify-center w-full h-full min-h-[60vh]">
-          <ClipLoader
-            loading={loading}
-            aria-label="Loading Show Detail Spinner"
-            data-testid="loader"
-            color="white"
-          />
+          <ClipLoader loading={loading} color="white" />
         </div>
       ) : (
         <div>
+          {/* posters and interaction buttons */}
           <div className="relative w-full overflow-hidden">
-            <div className="blur-lg max-h-[75vh]">
+            {/* blurred backdrop */}
+            <div className="blur-none lg:blur-lg max-h-[75vh]">
               <FilmCard
                 src={
                   showData.backdrop_path
                     ? `${basePosterPath}${heroBannerWidth}${showData.backdrop_path}`
                     : heroPosterPlaceholder
                 }
-              />{" "}
+              />
             </div>
+
+            {/* Everything less backdrop, absolute position starts */}
             <div className="absolute bottom-5 left-5 p-4 md:p-8 flex flex-col md:flex-row gap-6 md:gap-8 items-end">
-              <div className="w-48 md:w-56 shrink-0">
+              {/* small poster */}
+              <div className="hidden lg:block w-48 md:w-56 shrink-0">
                 <FilmCard
+                  imgClasses="w-full h-auto rounded-lg shadow-2xl object-cover"
                   src={
                     showData.poster_path
                       ? `${basePosterPath}${smallBannerWidth}${showData.poster_path}`
                       : smallBannerPlaceHolder
                   }
-                />{" "}
+                />
               </div>
+
+              {/* Everything else but the posters */}
               <div className="w-full flex flex-col gap-2">
-                <p className="text-md font-normal">
+                <p className="text-xs md:text-md font-normal">
                   {showData.first_air_date} -{" "}
                   {showData.status === "Ended"
                     ? showData.last_air_date
                     : "Continuing"}
                 </p>
-                <h2 className="text-3xl md:text-4xl font-bold leading-tight tracking-[-0.033em]">
+                <h2 className="text-2xl md:text-4xl font-bold leading-tight tracking-[-0.033em]">
                   {showData.title || showData.name}
                 </h2>
                 <div className="flex gap-2 p-3 overflow-x-auto -mx-3 mt-2">
                   {showGenres.map((genre) => (
-                    <div className="flex h-7 shrink-0 items-center justify-center gap-x-2 rounded-full border border-white/20 bg-white/10 px-3">
-                      <p
-                        className="text-xs font-medium leading-normal"
-                        key={genre.id}
-                      >
+                    <div
+                      key={genre.id}
+                      className="flex h-7 shrink-0 items-center justify-center gap-x-2 rounded-full border border-white/20 bg-white/10 px-3"
+                    >
+                      <p className="text-xs font-medium leading-normal">
                         {genre.name}
                       </p>
                     </div>
                   ))}
                 </div>
-                <div className="flex flex-wrap items-center gap-4">
-                  <p className="text-xl font-bold">{showData.vote_average}</p>
+                <p className="text-xl font-bold my-2">
+                  {showData.vote_average}
+                </p>
+
+                {/* Desktop Interaction Buttons */}
+                <div className="hidden md:flex flex-wrap items-center gap-4">
                   <div className="flex items-center justify-center">
                     {filmStatus.status === "watchlist" ? (
                       <IconButton
-                        className="cursor-pointer hover:bg-[#b7c8e1]/20 hover:scale-110 active:scale-95 transition-all duration-200"
-                        onClick={() => {
-                          handleStatusFavorite("dropped");
-                        }}
+                        onClick={() => handleStatusFavorite("dropped")}
                       >
                         <BookmarkAddIcon className="text-[#b7c8e1] text-3xl drop-shadow-md" />
                       </IconButton>
                     ) : (
                       <IconButton
-                        className="cursor-pointer hover:bg-[#b7c8e1]/10 hover:scale-110 active:scale-95 transition-all duration-200"
-                        onClick={() => {
-                          handleStatusFavorite("watchlist");
-                        }}
+                        onClick={() => handleStatusFavorite("watchlist")}
                       >
-                        <BookmarkAddOutlinedIcon className="text-[#b7c8e1] transition-colors" />
+                        <BookmarkAddOutlinedIcon className="text-[#b7c8e1]" />
                       </IconButton>
                     )}
+
                     {filmStatus.status === "watched" ? (
                       <IconButton
-                        className="cursor-pointer hover:bg-[#b7c8e1]/20 hover:scale-110 active:scale-95 transition-all duration-200"
-                        onClick={() => {
-                          handleStatusFavorite("dropped");
-                        }}
+                        onClick={() => handleStatusFavorite("dropped")}
                       >
                         <VisibilityIcon className="text-[#b7c8e1] text-3xl drop-shadow-md" />
                       </IconButton>
                     ) : (
                       <IconButton
-                        className="cursor-pointer hover:bg-[#b7c8e1]/10 hover:scale-110 active:scale-95 transition-all duration-200"
-                        onClick={() => {
-                          handleStatusFavorite("watched");
-                        }}
+                        onClick={() => handleStatusFavorite("watched")}
                       >
-                        <VisibilityOutlinedIcon className="text-[#b7c8e1] transition-colors" />
+                        <VisibilityOutlinedIcon className="text-[#b7c8e1]" />
                       </IconButton>
                     )}
+
                     {filmStatus.is_favorited ? (
-                      <IconButton
-                        className="cursor-pointer hover:bg-red-700/20 hover:scale-110 active:scale-95 transition-all duration-200"
-                        onClick={() => {
-                          handleStatusFavorite(false);
-                        }}
-                      >
+                      <IconButton onClick={() => handleStatusFavorite(false)}>
                         <FavoriteIcon className="text-red-700 text-3xl drop-shadow-md" />
                       </IconButton>
                     ) : (
-                      <IconButton
-                        className="cursor-pointer hover:bg-red-700/10 hover:scale-110 active:scale-95 transition-all duration-200"
-                        onClick={() => {
-                          handleStatusFavorite(true);
-                        }}
-                      >
-                        <FavoriteBorderOutlinedIcon className="text-red-700 transition-colors" />
+                      <IconButton onClick={() => handleStatusFavorite(true)}>
+                        <FavoriteBorderOutlinedIcon className="text-red-700" />
                       </IconButton>
                     )}
+
                     <Rating
-                      className="cursor-pointer text-amber-400 drop-shadow-md [&_.MuiRating-iconEmpty]:text-amber-400/50! transition-all"
-                      onChange={(event, newValue) => {
-                        handleRating(newValue);
-                      }}
+                      className="text-amber-400 drop-shadow-md [&_.MuiRating-iconEmpty]:text-amber-400/50!"
+                      onChange={(event, newValue) => handleRating(newValue)}
                       name="film-rating"
                       precision={0.5}
                       value={filmRating.rating}
                     />
-                    <IconButton
-                      className="cursor-pointer group hover:bg-white/10 active:scale-95 transition-all duration-200"
-                      onClick={() => {
-                        setIsReviewOpen(true);
-                      }}
-                    >
-                      <CreateIcon className="text-white drop-shadow-md group-hover:text-amber-400 transition-colors" />
+
+                    <IconButton onClick={() => setIsReviewOpen(true)}>
+                      <CreateIcon className="text-white drop-shadow-md hover:text-amber-400 transition-colors" />
                     </IconButton>
                   </div>
                 </div>
               </div>
             </div>
+
+            {/* Mobile Interaction Bar */}
+            <div className="flex flex-wrap items-center gap-4 md:hidden justify-center bg-[#131b2e] h-12">
+              <div className="flex items-center justify-center">
+                {filmStatus.status === "watchlist" ? (
+                  <IconButton onClick={() => handleStatusFavorite("dropped")}>
+                    <BookmarkAddIcon className="text-[#b7c8e1] text-3xl" />
+                  </IconButton>
+                ) : (
+                  <IconButton onClick={() => handleStatusFavorite("watchlist")}>
+                    <BookmarkAddOutlinedIcon className="text-[#b7c8e1]" />
+                  </IconButton>
+                )}
+
+                {filmStatus.status === "watched" ? (
+                  <IconButton onClick={() => handleStatusFavorite("dropped")}>
+                    <VisibilityIcon className="text-[#b7c8e1] text-3xl" />
+                  </IconButton>
+                ) : (
+                  <IconButton onClick={() => handleStatusFavorite("watched")}>
+                    <VisibilityOutlinedIcon className="text-[#b7c8e1]" />
+                  </IconButton>
+                )}
+
+                {filmStatus.is_favorited ? (
+                  <IconButton onClick={() => handleStatusFavorite(false)}>
+                    <FavoriteIcon className="text-red-700 text-3xl" />
+                  </IconButton>
+                ) : (
+                  <IconButton onClick={() => handleStatusFavorite(true)}>
+                    <FavoriteBorderOutlinedIcon className="text-red-700" />
+                  </IconButton>
+                )}
+
+                <Rating
+                  className="cursor-pointer text-amber-400 drop-shadow-md [&_.MuiRating-iconEmpty]:text-amber-400/50! transition-all"
+                  onChange={(event, newValue) => handleRating(newValue)}
+                  name="film-rating-mobile"
+                  precision={0.5}
+                  value={filmRating.rating}
+                  size="small"
+                />
+
+                <IconButton onClick={() => setIsReviewOpen(true)}>
+                  <CreateIcon className="text-white" />
+                </IconButton>
+              </div>
+            </div>
           </div>
+
+          {/* Buttons and Content Sections */}
           <div className="p-4 md:p-8">
-            {/* The "Track" wrapper */}
             <div className="flex border-b border-white/10">
               <button
-                onClick={() => {
-                  setCurrentMode("details");
-                }}
-                // Added -mb-px to all active states so the border overlaps correctly
+                onClick={() => setCurrentMode("details")}
                 className={`uppercase px-4 py-3 font-semibold transition-colors ${
                   currentMode === "details"
                     ? "border-b-2 border-[#adc6ff] text-[#dae2fd] -mb-px"
@@ -386,9 +403,7 @@ function ShowDetail() {
                 Details
               </button>
               <button
-                onClick={() => {
-                  setCurrentMode("cast-crew");
-                }}
+                onClick={() => setCurrentMode("cast-crew")}
                 className={`uppercase px-4 py-3 font-semibold transition-colors ${
                   currentMode === "cast-crew"
                     ? "border-b-2 border-[#adc6ff] text-[#dae2fd] -mb-px"
@@ -398,9 +413,7 @@ function ShowDetail() {
                 Cast & Crew
               </button>
               <button
-                onClick={() => {
-                  setCurrentMode("reviews");
-                }}
+                onClick={() => setCurrentMode("reviews")}
                 className={`uppercase px-4 py-3 font-semibold transition-colors ${
                   currentMode === "reviews"
                     ? "border-b-2 border-[#adc6ff] text-[#dae2fd] -mb-px"
@@ -409,10 +422,8 @@ function ShowDetail() {
               >
                 Reviews
               </button>
-              {/* <button className="uppercase px-4 py-3 font-semibold text-[#dae2fd]/60 hover:text-[#dae2fd]">Seasons</button> */}
             </div>
 
-            {/* Content Sections */}
             <div className="mt-6">
               {currentMode === "details" && (
                 <FilmDetailsComp filmData={showData} />
@@ -427,13 +438,13 @@ function ShowDetail() {
                   myReviews={myReviews}
                   openEditReview={openEditReview}
                   onDelete={openDelete}
-                  // Passed the rating prop down just like the styled Movie block
                   rating={filmRating?.rating}
                 />
               )}
             </div>
           </div>
 
+          {/* Modals */}
           {isReviewOpen && (
             <ReviewModal
               title={showData?.title || showData?.name || "Loading..."}
@@ -443,9 +454,7 @@ function ShowDetail() {
                   : ""
               }
               isOpen={isReviewOpen}
-              onClose={() => {
-                setIsReviewOpen(false);
-              }}
+              onClose={() => setIsReviewOpen(false)}
               onReviewSubmit={handleReview}
               onRatingSubmit={handleRating}
               prevRating={filmRating.rating}
@@ -454,9 +463,7 @@ function ShowDetail() {
           {isEditReviewOpen && (
             <EditReviewModal
               isOpen={isEditReviewOpen}
-              onClose={() => {
-                setIsEditReviewOpen(false);
-              }}
+              onClose={() => setIsEditReviewOpen(false)}
               onReviewSubmit={handleReview}
               onRatingSubmit={handleRating}
               prevRating={filmRating.rating}
@@ -470,9 +477,7 @@ function ShowDetail() {
             message={"Are you sure you want to delete this review?"}
             continueMsg={"Yes"}
             cancelMsg={"Cancel"}
-            handleCancel={() => {
-              setDeleteModalOpen(false);
-            }}
+            handleCancel={() => setDeleteModalOpen(false)}
             handleContinue={() => {
               handleDeleteReview(deleteReviewId);
               setDeleteModalOpen(false);
@@ -483,4 +488,5 @@ function ShowDetail() {
     </main>
   );
 }
+
 export default ShowDetail;

@@ -34,7 +34,7 @@ function FilmReviewComp({
       </p>
     );
   }
-  if (myReviews.length <= 0 || !user) {
+  if (!user || myReviews?.length <= 0) {
     // When I haven't made a comment, or there is no user
     return (
       <div className="my-8">

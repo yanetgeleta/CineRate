@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
   };
   if (loading) {
     return (
-      <div className="flex items-center justify-center w-full h-full min-h-[60vh]">
+      <div className="flex items-center justify-center w-full h-full min-h-[60vh] mt-20">
         <ClipLoader
           loading={loading}
           aria-label="Loading Movies Spinner"

@@ -50,7 +50,7 @@ const SignUpForm = (props) => {
   return (
     <div>
       <form className="flex flex-col gap-4 px-4" onSubmit={handleSubmit}>
-        <div className="flex justify-between gap-4">
+        <div className="flex flex-col md:flex-row justify-between gap-4">
           <label className="flex flex-col flex-1" htmlFor="signup-fname">
             <p className="text-sm font-medium leading-normal pb-2">
               First Name
@@ -82,7 +82,7 @@ const SignUpForm = (props) => {
             />
           </label>
         </div>
-        <div className="flex justify-between gap-4">
+        <div className="flex flex-col md:flex-row justify-between gap-4">
           <label className="flex flex-col flex-1" htmlFor="signup-username">
             <p className="text-sm font-medium leading-normal pb-2">Username</p>
             <input

@@ -44,7 +44,27 @@ function CarouselItem({ item, filmType, ...otherProps }) {
     );
   };
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div>
+        <div className="relative aspect-2/3 rounded-2xl overflow-hidden mb-4 shadow-xl group-hover:shadow-[#adc6ff]/20 transition-all duration-300">
+          <FilmCard
+            imgClasses={
+              "w-full h-full object-cover rounded-xl group-hover:scale-110 transition-transform duration-500"
+            }
+            src={
+              `${otherProps.basePath}${otherProps.bannerWidth}${item.poster_path}` ||
+              smallBannerPlaceHolder
+            }
+            alt="A small film poster card"
+          />
+        </div>
+        <div className="mt-4">
+          <h2 className="text-[#dae2fd] font-semibold text-base group-hover:text-[#adc6ff] transition-colors">
+            {item.title || item.name}
+          </h2>
+        </div>
+      </div>
+    );
   }
 
   // Add a clip loader later on
