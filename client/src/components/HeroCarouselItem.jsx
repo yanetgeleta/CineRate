@@ -44,7 +44,29 @@ const HeroCarouselItem = ({
     );
   };
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="flex justify-center">
+        <FilmCard
+          imgClasses="rounded-xsm"
+          src={
+            item.backdrop_path
+              ? `${basePath}${bannerWidth}${item.backdrop_path}`
+              : heroPosterPlaceholder
+          }
+          alt="Hero film card"
+        />
+        <div className="z-10 absolute bottom-15 left-10">
+          <h2 className="text-4xl md:text-8xl font-bold tracking-tighter mb-6 leading-[0.9] text-[#dae2fd] max-w-[70vw]">
+            {item.title || item.name}
+          </h2>
+          <div>
+            <p className="hidden md:block text-lg text-[#c2c6d6] mb-8 max-w-xl leading-relaxed">
+              {item.overview}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

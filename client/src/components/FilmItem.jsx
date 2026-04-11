@@ -42,7 +42,7 @@ function FilmItem({ film, filmType, basePosterPath, smallBannerWidth }) {
   const smallBannerPlaceHolder =
     "https://placehold.co/300/black/white?text=Small+Poster+Placeholder";
   if (loading) {
-    return <p>Loading...</p>;
+    return <p>Loading film item</p>;
   }
   return (
     <div className="group cursor-pointer relative">
