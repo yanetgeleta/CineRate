@@ -264,7 +264,7 @@ function MovieDetail() {
           {/* posters and interaction buttons */}
           <div className="relative w-full overflow-hidden">
             {/* blurred backdrop */}
-            <div className="blur-lg max-h-[75vh]">
+            <div className="blur-none lg:blur-lg max-h-[75vh]">
               {/* Backdrop */}
               <FilmCard
                 src={
@@ -274,10 +274,10 @@ function MovieDetail() {
                 }
               />
             </div>
-            {/* Everything less backdrop */}
+            {/* Everything less backdrop, absolute position starts */}
             <div className="absolute bottom-5 left-5 p-4 md:p-8 flex flex-col md:flex-row gap-6 md:gap-8 items-end">
               {/* small poster */}
-              <div className="w-48 md:w-56 shrink-0">
+              <div className="hidden lg:block w-48 md:w-56 shrink-0">
                 <FilmCard
                   imgClasses="w-full h-auto rounded-lg shadow-2xl object-cover"
                   src={
@@ -289,8 +289,10 @@ function MovieDetail() {
               </div>
               {/* Everyting else but the posters */}
               <div className="w-full flex flex-col gap-2">
-                <p className="text-md font-normal">{movieData.release_date}</p>
-                <h2 className="text-3xl md:text-4xl font-bold leading-tight tracking-[-0.033em]">
+                <p className="text-xs md:text-md font-normal">
+                  {movieData.release_date}
+                </p>
+                <h2 className="text-2xl md:text-4xl font-bold leading-tight tracking-[-0.033em]">
                   {movieData.title || movieData.name}
                 </h2>
                 <div className="flex gap-2 p-3 overflow-x-auto -mx-3 mt-2">
@@ -305,8 +307,10 @@ function MovieDetail() {
                     </div>
                   ))}
                 </div>
-                <div className="flex flex-wrap items-center gap-4">
-                  <p className="text-xl font-bold">{movieData.vote_average}</p>
+                <p className="text-xl font-bold my-2">
+                  {movieData.vote_average}
+                </p>
+                <div className="hidden md:flex flex-wrap items-center gap-4">
                   {/* Will be replace by my own rating on the second version maybe */}
                   {/* <p>{movieData.overview}</p> */}
                   <div className="flex items-center justify-center">
@@ -379,6 +383,79 @@ function MovieDetail() {
                     </IconButton>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div className="flex flex-wrap items-center gap-4 md:hidden justify-center bg-[#131b2e] h-12">
+              {/* Will be replace by my own rating on the second version maybe */}
+              {/* <p>{movieData.overview}</p> */}
+              <div className="flex items-center justify-center">
+                {filmStatus.status === "watchlist" ? (
+                  <IconButton
+                    className="cursor-pointer hover:bg-[#b7c8e1]/20 hover:scale-110 active:scale-95 transition-all duration-200"
+                    onClick={() => {
+                      handleStatusFavorite("dropped");
+                    }}
+                  >
+                    {" "}
+                    <BookmarkAddIcon className="text-[#b7c8e1] text-3xl drop-shadow-md" />
+                  </IconButton>
+                ) : (
+                  <IconButton
+                    className="cursor-pointer hover:bg-[#b7c8e1]/10 hover:scale-110 active:scale-95 transition-all duration-200"
+                    onClick={() => {
+                      handleStatusFavorite("watchlist");
+                    }}
+                  >
+                    <BookmarkAddOutlinedIcon className="text-[#b7c8e1] transition-colors" />
+                  </IconButton>
+                )}
+                {filmStatus.status === "watched" ? (
+                  <IconButton
+                    className="cursor-pointer hover:bg-[#b7c8e1]/20 hover:scale-110 active:scale-95 transition-all duration-200"
+                    onClick={() => handleStatusFavorite("dropped")}
+                  >
+                    <VisibilityIcon className="text-[#b7c8e1] text-3xl drop-shadow-md" />
+                  </IconButton>
+                ) : (
+                  <IconButton
+                    className="cursor-pointer  hover:bg-[#b7c8e1]/10 hover:scale-110 active:scale-95 transition-all duration-200"
+                    onClick={() => handleStatusFavorite("watched")}
+                  >
+                    <VisibilityOutlinedIcon className="text-[#b7c8e1] transition-colors" />
+                  </IconButton>
+                )}
+                {filmStatus.is_favorited ? (
+                  <IconButton
+                    className="cursor-pointer hover:bg-red-700/20 hover:scale-110 active:scale-95 transition-all duration-200"
+                    onClick={() => handleStatusFavorite(false)}
+                  >
+                    <FavoriteIcon className="text-red-700 text-3xl drop-shadow-md" />
+                  </IconButton>
+                ) : (
+                  <IconButton
+                    className="cursor-pointer hover:bg-red-700/10 hover:scale-110 active:scale-95 transition-all duration-200"
+                    onClick={() => handleStatusFavorite(true)}
+                  >
+                    <FavoriteBorderOutlinedIcon className="text-red-700 transition-colors" />
+                  </IconButton>
+                )}
+                <Rating
+                  className="cursor-pointer text-amber-400 drop-shadow-md [&_.MuiRating-iconEmpty]:text-amber-400/50! transition-all"
+                  onChange={(event, newValue) => {
+                    handleRating(newValue);
+                  }}
+                  name="film-rating"
+                  precision={0.5}
+                  value={filmRating.rating}
+                />
+                <IconButton
+                  className="cursor-pointer group hover:bg-white/10 active:scale-95 transition-all duration-200"
+                  onClick={() => {
+                    setIsReviewOpen(true);
+                  }}
+                >
+                  <CreateIcon className="text-white drop-shadow-md group-hover:text-amber-400 transition-colors" />
+                </IconButton>
               </div>
             </div>
           </div>

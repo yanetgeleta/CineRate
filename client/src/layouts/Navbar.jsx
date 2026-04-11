@@ -76,8 +76,8 @@ function Navbar() {
               />
             </form>
           )}
-          {user && !pathname.startsWith("/profile") && (
-            <div className="flex gap-1.5 items-center justify-center">
+          {user && (
+            <div className="md:flex gap-1.5 items-center justify-center hidden">
               {/* <NotificationRing /> */}
               <button
                 className="hidden md:flex items-center justify-center bg-[#262348] text-white text-lg font-bold leading-normal tracking-[0.015em] hover:bg-[#262348]/8 transition-colors min-w-21 max-w-120 cursor-pointer rounded-lg h-10 px-4 active:scale-95"
@@ -89,7 +89,7 @@ function Navbar() {
               >
                 Log out
               </button>
-              <NavLink className="" to={`/profile/${user.id}`}>
+              <NavLink className="hidden md:block" to={`/profile/${user.id}`}>
                 <span>
                   <ProfilePic imgClass="size-15 flex items-center justify-center rounded-full hover:scale-105 transition-all active:scale-95" />
                 </span>
@@ -121,20 +121,26 @@ function Navbar() {
         </div>
       </div>
       {/* Mobile Menu Overlay */}
+      {/* PLACE THIS AT THE VERY END OF YOUR NAVBAR COMPONENT, JUST BEFORE THE LAST </nav> TAG */}
       <div
-        className={`fixed inset-0 z-60 flex justify-end transition-opacity duration-300 ${isMenuOpen ? "visible opacity-100" : "invisible opacity-0"}`}
+        className={`fixed inset-0 z-[100] transition-all duration-300 ${
+          isMenuOpen ? "visible" : "invisible pointer-events-none"
+        }`}
       >
-        {/* The Dimmed Backdrop */}
+        {/* Backdrop: inset-0 makes it cover the entire browser window */}
         <div
-          className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+          className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${
+            isMenuOpen ? "opacity-100" : "opacity-0"
+          }`}
           onClick={toggleMenu}
         />
 
-        {/* The Sidebar Content */}
+        {/* Sidebar */}
         <div
-          className={`relative w-72 h-full bg-[#0B1326] border-l border-white/10 p-8 transition-transform duration-300 ease-in-out ${isMenuOpen ? "translate-x-0" : "translate-x-full"}`}
+          className={`absolute right-0 w-72 h-screen bg-[#0B1326] border-l border-white/10 p-8 transition-transform duration-300 ease-in-out ${
+            isMenuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
         >
-          {/* Close Button */}
           <button
             onClick={toggleMenu}
             className="absolute top-6 right-6 text-slate-400"

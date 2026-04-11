@@ -117,16 +117,16 @@ function Profile() {
           <section className="relative h-80 w-full overflow-hidden">
             <div class="absolute inset-0 bg-linear-to-t from-[#0b1326] to-transparent z-10"></div>
             <img
-              class="w-full h-full object-cover opacity-30"
+              class="w-full h-50 md:h-full object-cover opacity-30"
               data-alt="Cinematic movie theatre abstract background"
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEKfh0XQiOIDhqtFYvhzKq8n0SB_uywSVWJJwpCi7rpto8TcfM6-Eav488ordmeyqbBgMnsGODinCARj9o5LsA7rGmXguOeyeK5uA7cF735y6L-AvtQUamH0sd244oGzetL8QaadSpvZqmFXsQyXI4NL8tK1lfO6oMcp4LSG3REuUrhouZb_7S35t2LkXEP5W-okz_2BzHwIjZlAoIt4pImep1nINDVjxegkOXT3PL0vNfD3sRvzyujIGU3X-qesjolla-1tuxLEKw"
             />
-            <div className="absolute bottom-0 left-0 p-12 z-20 flex items-end gap-8 w-full max-w-7xl mx-auto">
-              <div className="w-32 h-32 rounded-2xl overflow-hidden border-4 border-[#222a3d] shadow-2xl">
-                <ProfilePic imgClass="w-full h-full object-cover" />
+            <div className="absolute bottom-0 left-0 p-12 z-20 flex items-center gap-8 w-full max-w-7xl mx-auto">
+              <div className="w-32 rounded-2xl overflow-hidden border-4 border-[#222a3d] shadow-2xl">
+                <ProfilePic imgClass="w-full object-cover" />
               </div>
               <div className="grow pb-4">
-                <h2 className="text-4xl md:text-5xl font-bold tracking-tighter text-[#dae2fd] mb-1">
+                <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-[#dae2fd] mb-1">
                   {user.display_name}
                 </h2>
                 {/*  */}
@@ -165,7 +165,7 @@ function Profile() {
                 return (
                   <button
                     key={b.text}
-                    className={`flex-1 md:flex-none px-8 py-2.5 rounded-lg text-sm font-bold transition-all shadow-lg ${
+                    className={`flex-1 md:flex-none px:6 md:px-8 md:py-2.5 rounded-lg text-sm font-bold transition-all shadow-lg ${
                       isActive
                         ? "bg-[#adc6ff] text-[#002e6a]"
                         : "text-[#c2c6d6] hover:text-[#dae2fd]"

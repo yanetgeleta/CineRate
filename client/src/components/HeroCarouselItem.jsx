@@ -97,7 +97,7 @@ const HeroCarouselItem = ({
       </Link>
       <div className="flex gap-4 absolute bottom-6 left-10 z-20">
         <button
-          className="bg-[#adc6ff] text-[#002e6a] px-8 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-[#4d8eff] transition-all hover:scale-105 active:scale-95 shadow-xl shadow-[#adc6ff]/10"
+          className="bg-[#adc6ff] text-[#002e6a] px-4 py-1.5 md:px-8 md:py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-[#4d8eff] transition-all hover:scale-105 active:scale-95 shadow-xl shadow-[#adc6ff]/10"
           onClick={() => {
             onTrailerButtonClick({
               filmId: item.id,
@@ -105,11 +105,11 @@ const HeroCarouselItem = ({
             });
           }}
         >
-          <PlayArrowIcon /> Watch Trailer
+          <PlayArrowIcon /> Trailer
         </button>
         {filmStatus.status !== "watchlist" ? (
           <button
-            className="bg-[#222a3d]/60 backdrop-blur-md text-[#dae2fd] px-8 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-[#31394d] transition-all hover:scale-105 active:scale-95"
+            className="bg-[#222a3d]/60 backdrop-blur-md text-[#dae2fd] px-4 py-1.5 md:px-8 md:py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-[#31394d] transition-all hover:scale-105 active:scale-95"
             onClick={() => {
               handleInteraction("watchlist");
             }}
@@ -119,7 +119,7 @@ const HeroCarouselItem = ({
           </button>
         ) : (
           <button
-            className="bg-[#222a3d]/60 backdrop-blur-md text-[#dae2fd] px-8 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-[#31394d] transition-all hover:scale-105 active:scale-95"
+            className="bg-[#222a3d]/60 backdrop-blur-md text-[#dae2fd] px-4 py-1.5 md:px-8 md:py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-[#31394d] transition-all hover:scale-105 active:scale-95"
             onClick={() => {
               handleInteraction("dropped");
             }}
@@ -129,7 +129,7 @@ const HeroCarouselItem = ({
           </button>
         )}
       </div>
-      <div className="flex h-7 w-20 shrink-0 items-center justify-center gap-x-2 rounded-full border border-white/20 bg-white/10 px-3 mb-8 absolute top-16 right-8">
+      <div className="flex h-7 w-20 shrink-0 items-center justify-center gap-x-2 rounded-full border border-white/20 bg-white/10 px-3 mb-8 absolute top-6 right-2 sm:top-6 sm:right-4 md:top-4 md:right-6 lg:top-12 lg:right-6 xl:top-16 xl:right-8">
         <p className="text-sm font-medium leading-normal text-slate-600">
           {item.media_type === "tv" ? "Show" : "Movie"}
         </p>
