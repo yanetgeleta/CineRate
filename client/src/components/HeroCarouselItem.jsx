@@ -84,7 +84,7 @@ const HeroCarouselItem = ({
           }
           alt="Hero film card"
         />
-        <div className="z-10 absolute bottom-15 left-10">
+        <div className="z-10 absolute bottom-10 left-5 md:bottom-15 md:left-10">
           <h2 className="text-4xl md:text-8xl font-bold tracking-tighter mb-6 leading-[0.9] text-[#dae2fd] max-w-[70vw]">
             {item.title || item.name}
           </h2>
@@ -95,7 +95,7 @@ const HeroCarouselItem = ({
           </div>
         </div>
       </Link>
-      <div className="flex gap-4 absolute bottom-6 left-10 z-20">
+      <div className="flex gap-4 absolute left-5 bottom-6 md:left-10 z-20">
         <button
           className="bg-[#adc6ff] text-[#002e6a] px-4 py-1.5 md:px-8 md:py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-[#4d8eff] transition-all hover:scale-105 active:scale-95 shadow-xl shadow-[#adc6ff]/10"
           onClick={() => {
