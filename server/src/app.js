@@ -6,7 +6,7 @@ import tmdbRoute from "./routes/tmdbRoutes.js";
 import libraryRoutes from "./routes/libraryRoutes.js";
 import reviewsRoutes from "./routes/reviewsRatingsRoutes.js";
 import env from "dotenv";
-import path from "path";
+import path from "path";  
 
 env.config({ path: path.resolve(process.cwd(), ".env") });
 
