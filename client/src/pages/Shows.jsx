@@ -89,7 +89,6 @@ const Shows = () => {
               filmType="tv"
             />
             {/* Genres not working: war and politics, action and adventure, sci-fi and fantasy */}
-            <h2>Genres</h2>
             <GenresFilter
               onGenreChange={(genreValue) => {
                 setGenre(genreValue);
