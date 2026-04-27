@@ -99,7 +99,6 @@ const Movies = () => {
               currentSortValue={sortBy}
               filmType="movie"
             />
-            <h2>Genres</h2>
             <GenresFilter
               onGenreChange={(genreValue) => {
                 setGenre(genreValue);

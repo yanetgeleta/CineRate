@@ -22,7 +22,7 @@ const User = {
     const user = result.rows[0];
     return user;
   },
-  newUserGoogle: async (email, id, displayName, photo) => {
+  pnewUserGoogle: async (email, id, displayName, photo) => {
     const result = await db.query(
       `insert into users(email, auth_provider, google_id, display_name, profile_pic_url)
                       values($1, 'google', $2, $3, $4)
