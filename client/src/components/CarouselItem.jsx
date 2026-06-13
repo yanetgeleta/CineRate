@@ -45,11 +45,11 @@ function CarouselItem({ item, filmType, ...otherProps }) {
   };
   if (loading) {
     return (
-      <div>
+      <div className="will-change-transform transform-gpu transition-transform duration-300 ease-out">
         <div className="relative aspect-2/3 rounded-2xl overflow-hidden mb-4 shadow-xl group-hover:shadow-[#adc6ff]/20 transition-all duration-300">
           <FilmCard
             imgClasses={
-              "w-full h-full object-cover rounded-xl group-hover:scale-110 transition-transform duration-500"
+              "w-full h-full object-cover rounded-xl group-hover:scale-110 transition-transform duration-500 ease-out will-change-transform"
             }
             src={
               `${otherProps.basePath}${otherProps.bannerWidth}${item.poster_path}` ||
@@ -69,14 +69,15 @@ function CarouselItem({ item, filmType, ...otherProps }) {
 
   // Add a clip loader later on
   return (
-    <div className="relative group transition-all duration-300">
+    // changed code: use will-change and GPU transform hints for smoother swipes/transforms
+    <div className="relative group will-change-transform transform-gpu transition-transform duration-300 ease-out">
       <Link
         to={`/${item.media_type === "movie" || filmType === "movie" ? "moviedetail" : "showdetail"}/${item.id}`}
       >
         <div className="relative aspect-2/3 rounded-2xl overflow-hidden mb-4 shadow-xl group-hover:shadow-[#adc6ff]/20 transition-all duration-300">
           <FilmCard
             imgClasses={
-              "w-full h-full object-cover rounded-xl group-hover:scale-110 transition-transform duration-500"
+              "w-full h-full object-cover rounded-xl group-hover:scale-110 transition-transform duration-500 ease-out will-change-transform"
             }
             src={
               `${otherProps.basePath}${otherProps.bannerWidth}${item.poster_path}` ||
