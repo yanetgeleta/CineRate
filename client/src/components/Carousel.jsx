@@ -33,7 +33,7 @@ const Carousel = ({
     grabCursor: true,
     freeMode: true,
     watchOverflow: true,
-    slidesPerView: "auto",
+    slidesPerView: 1,
     spaceBetween: settings?.spaceBetween ?? 20,
     // keep existing autoplay/navigation/pagination if provided
   };

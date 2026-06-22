@@ -50,8 +50,8 @@ function Home() {
     spaceBetween: 20,
     slidesPerView: 5,
     breakpoints: {
-      320: { slidesPerView: 2 },
-      640: { slidesPerView: 3 },
+      320: { slidesPerView: 2.5 },
+      640: { slidesPerView: 3.5 },
       1024: { slidesPerView: 4 },
       1280: { slidesPerView: 5 },
     },
