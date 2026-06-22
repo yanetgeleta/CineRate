@@ -2,15 +2,13 @@ import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/bundle";
-// import "swiper/css/pagination";
-// import "swiper/css/autoplay";
 import {
   A11y,
   Navigation,
   Pagination,
   Autoplay,
   Mousewheel,
-  FreeMode,
+  EffectFade,
 } from "swiper/modules";
 import CarouselItem from "./CarouselItem";
 import { useAuth } from "../context/AuthContext";
@@ -27,30 +25,57 @@ const Carousel = ({
   const { user } = useAuth();
   if (!items || items.length === 0) return null;
 
-  // changed code: lightweight sensible defaults optimized for smoother swiping
+  // sensible defaults
   const defaultSettings = {
-    speed: 600, // ms transition speed
+    speed: 600,
     grabCursor: true,
-    freeMode: true,
     watchOverflow: true,
-    slidesPerView: 1,
     spaceBetween: settings?.spaceBetween ?? 20,
-    // keep existing autoplay/navigation/pagination if provided
+    // by default allow multiple slides per view (posters) — hero override below
+    slidesPerView: settings?.slidesPerView ?? "auto",
+    // keep navigation/pagination/autoplay if provided in settings
   };
 
   const mergedSettings = { ...defaultSettings, ...(settings || {}) };
 
+  // Enforce snapping to full slides for hero banner
+  const finalSettings =
+    bannerWidth === "w1280"
+      ? {
+          ...mergedSettings,
+          // one full slide at a time
+          freeMode: false,
+          slidesPerView: 1,
+          slidesPerGroup: 1,
+          centeredSlides: false,
+          // reduce accidental half-swipes
+          threshold: 20,
+          longSwipesRatio: 0.5,
+          shortSwipes: true,
+          resistanceRatio: 0,
+          // keep autoplay if passed
+          autoplay: mergedSettings.autoplay ?? undefined,
+        }
+      : {
+          // keep poster behavior (allow multiple visible)
+          ...mergedSettings,
+          // ensure snapping by grouping visible slides (prevents half-slide stop on desktop)
+          slidesPerGroup:
+            mergedSettings.slidesPerView === "auto"
+              ? 1
+              : mergedSettings.slidesPerView,
+          freeMode: false, // disable freeMode so slides snap to grid
+        };
+
   return (
     <Swiper
-      modules={[Navigation, Pagination, A11y, Autoplay, Mousewheel, FreeMode]}
-      {...mergedSettings}
-      // changed code: add a small class so the Swiper container uses GPU transforms where appropriate
+      modules={[Navigation, Pagination, A11y, Autoplay, Mousewheel, EffectFade]}
+      {...finalSettings}
       className="will-change-transform transform-gpu"
     >
       {items.map((item) => (
         <SwiperSlide key={item.id}>
-          {/* changed code: wrap item in a GPU-accelerated container with eased transition for smoother feel */}
-          <div className="will-change-transform transform-gpu transition-transform duration-400 ease-out touch-pan-y">
+          <div className="will-change-transform transform-gpu transition-transform duration-300 ease-out">
             {bannerWidth === "w1280" ? (
               <HeroCarouselItem
                 bannerWidth={bannerWidth}
