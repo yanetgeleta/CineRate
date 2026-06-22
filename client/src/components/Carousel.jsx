@@ -64,7 +64,7 @@ const Carousel = ({
             mergedSettings.slidesPerView === "auto"
               ? 1
               : mergedSettings.slidesPerView,
-          freeMode: false, // disable freeMode so slides snap to grid
+          freeMode: true, // disable freeMode so slides snap to grid
         };
 
   return (
