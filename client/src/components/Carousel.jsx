@@ -60,10 +60,7 @@ const Carousel = ({
           // keep poster behavior (allow multiple visible)
           ...mergedSettings,
           // ensure snapping by grouping visible slides (prevents half-slide stop on desktop)
-          slidesPerGroup:
-            mergedSettings.slidesPerView === "auto"
-              ? 1
-              : mergedSettings.slidesPerView,
+          // slidesPerGroup: 1,
           freeMode: true, // disable freeMode so slides snap to grid
         };
 
